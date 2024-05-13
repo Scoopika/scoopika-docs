@@ -1,71 +1,73 @@
 ---
 title: Introduction
-description: 'Welcome to the home of your new documentation'
 ---
 
 <img
   className="block dark:hidden"
-  src="/images/hero-light.svg"
+  src="/images/scoopika-hero-light.png"
   alt="Hero Light"
 />
 <img
   className="hidden dark:block"
-  src="/images/hero-dark.svg"
+  src="/images/scoopika-hero-color.png"
   alt="Hero Dark"
 />
 
-## Setting up
+## What is Scoopika?
 
-The first step to world-class documentation is setting up your editing environments.
+Scoopika is your go-to platform for seamlessly adding LLM-powered agents into your applications, prioritizing web integration, data safety, validation, developer experience, and flexibility.
+
+Scoopika provides the following base features out of the box:
+
+1. **LLM Output validation**: For structured output and tools arguments, with full type-safety.
+2. **Real-time streaming hooks**: +10 hooks for streaming responses from the LLM. Works between client-server with no additional configuration.
+3. **Errors auto healing**: If an error occures, Scoopika will auto heal communicating with the user about any invalid or missing information (in case of tools invalid inputs).
+4. **Flexibility**: Scoopika agents accept plugged data, like images (if model support vission), custom data and RAG, so if you have a Vector database or want to send the agent any custom knowledge it's as easy as plugging the data into the run inputs.
+5. **Web-first**: Scoopika focuses on being an ideal solution for web applications, providing libraries for both server and client side, with real-time hooks between the two, and [client-side actions](/client-side-actions).
+6. **Ease of use**: No LLM or machine learning knowledge is required to work with Scoopika and build AI-powered applications.
+
+## Getting started
+
+You can start with the [Quick start](/quick-start) as It will guide from creating an account to running your first agent.
+
+## Essentials
+
+Scoopika comes with a full bag of products, We'd like to introduce you to the essentials:
 
 <CardGroup cols={2}>
   <Card
-    title="Edit Your Docs"
-    icon="pen-to-square"
-    href="https://mintlify.com/docs/quickstart"
+    title="AI Agents"
+    icon="robot"
+    href="/essentials/agents"
   >
-    Get your docs set up locally for easy development
+    Personalized LLM-powered agents empowering your applications with intelligent capabilities
   </Card>
   <Card
-    title="Preview Changes"
-    icon="image"
+    title="Multi-agent smart boxes"
+    icon="cube"
+    href="https://docs.scoopika.com/docs/boxes"
+  >
+    Foster collaboration among multiple agents enabling enhanced problem-solving & interaction
+  </Card>
+  <Card
+    title="Tools"
+    icon="screwdriver-wrench"
     href="https://mintlify.com/docs/development"
   >
-    Preview your changes before you push to make sure they're perfect
-  </Card>
-</CardGroup>
-
-## Make it yours
-
-Update your docs to your brand and add valuable content for the best user conversion.
-
-<CardGroup cols={2}>
-  <Card
-    title="Customize Style"
-    icon="palette"
-    href="https://mintlify.com/docs/settings/global"
-  >
-    Customize your docs to your company's colors and brands
+    Equip agents with custom functions & APIs, allowing them to perform actions and retrieve data based on contextual cues
   </Card>
   <Card
-    title="Reference APIs"
-    icon="code"
-    href="https://mintlify.com/docs/api-playground/openapi"
+    title="History stores"
+    icon="database"
+    href="https://mintlify.com/docs/development"
   >
-    Automatically generate endpoints from an OpenAPI spec
+    Provide agents with chat sessions histories, enabling them to retain context with the user
   </Card>
   <Card
-    title="Add Components"
-    icon="screwdriver-wrench"
-    href="https://mintlify.com/docs/components/accordion"
+    title="Client-side actions"
+    icon="bolt"
+    href="https://mintlify.com/docs/development"
   >
-    Build interactive features and designs to guide your users
-  </Card>
-  <Card
-    title="Get Inspiration"
-    icon="stars"
-    href="https://mintlify.com/customers"
-  >
-    Check out our showcase of our favorite documentation
+    Execute client-side actions triggered by agents, enhancing user experiences with real-time, contextually-driven interactions
   </Card>
 </CardGroup>

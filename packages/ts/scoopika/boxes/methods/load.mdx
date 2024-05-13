@@ -1,0 +1,27 @@
+---
+title: load
+description: Pre-load Box Data (Optional)
+---
+
+Allows you to optionally load the box data from the Scoopika platform before initiating any runs. By default, the box data is automatically loaded during the first run call. However, using load can be beneficial if you need to access the box data (such as its name and list of agents) before making the first run.
+
+## Return Value
+
+The `load` method does not require any arguments and returns the `Box` instance itself. You can then access the loaded box data using the `box.box` property, which holds an object of type `BoxData`.
+
+[Reference to BoxData](/api-reference/agent-data)
+
+## Behaviour
+
+If the box can't be loaded from the platform It'll throw an error.
+
+<RequestExample>
+```typescript Usage example
+import type { BoxData } from "@scoopika/types"
+
+const box = await new Box("ID", scoopika).load();
+const boxData = box.box as BoxData;
+
+console.log(boxData.id); // string
+```
+</RequestExample>

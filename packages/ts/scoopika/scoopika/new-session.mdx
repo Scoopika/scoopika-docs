@@ -1,0 +1,51 @@
+---
+title: newSession
+description: Create a new chat session
+---
+
+Allows you to create a new chat session within Scoopika. This session serves as a container for user interactions with your agents, storing conversation history and potentially user information.
+
+## Arguments
+
+Takes one arguments passed as an `object` with the following properties:
+
+<ParamField path="id" type="string" default="crypto.randomUUID()">
+	The session ID to create. should be unique. if not provided a random ID will be generated.
+</ParamField>
+
+<ParamField path="user_id" type="string">
+	Allows you to associate the new session with a specific user by providing their ID. Including `user_id` enables you to later retrieve all sessions belonging to that user using the [listUserSessions method](/packages/ts/scoopika/scoopika/list-user-sessions).
+</ParamField>
+
+<ParamField path="user_name" type="string">
+	Allows you to specify the user's name for this session. Providing a user name can potentially be used by the agent to personalize interactions by addressing the user by name.
+</ParamField>
+
+## Response
+
+<ResponseField name="session" type="Promise<StoreSession>">
+	Returns a Promise that resolves to the created session as a `StoreSession` object.
+
+	[Reference to StoreSession](/api-reference/store-session)
+</ResponseField>
+
+<RequestExample>
+```typescript Usage example
+await scoopika.newSession({
+	id: "SESSION_ID",
+	user_name: "USER_NAME",
+	user_id: "USER_ID"
+})
+```
+</RequestExample>
+
+<ResponseExample>
+```json Response example
+{
+	"id": "SESSION_ID",
+	"user_name": "USER_NAME",
+	"user_id": "USER_ID",
+	"saved_prompts": {}
+}
+```
+</ResponseExample>

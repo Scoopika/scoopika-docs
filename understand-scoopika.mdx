@@ -1,0 +1,59 @@
+---
+title: Understanding Scoopika
+description: Welcome to the world of Scoopika
+---
+
+## Products
+
+Scoopika offers a number of products, but the star of the show is [AI Agents](/agents), The other products either enhance your agents' capabilities or provide additional features. Let's take a quick peek:
+
+<CardGroup cols={1}>
+  <Card
+    title="AI Agents"
+    icon="robot"
+    href="https://docs.scoopika.com/docs/agents"
+  >
+    Personalized LLM-powered agents empowering your applications with intelligent capabilities
+  </Card>
+  <Card
+    title="Multi-agent smart boxes"
+    icon="cube"
+    href="https://docs.scoopika.com/docs/boxes"
+  >
+    Imagine your agents teaming up in these boxes! They'll collaborate to tackle problems and interact more effectively.
+  </Card>
+  <Card
+    title="Tools"
+    icon="screwdriver-wrench"
+    href="https://mintlify.com/docs/development"
+  >
+    Equip your agents with custom functions & APIs, allowing them to perform actions and fetch data based on what's happening around them.
+  </Card>
+  <Card
+    title="History stores"
+    icon="database"
+    href="https://mintlify.com/docs/development"
+  >
+    These are your agents' memories. They store chat session history, enabling them to keep conversations flowing and remember what users said before.
+  </Card>
+</CardGroup>
+
+## Packages
+
+Scoopika offers different packages to suit your project's needs, whether it's on the server-side or client-side.
+
+`@scoopika/scoopika`: This main package encompasses all Scoopika functionalities and is intended for server-side use.
+
+<Info>Notice that `@scoopika/scoopika` exposes your Scoopika token and any LLMs providers keys you're using in your engines and should never be used on client-side</Info>
+
+For web application development, we introduce:
+
+`@scoopika/server`: Used to create a Scoopika Server in a snap, ensuring smooth communication with your Scoopika client, with no additional setup.
+
+`@scoopika/client`: This client-side package lets you chat communicate your Scoopika Server, supporting cool features like real-time streaming hooks and client-side actions.
+
+You can definitely use Scoopika like any other library, but our server-client solution is built for modern web development. It saves you time and makes your users' experience extra interactive. the choice is yours. Explore all options and see what works best for you.
+
+<Tip>You can build your own server that can communicate with a Scoopika client, See [this guide]()</Tip>
+
+For more on the matter, check [Scoopika for the web](/scoopika-for-the-web).

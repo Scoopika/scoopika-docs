@@ -1,0 +1,92 @@
+---
+title: addTool
+---
+
+The `addTool` method allows you to equip your agents with the capabilities of external tools. This can significantly enhance your agent's functionality by enabling it to interact with external data sources or services. Refer to the [Tools](/tools) page for more information on the concept of tools within Scoopika.
+
+## Arguments
+
+<ParamField path="func" type="Function" required>
+  Specifies the function to be executed when the agent calls the added tool. This function can perform any logic you define, but it will always receive its arguments as an object that has been validated against the provided tool schema.
+</ParamField>
+
+<ParamField path="schema" type="ToolSchema" required>
+  Defines the schema for the tool. The schema is a critical element as it determines the expected parameters (inputs) for the tool function and tells the agent what the tool is about and when to call it.
+
+  Recommended resources:
+
+  [Reference to ToolSchema](/api-reference/tool-schema)
+
+  [createToolSchema](/packages/ts/scoopika/scoopika/create-tool-schema)
+
+  [How to build my tools](/guides/how-to-build-my-tools)
+</ParamField>
+
+<ResponseExample>
+```typescript Usage
+import { createToolSchema } from "@scoopika/scoopika";
+
+// Define the tool parameters schema
+const toolParams = {
+	type: "object",
+	properties: {
+		id: {
+			type: "string",
+			description: "The document ID to get info about",
+		}
+	},
+	required: ["id"]
+}
+
+// Create a tool schema
+const toolSchema = createToolSchema({
+	name: "get_document_info",
+	description: "Get information about a document",
+	parameters: toolParams
+})
+
+// Define the tool function
+function toolFunc(args) {
+	// do anything in the function
+}
+
+agent.addTool(toolFunc, toolSchema);
+```
+
+```typescript Type-safe usage
+import {
+	createToolSchema,
+	FromSchema,
+	JSONSchema
+} from "@scoopika/scoopika";
+
+// Define the tool parameters schema
+const toolParams = {
+	type: "object",
+	properties: {
+		id: {
+			type: "string",
+			description: "The document ID to get info about",
+		}
+	},
+	required: ["id"]
+} as const satisfies JSONSchema;
+
+// Define the tool inputs type (from the tool parameters)
+type ToolInputs = FromSchema<typeof toolParams>;
+
+// Create the tool schema
+const toolSchema = createToolSchema({
+	name: "get_document_info",
+	description: "Get information about a document",
+	parameters: toolParams
+})
+
+// Define the tool function
+function toolFunc(args: ToolInputs) {
+	// do anything in the function
+}
+
+agent.addTool<ToolInputs>(toolFunc, toolSchema);
+```
+</ResponseExample>

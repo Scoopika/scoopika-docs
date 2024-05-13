@@ -1,18 +1,18 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Scoopika",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/scoopika-white.png",
+    "light": "/logo/scoopika-black.png"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/scoopika.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#8f70f5",
+    "light": "#a48bf7",
+    "dark": "#8f70f5",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#a48bf7",
+      "to": "#6a40f2"
     }
   },
   "topbarLinks": [
@@ -23,45 +23,41 @@
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "url": "https://scoopika.com/app"
+  },
+  "feedback": {
+    "thumbsRating": true,
+    "suggestEdit": true,
+    "raiseIssue": true
+  },
+  "primaryTab": {
+    "name": "General"
   },
   "tabs": [
+    {
+      "name": "Packages",
+      "url": "packages"
+    },
     {
       "name": "API Reference",
       "url": "api-reference"
     }
   ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
-    }
-  ],
+  
   "navigation": [
     {
       "group": "Get Started",
       "pages": [
         "introduction",
         "quickstart",
-        "development"
+        "understand-scoopika"
       ]
     },
     {
       "group": "Essentials",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
+        "essentials/agents",
+        "essentials/multi-agent-boxes",
         "essentials/images",
         "essentials/settings",
         "essentials/navigation",
@@ -69,23 +65,127 @@
       ]
     },
     {
-      "group": "API Documentation",
+      "group": "Help",
       "pages": [
-        "api-reference/introduction"
+        "help/account",
+        "help/pricing",
+        "help/contact-us"
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Overall",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "packages/overview"
+      ]
+    },
+    {
+      "group": "Packages",
+      "pages": [
+        {
+          "group": "@scoopika/scoopika",
+          "pages": [
+            "packages/ts/scoopika/overview",
+            "packages/ts/scoopika/get-started",
+            "packages/ts/scoopika/scoopika/init",
+            {
+              "group": "Agents",
+              "icon": "robot",
+              "pages": [
+                "packages/ts/scoopika/agents/init",
+                {
+                  "group": "Methods",
+                  "pages": [
+                    "packages/ts/scoopika/agents/methods/overview",
+                    "packages/ts/scoopika/agents/methods/run",
+                    "packages/ts/scoopika/agents/methods/add-tool",
+                    "packages/ts/scoopika/agents/methods/structured-output",
+                    "packages/ts/scoopika/agents/methods/load",
+                    "packages/ts/scoopika/agents/methods/info"
+                  ]
+                }
+              ]
+            },
+            {
+              "group": "Multi-agent Boxes",
+              "icon": "cube",
+              "pages": [
+                "packages/ts/scoopika/boxes/init",
+                {
+                  "group": "Methods",
+                  "pages": [
+                    "packages/ts/scoopika/boxes/methods/overview",
+                    "packages/ts/scoopika/boxes/methods/run",
+                    "packages/ts/scoopika/boxes/methods/load"
+                  ]
+                }
+              ]
+            },
+            {
+              "group": "History Sessions",
+              "icon": "database",
+              "pages": [
+                "packages/ts/scoopika/scoopika/history",
+                "packages/ts/scoopika/scoopika/get-session",
+                "packages/ts/scoopika/scoopika/new-session",
+                "packages/ts/scoopika/scoopika/list-user-sessions",
+                "packages/ts/scoopika/scoopika/get-session-runs",
+                "packages/ts/scoopika/scoopika/delete-session"
+              ]
+            },
+            "packages/ts/scoopika/scoopika/create-tool-schema"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Types",
+      "pages": [
+        {
+          "group": "Inputs",
+          "pages": [
+            "api-reference/inputs",
+            "api-reference/plug"
+          ]
+        },
+        "api-reference/hooks",
+        {
+          "group": "Agents",
+          "pages": [
+            "api-reference/agent-response",
+            "api-reference/llm-response",
+            "api-reference/agent-data"
+          ]
+        },
+        {
+          "group": "Tools",
+          "pages": [
+            "api-reference/tool-history",
+            "api-reference/tool-call",
+            "api-reference/tool-schema"
+          ]
+        },
+        {
+          "group": "Sessions",
+          "pages": [
+            "api-reference/store-session",
+            "api-reference/run-history"
+          ]
+        },
+        {
+          "group": "Boxes",
+          "pages": [
+            "api-reference/box-response",
+            "api-reference/box-data"
+          ]
+        }
       ]
     }
   ],
   "footerSocials": {
     "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "github": "https://github.com/scoopika"
+  },
+  "playground": {
+    "mode": "hide"
   }
 }

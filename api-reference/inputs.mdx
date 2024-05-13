@@ -1,0 +1,64 @@
+---
+title: Inputs
+---
+
+`Inputs` is the primary input for running both agents and boxes through the `.run` method. It allows you to specify the message, history session ID, run ID, inject additional data, and pass variables to prompts..
+
+## Props
+
+The inputs can contain any key-value pairs, the main fields are:
+
+<ParamField path="message" type="string">
+  The primary message to be sent to the agent for processing. This message becomes the latest chat message within the agent's context and the chat session.
+</ParamField>
+
+<ParamField path="session_id" type="string">
+  An identifier for the chat session. Providing a `session_id` helps maintain context across multiple runs within the same conversation. This allows agents to access previous history messages, enhancing its understanding of the ongoing interaction.
+
+  > If this field is not provided, a new session with a random ID will be created for each run.
+
+  > Providing a non-existent `session_id` will create a new session with the provided ID.
+</ParamField>
+
+<ParamField path="run_id" type="string">
+  A unique identifier for the specific run. If you don't provide a `run_id`, a random one will be generated.
+
+  This field can be useful for tracking individual runs within your application logic, particularly when interacting between client and server.
+</ParamField>
+
+<ParamField path="save_history" type="boolean" default={true}>
+  Determines whether to save the current run to the associated session's history.
+
+  The default behavior is `true`, ensuring historical data is preserved.
+</ParamField>
+
+
+<ParamField path="plug" type="Plug">
+  Used to inject custom data into the run.
+
+  [Reference to Plug](/api-reference/plug)
+</ParamField>
+
+<ParamField path="Custom Key-Value Pairs">
+  The `Inputs` object offers flexibility by allowing you to include additional key-value pairs beyond the pre-defined fields.
+
+  This enables you to pass variables values to prompts within agents and boxes.
+</ParamField>
+
+<RequestExample>
+```typescript Import type
+import type { Inputs } from "@scoopika/types";
+```
+</RequestExample>
+
+<ResponseExample>
+```json Example
+{
+  "message": "Hello",
+  "session_id": "SESSION_1",
+  "run_id": "RUN_1",
+  "plug": {},
+  "variable_id": "VALUE"
+}
+```
+</ResponseExample>

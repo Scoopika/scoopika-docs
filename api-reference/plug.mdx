@@ -1,0 +1,51 @@
+---
+title: Plug
+---
+
+The `Plug` is used to inject custom data into agent and box runs through the `.run` method's [Inputs](/api-reference/inputs). These custom data points can enhance an agent's processing capabilities.
+
+## Props
+
+<ParamField path="rag" type="string | function">
+  This field facilitates the provision of custom knowledge for the LLM using Retrieval-Augmented Generation (RAG).
+
+  Can be one of:
+
+  **String**: You can directly provide a string containing the custom knowledge.
+
+  **Function**: For more intricate retrieval scenarios, define a `function` that accepts the current message context (`string`) as input. This function can either return a `string` containing the custom knowledge synchronously or a `Promise` that resolves to a `string` asynchronously.
+
+  This field is intended to be used if you want to connect a Vector store to your agents. as it will be executed and sent the `message` from the run [Inputs](/api-reference/inputs), and then you can do anything with it, like getting relevant data from a Vector database.
+</ParamField>
+
+<ParamField path="images" type="string array">
+  This field allows you to pass a list of image URLs to the agent. The LLM driving the agent have to support vission (like latest GPT-4 versions), otherwise Scoopika will encounter an error.
+</ParamField>
+
+<ParamField path="data" type="PlugData array">
+  Additional information to the agent. Each object within the array has the following structure:
+
+  - **description (string)**: A clear description of the data being provided so the agent understands what it's about.
+  - **value (string)**: The actual data you want to pass to the agent.
+</ParamField>
+
+<RequestExample>
+```typescript Import type
+import type { Plug } from "@scoopika/types";
+```
+</RequestExample>
+
+<ResponseExample>
+```json Example
+{
+	"rag": (context) => ("Custom knowledge"),
+	"images": [ "IMG_URL_1", "IMG_URL_2" ],
+	"data": [
+		{
+			"description": "Tone",
+			"data": "Professional"
+		}
+	]
+}
+```
+</ResponseExample>

@@ -1,0 +1,42 @@
+---
+title: ToolCall
+---
+
+The `ToolCall` object contains details about an external tool called by the agent during processing.
+
+<ResponseField name="id" type="string">
+  The ID of the call
+</ResponseField>
+
+<ResponseField name="type" type='string, always "function"'>
+  The type of the call. currently will always be `"function"`.
+</ResponseField>
+
+<ResponseField name="function" type='object'>
+  This property provides details about the specific function call made by the agent.
+
+  Properties:
+
+  - **name** (`string`): This field specifies the name of the function or tool that was called.
+  - **arguments** (`string`): This field contains a JSON-encoded string representing the arguments that were passed to the called function. While the field itself is a string, you can leverage `JSON.parse` to convert it into a JavaScript object for easier access to the individual arguments.
+
+</ResponseField>
+
+<RequestExample>
+```typescript Import type
+import type { LLMToolCall } from "@scoopika/types";
+```
+</RequestExample>
+
+<ResponseExample>
+```json Example
+{
+	"id": "CALL_1",
+	"type": "function",
+	"function": {
+		"name": "get_document",
+		"arguments": "{\"id\": \"001\"}"
+	}
+}
+```
+</ResponseExample>

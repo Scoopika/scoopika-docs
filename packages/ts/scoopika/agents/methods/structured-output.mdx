@@ -1,0 +1,95 @@
+---
+title: structuredOutput
+---
+
+Used to extract structured data. It takes [Inputs](/api-reference/inputs) and a [JSON schema](https://json-schema.org/learn/getting-started-step-by-step), and extracts data from the inputs based on the provided schema.
+
+
+## Key Functionalities
+
+- **Dynamic Data Extraction**: By providing a JSON schema, you can dynamically guide the agent to output structured JSON data.
+
+- **Type-Safe**: The `structuredOutput` method leverages the provided JSON schema to validate the extracted data and return a type-safe JSON object.
+
+- **Session-Aware Extraction**: When a `session_id` is included in the inputs, the method can potentially incorporate data retrieved from prior conversations within the same session, enabling a more contextual understanding during the extraction process.
+
+## Arguments
+
+Takes one argument  passed as an object with the following properties:
+
+<ParamField path="schema" type="JSONSchema" required>
+  a JSON schema object defining the expected structure of the data to be extracted.
+
+  [JSON schema](https://json-schema.org/learn/getting-started-step-by-step)
+</ParamField>
+
+<ParamField path="inputs" type="Inputs" required>
+  Provides the message and other relevant context for the agent to process.
+
+  [Reference to Inputs](/api-reference/inputs)
+</ParamField>
+
+## Return Value
+
+This method returns a `Promise` that resolves to a validated JSON object that adheres to the provided schema. This object represents the extracted structured data.
+
+## Return Type
+
+You can provide a generic to this method (See the type-safe example), if you don't provide a generic it returns `Record<string, any>`.
+
+## Behaviour
+
+If the data validation fails It will throw an error that's not auto healed.
+
+## Acknowledgement
+
+The types `JSONSchema` and `FromSchema` comes from [json-schema-to-ts](https://www.npmjs.com/package/json-schema-to-ts).
+
+<RequestExample>
+```typescript Basic example
+const schema = {
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"description": "The user name"
+		}
+	},
+	"required": ["name"]
+};
+
+const data = await agent.structuredOutput({
+	schema,
+	inputs: {
+		message: "Hello, my name is Kais!"
+	}
+});
+
+console.log(data.name);
+```
+```typescript Type-safe example
+import { JSONSchema, FromSchema } from "@scoopika/scoopika"
+
+const schema = {
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"description": "The user name"
+		}
+	},
+	"required": ["name"]
+} as const satisfies JSONSchema;
+
+type Schema = FromSchema<typeof schema>;
+
+const data = await agent.structuredOutput<Schema>({
+	schema,
+	inputs: {
+		message: "Hello, my name is Kais!"
+	}
+});
+
+console.log(data.name); // string
+```
+</RequestExample>

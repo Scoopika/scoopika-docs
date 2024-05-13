@@ -1,0 +1,27 @@
+---
+title: load
+description: Pre-load Agent Data (Optional)
+---
+
+Allows you to optionally load the agent's data from the Scoopika platform before initiating any runs. By default, the agent data is automatically loaded during the first run call. However, using load can be beneficial if you need to access the agent's data (such as its name or description) before making the first run.
+
+## Return Value
+
+The `load` method does not require any arguments and returns the `Agent` instance itself. You can then access the loaded agent data using the `agent.agent` property, which holds an object of type `AgentData`.
+
+[Reference to AgentData](/api-reference/agent-data)
+
+## Behaviour
+
+If the agent can't be loaded from the platform It'll throw an error.
+
+<RequestExample>
+```typescript Usage example
+import type { AgentData } from "@scoopika/types"
+
+const agent = await new Agent("ID", scoopika).load();
+const agentData = agent.agent as AgentData;
+
+console.log(agentData.name); // string
+```
+</RequestExample>

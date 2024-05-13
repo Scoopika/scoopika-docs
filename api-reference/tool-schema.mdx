@@ -1,0 +1,48 @@
+---
+title: ToolSchema
+---
+
+A `ToolSchema` object serves as a blueprint for external tools or custom functions that you can integrate with your agents in Scoopika. This schema defines the tool's name, description, and most importantly, the expected parameters (inputs) it requires.
+
+## Props
+
+<ParamField path="name" type="string">
+  This property specifies a clear and descriptive name for the tool.
+</ParamField>
+
+<ParamField path="description" type="string">
+   Provide a concise description of the tool's functionality and when the agent should call it.
+</ParamField>
+
+<ParamField path="parameters" type="ToolParamters | JSONSchema">
+  This property defines the schema for the tool's parameters. The schema is a critical element as it dictates the expected data format for the arguments that will be passed to the tool function. Scoopika will use this schema to validate the agent's call.
+
+  Recommended to use an object `JSONSchema` and then use the `createToolSchema` with it. [learn more](/packages/ts/scoopika/agents/methods/add-tool)
+
+  [Reference to JSONSchema](https://json-schema.org/learn/getting-started-step-by-step)
+</ParamField>
+
+<RequestExample>
+```typescript Import type
+import type { ToolSchema } from "@scoopika/types";
+```
+</RequestExample>
+
+<ResponseExample>
+```json Example
+{
+	"name": "tool_name",
+	"description": "The is the tool's description",
+	"paramters": {
+		"type": "object",
+		"properties": {
+			"prop1": {
+				"type": "string",
+				"description": "The property description"
+			}
+		},
+		"required": ["prop1"]
+	}
+}
+```
+</ResponseExample>

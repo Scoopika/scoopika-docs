@@ -1,0 +1,59 @@
+---
+title: 'Multi-agent boxes'
+description: 'Foster collaboration among multiple agents'
+icon: 'cube'
+---
+
+<Info>
+    This page provides a high-level overview of Scoopika's Multi-agent Boxes (also known as Smart Boxes). For in-depth documentation, refer to the dedicated [Smart boxes documentation](/agents).
+</Info>
+
+Imagine a team of AI specialists working together! Multi-agent boxes are virtual containers that house multiple agents. The box intelligently selects the most suitable agent for the task in hand.
+
+**Important Note**: Multi-agent boxes are currently a demo feature. However, you can still facilitate agent communication without them using the `agent.toTool` method. This method allows you to pass agents as tools to other agents, enabling collaboration. [learn more](/agent/toTool)
+
+## Creating Multi-agent Boxes
+
+You can visit the [Scoopika platform](https://scoopika.com/app/boxes) to create a new box, The process is simple:
+
+1. **Name your box**: Give it a clear and descriptive name.
+2. **Select the driving LLM**: Choose the Large Language Model that will coordinate the agents within the box.
+3. **Assemble your team**: Select the agents you want to include from your existing agents.
+
+## Initializing a Box Instance
+
+Before you can utilize a box in your application, ensure you have [initialized a Scoopika instance](/initialize-scoopika-instance). Then, proceed with initializing the box instance:
+
+```typescript
+import { Box } from "@scoopika/scoopika";
+
+const box = new Box("BOX_ID", scoopika);
+```
+
+## Running the Box
+
+Running a multi-agent box follows a similar approach to running individual agents. However, box instances introduce additional functionalities through [streaming hooks](/box/streaming-hooks).
+
+```typescript
+const response = await box.run({
+    inputs: {
+        message: "Hello" // Required field for box inputs
+    }
+})
+
+console.log(response);
+```
+
+## Tools
+
+Multi-agent boxes offer the flexibility to equip agents with tools. You can add tools globally, accessible by all agents within the box, or assign them to specific agents.
+
+```typescript
+// Global tool (all agents)
+box.addGlobalTool(toolFunc, toolSchema);
+
+// Tool for a specific agent
+box.addTool("AGENT_NAME", toolFunc, toolSchema);
+```
+
+For detailed instructions on creating tool schemas, refer to the [tools documentation](/essentials/tools).

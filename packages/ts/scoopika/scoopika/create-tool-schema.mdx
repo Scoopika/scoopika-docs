@@ -1,0 +1,82 @@
+---
+title: createToolSchema
+---
+
+Used to create a Scoopika tool schema from a JSON schema.
+
+## Arguments
+
+Takes one arguments passed an object with the following properties:
+
+<ParamField path="name" type="string" required>
+	The name of the tool.
+</ParamField>
+
+<ParamField path="description" type="string" required>
+	The description of the tool. keep your description clear as it guides the agent when to use the tool.
+</ParamField>
+
+<ParamField path="parameters" type="JSONSchema" required>
+	The parameters schema of the tool's function. recommended to be a `JSONSchema` as `object` in the parent property 
+
+	[Reference to JSONSchema](https://json-schema.org/learn/getting-started-step-by-step)
+</ParamField>
+
+## Return Value
+
+<ResponseField name="tool_schema" type="ToolSchema">
+	Returns a tool schema that can be then used to inject the too into agents (using [addTool](/packages/ts/scoopika/agents/methods/add-tool)) and boxes.
+
+	[Reference to ToolSchema](/api-reference/tool-schema)
+</ResponseField>
+
+<ResponseExample>
+```typescript Usage
+import { createToolSchema } from "@scoopika/scoopika";
+
+const toolSchema = createToolSchema({
+	name: "get_document_info",
+	description: "Get information about a document",
+	parameters: {
+		type: "object",
+		properties: {
+			id: {
+				type: "string",
+				description: "The document ID to get info about",
+			}
+		},
+		required: ["id"]
+	}
+});
+```
+
+```typescript Type-safe usage
+import {
+	createToolSchema,
+	FromSchema,
+	JSONSchema
+} from "@scoopika/scoopika";
+
+// Define the tool parameters schema
+const toolParams = {
+	type: "object",
+	properties: {
+		id: {
+			type: "string",
+			description: "The document ID to get info about",
+		}
+	},
+	required: ["id"]
+} as const satisfies JSONSchema;
+
+// Create a type for the tool's parameters or inputs
+type ToolInputs = FromSchema<typeof toolParams>;
+
+// Create the tool schema
+const toolSchema = createToolSchema({
+	name: "get_document_info",
+	description: "Get information about a document",
+	parameters: toolParams
+});
+```
+</ResponseExample>

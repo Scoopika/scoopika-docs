@@ -1,0 +1,26 @@
+---
+title: Initialize Box
+---
+
+You can use the `Box` class to initialize and new smart box instance. [What are multi-agent boxes](/essentials/multi-agent-boxes)
+
+## Arguments
+
+<ParamField path="id" type="string" required>
+  The box ID. your box ID is shown next to its name in the [platform](https://scoopika.com/app/boxes), just click it to copy.
+</ParamField>
+
+<ParamField path="scoopika" type="Scoopika" required>
+  An instance of the Scoopika class that you previously initialized.
+
+  [Reference to Scoopika instance](/packages/ts/scoopika/scoopika)
+</ParamField>
+
+<RequestExample>
+```typescript Usage example
+import { Scoopika, Box } from "@scoopika/scoopika";
+
+const scoopika = new Scoopika({...}); // set your scoopika config
+const box = new Box("BOX_ID", scoopika);
+```
+</RequestExample>

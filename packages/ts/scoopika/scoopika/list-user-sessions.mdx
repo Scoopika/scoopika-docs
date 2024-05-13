@@ -1,0 +1,39 @@
+---
+title: listUserSessions
+description: List sessions IDs based on the user ID
+---
+
+Allows you to retrieve a list of session IDs associated with a particular user within Scoopika. This can be useful for managing user interactions and potentially retrieving specific sessions based on user IDs.
+
+To create a session that belongs to a specific user just specify the `user_id` property when creating a new session using the [newSession method](/packages/ts/scoopika/scoopika/new-session).
+
+## Arguments
+
+<ParamField path="user_id" type="string" required>
+  The user ID for which you want to retrieve a list of session IDs. It's important to remember that this method relies on user IDs being associated with sessions during creation.
+</ParamField>
+
+## Response
+
+<ResponseField name="sessions_ids" type="Promise<string[]>">
+  Returns a Promise that resolves to an array of strings. Each `string` in the array represents the unique ID of a session belonging to the provided user. If no sessions are found for the specified user, the method will resolve to an empty array.
+
+  You can then use one of these methods with the IDs:
+
+  - [getSession](/packages/ts/scoopika/scoopika/get-session): To get the session info.
+  - [getSessionRuns](/packages/ts/scoopika/scoopika/get-session): Get the runs (messages) of the session.
+</ResponseField>
+
+<RequestExample>
+```typescript Usage example
+const sessions = await scoopika.listUserSessions(
+	"USER_ID"
+);
+```
+</RequestExample>
+
+<ResponseExample>
+```json Response example
+["SESSION_ID_1", "SESSION_ID_2"]
+```
+</ResponseExample>

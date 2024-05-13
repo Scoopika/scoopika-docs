@@ -1,0 +1,20 @@
+---
+title: info
+description: Get Specific Info About the Agent
+---
+
+Get info about the agent, type-safe out-of-the-box and does not require to running the `load` method as it auto loads the agent.
+
+## Arguments
+
+<ResponseField name="key" type="string" required>
+	The key of the data to get. has to be keyof [AgentData](/api-reference/agent-data).
+</ResponseField>
+
+<RequestExample>
+```typescript Usauge example
+const name = await agent.info("name"); // string
+
+console.log(name);
+```
+</RequestExample>

@@ -1,0 +1,67 @@
+---
+title: AgentData
+---
+
+`AgentData` represents the information of an agent within Scoopika.
+
+## Useful Props
+
+<ParamField path="id" type="string">
+  The agent ID.
+</ParamField>
+
+<ParamField path="name" type="string">
+  The agent name.
+</ParamField>
+
+<ParamField path="avatar" type="string | undefined">
+  The agent avatar. usually a url, but if you use the AI generated avatars in the platform till will actually be in base64.
+</ParamField>
+
+<ParamField path="description" type="string">
+  The agent description.
+</ParamField>
+
+## Props Not For Developer Interaction
+
+The following properties are included for informational purposes only and are not intended for direct developer interaction:
+
+<ParamField path="prompts" type="Prompt[]">
+  The prompts the agent has, you won't need to deal with this one,
+</ParamField>
+
+<ParamField path="tools" type="ToolSchema[]">
+  A list of tools the agent has, you won't need to deal with this one too and it's only used by the Box instance under the hood.
+</ParamField>
+
+<ParamField path="chained" type="boolean" deprecated>
+  If the agent uses prompt chaining. this feature was removed.
+</ParamField>
+
+<ParamField path="wanted_responses" type="string[]" deprecated>
+  The wanted prompts response to return from the agent. this feature was removed.
+</ParamField>
+
+<ParamField path="timeout" type="number | undefined">
+  This is not being used for now.
+</ParamField>
+
+<RequestExample>
+```typescript Import type
+import type { AgentData } from "@scoopika/types";
+```
+</RequestExample>
+
+<ResponseExample>
+```json Example
+{
+	"id": "AGENT_1",
+	"name": "agent_name",
+	"description": "agent description",
+	"avatar": "IMG_URL",
+	"chained": false,
+	"prompts": [],
+	"tools": []
+}
+```
+</ResponseExample>

@@ -1,0 +1,37 @@
+---
+title: BoxData
+---
+
+Represents a box within Scoopika.
+
+<ResponseField name="id" type="string">
+	The ID of the box.
+</ResponseField>
+
+<ResponseField name="agents" type="AgentData[]">
+	The list of agents available under the box.
+
+	[Reference to AgentData](/api-reference/agent-data)
+</ResponseField>
+
+<RequestExample>
+```typescript Import type
+import type { BoxData } from "@scoopika/types";
+```
+</RequestExample>
+
+<ResponseExample>
+```json Example
+{
+	"id": "BOX_ID",
+	"agents": [
+		"id": "AGENT_1",
+		"name": "agent_name",
+		"description": "agent description",
+		"avatar": "IMG_URL",
+		"prompts": [],
+		"tools": []
+	]
+}
+```
+</ResponseExample>

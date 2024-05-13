@@ -1,0 +1,50 @@
+---
+title: getSession
+description: Retreive a chat session by ID
+---
+
+Allows you to retrieve a chat session by its unique identifier within Scoopika. This can be useful for accessing past conversation history or user data associated with a specific session.
+
+This method does not return the actual session history (runs or messages), But it returns a [StoreSession object](/api-reference/store-session), to get the session's runs, refer to [getSessionRuns](/package/ts/scoopika/scoopika/get-session-runs).
+
+## Arguments
+
+<ParamField path="id" type="string" required>
+  The session ID to retreive.
+</ParamField>
+
+<ParamField path="allow_new" type="boolean" default={true}>
+  This optional argument controls the behavior when the specified session ID is not found. When set to `true` the method will create a new session with the provided ID if it doesn't already exist. However, it's generally recommended to set `allow_new` to `false` to ensure retrieval of existing sessions only. This helps prevent unintended session creation in cases where you specifically want to access an existing one.
+</ParamField>
+
+## Return Value
+
+<ResponseField name="response" type="Promise<StoreSession>">
+	Returns a `Promise` that resolves to a `StoreSession object` containing information about the retrieved session, including its ID, user ID (if available), user name (if available), and saved prompts (if any).
+
+	[Reference to StoreSession](/api-reference/store-session)
+</ResponseField>
+
+<RequestExample>
+```typescript Usage example
+// Retrieve session, creating a new one if not found (default behavior)
+const session = await scoopika.getSession("SESSION_ID");
+
+// Retrieve session, throw error if not found
+const session = await scoopika.getSession(
+	"SESSION_ID",
+	false
+);
+```
+</RequestExample>
+
+<ResponseExample>
+```json Response example
+{
+	"id": "SESSION_ID",
+	"user_id": "SESSION_UESR_ID",
+	"user_name": "SESSION_USER_NAME",
+	"saved_prompts": {}
+}
+```
+</ResponseExample>

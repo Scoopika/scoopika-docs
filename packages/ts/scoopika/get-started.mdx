@@ -1,0 +1,68 @@
+---
+title: 'Get Started'
+---
+
+Install the package using your preferred package manager:
+
+```bash
+npm install @scoopika/scoopika
+```
+```bash
+yarn add @scoopika/scoopika
+```
+```bash
+pnpm add @scoopika/scoopika
+```
+
+## Initialization
+
+Before interacting with agents and boxes, you'll need to initialize a Scoopika instance. This instance acts as a central hub for managing your Scoopika interactions, including functionalities like history retrieval.
+
+1. Import the Scoopika class from the package.
+2. Create a new Scoopika instance, providing the following configuration options:
+	- token: Your unique Scoopika token. [generate token](https://scoopika.com/app/settings?tab=tokens).
+	- engines: An object containing API keys for the LLM providers your agents utilize (refer to the [engines documentation]() for details).
+
+```typescript
+import { Scoopika } from '@scoopika/scoopika';
+
+const scoopika = new Scoopika({
+	token: 'YOUR_SCOOPIKA_TOKEN',
+	engines: {
+		openai: 'OPENAI_KEY' // replace with your key
+	}
+});
+```
+
+Notice that in the engines, you need to provide keys for the providers your agents use, Check [engines](/packages/ts/scoopika/Scoopika/engines).
+
+Check all options you can pass to a Scoopika instance [here](/packages/ts/scoopika/options).
+
+## Basic usage
+
+```typescript
+import { Scoopika, Agent, Box } from '@scoopika/scoopika';
+
+const scoopika = new Scoopika({
+	token: 'YOUR_SCOOPIKA_TOKEN',
+	engines: {
+		openai: 'OPENAI_KEY'
+	}
+});
+
+// Run agent
+const agent = new Agent('AGENT_ID', scoopika);
+const agentResponse = await agent.run({
+	inputs: {
+		message: 'Hello!'
+	}
+});
+
+// Run box
+const box = new Box('BOX_ID', scoopika);
+const boxResponse = await box.run({
+	inputs: {
+		message: 'Hello!'
+	}
+})
+```

@@ -1,0 +1,44 @@
+---
+title: AgentResponse
+---
+
+`AgentResponse` is the object that the agent returns as a response after a successfull `.run` method call.
+
+## Props
+
+An `object` with the following properties:
+
+<ResponseField name="run_id" type="string">
+  This field holds the unique identifier assigned to the specific run. It can be helpful for tracking and managing individual runs within your application.
+</ResponseField>
+
+<ResponseField name="session_id" type="string">
+  This field indicates the session ID associated with the run. The `session_id` plays a crucial role in maintaining conversation context across multiple runs within the same session.
+</ResponseField>
+
+<ResponseField name="response" type="LLMResponse">
+  This property contains the core agent response, represented by an LLMResponse object (refer to [LLMResponse](/api-reference/llm-response)).
+
+  The `response` object provides the LLM's generated text content and any external tools it called during processing.
+
+  [Reference to LLMResponse](/api-reference/llm-response)
+</ResponseField>
+
+<RequestExample>
+```typescript Import type
+import type { AgentResponse } from "@scoopika/types";
+```
+</RequestExample>
+
+<ResponseExample>
+```json Example
+{
+	"run_id": "RUN_1",
+	"seession_id": "SESSION_1",
+	"response": {
+		"type": "text",
+		"content": "Hey, how can I assist you today?"
+	}
+}
+```
+</ResponseExample>

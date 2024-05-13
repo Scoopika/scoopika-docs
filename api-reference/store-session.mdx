@@ -1,0 +1,41 @@
+---
+title: StoreSession
+---
+
+Serves as a representation of a chat session within Scoopika.
+
+## Props
+
+<ParamField path="id" type="string">
+	The session ID.
+</ParamField>
+
+<ParamField path="user_id" type="string | undefined">
+	The session's user ID. used to list users sessions.
+</ParamField>
+
+<ParamField path="user_name" type="string | undefined">
+	The session's user name. used so the agent can recognize a user by its name.
+</ParamField>
+
+<ParamField path="saved_prompts" type="string | undefined">
+	Used by Scoopika to keep track of the system prompts saved in the session. Each agent saves a built system prompt that's created on the first session run with all its variable injected. mostly you won't need to deal with this property as it's used by Scoopika under the hood.
+</ParamField>
+
+
+<RequestExample>
+```typescript Import type
+import type { StoreSession } from "@scoopika/types";
+```
+</RequestExample>
+
+<ResponseExample>
+```json Example
+{
+	"id": "SESSION_ID",
+	"user_id": "SESSION_UESR_ID",
+	"user_name": "SESSION_USER_NAME",
+	"saved_prompts": {}
+}
+```
+</ResponseExample>

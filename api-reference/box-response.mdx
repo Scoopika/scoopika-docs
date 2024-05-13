@@ -1,0 +1,48 @@
+---
+title: BoxResponse
+---
+
+Returned as a box run response.
+
+## Props
+
+The box will return an array of objects with the following properties:
+
+<ResponseField name="name" type="string">
+	The agent name.
+</ResponseField>
+
+<ResponseField name="run" type="AgentResponse">
+	The response returned from the agent run.
+
+	[Reference to AgentResponse](/api-reference/agent-response)
+</ResponseField>
+
+<RequestExample>
+```typescript Type
+import { AgentResponse } from "@scoopika/types";
+
+type BoxResponse = {
+	name: string;
+	run: AgentResponse;
+}[];
+```
+</RequestExample>
+
+<ResponseExample>
+```json Response example
+[
+	{
+		"name": "AGENT_NAME",
+		"run": {
+			"run_id": "RUN_1",
+			"session_id": "SESSION_1",
+			"response": {
+				"type": "text",
+				"content": "Hey, how can I assist you?"
+			}
+		}
+	}
+]
+```
+</ResponseExample>

@@ -1,0 +1,68 @@
+---
+title: run
+description: Run the Box
+---
+
+The `run` method serves as the core mechanism for interacting with a Scoopika box. It allows you to trigger the execution of agents within the box based on the provided inputs and session context.
+
+## How it works
+
+When you run a box, first it selects what agents to execute from the available agents in the box. taking into consideration the current inputs and any historical context in the chat session.
+
+If the LLM powering the box supports [parallel function-calling](https://platform.openai.com/docs/guides/function-calling/parallel-function-calling), the box might actually select multiple agents for one run based on the context. the agents are executed in order one by one, and each agent will have access to the results of the previous agent.
+
+## Arguments
+
+Takes one argument as an object with the following properties:
+
+<ParamField path="inputs" type="Inputs" required>
+	Specifies the input properties for the box run.
+
+	<Info>inputs takes an `Inputs` object, but notice that the `message` field is required for a box run</Info>
+
+	[Reference to Inputs](/api-reference/inputs)
+</ParamField>
+
+<ParamField path="hooks" type="Hooks">
+	Allows you to provide a `Hooks object` to establish real-time communication channels with the box during its processing.
+
+	[Reference to Hooks](/api-reference/hooks)
+</ParamField>
+
+## Response
+
+<ParamField path="response" type="Promise<BoxResponse[]>">
+  The run method returns a `Promise` that resolves to an array of `BoxResponse` objects upon successful box run completion. Each object contains the agent's name, generated response (always text-based), and other relevant information about the run.
+
+  [Reference to BoxResponse](/api-reference/box-response)
+</ParamField>
+
+<RequestExample>
+```typescript Usage example
+await box.run({
+	inputs: { message: "Hello!" },
+	hooks: {
+		onSelectAgent: (agent) => console.log(`Selected ${agent.name}`),
+		onToken: (token) => console.log(token)
+	}
+});
+```
+</RequestExample>
+
+<ResponseExample>
+```json Response example
+[
+	{
+		"name": "AGENT_NAME",
+		"run": {
+			"run_id": "RUN_1",
+			"session_id": "SESSION_1",
+			"response": {
+				"type": "text",
+				"content": "Hey, how can I assist you?"
+			}
+		}
+	}
+]
+```
+</ResponseExample>

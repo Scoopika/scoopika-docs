@@ -1,0 +1,45 @@
+---
+title: ToolHistory
+---
+
+The `ToolHistory` is an object that contains information about an external tool an agent called during its processing. It contains insights into the called tool and the results it yielded.
+
+## Props
+
+<ResponseField name="call" type="ToolCall">
+  This property holds a `ToolCall` object that details the specific tool call made by the agent.
+
+  [Reference](/api-reference/tool-call)
+</ResponseField>
+
+<ResponseField name="result" type="any">
+  This field contains the actual result returned by the tool after its execution. The data type of the `result` can vary depending on the specific tool.
+</ResponseField>
+
+<RequestExample>
+```typescript Import type
+import type { ToolRunHistory } from "@scoopika/types";
+
+type ToolRun = ToolRunHistory<MyToolRes>;
+```
+</RequestExample>
+
+<ResponseExample>
+```json Example
+{
+	"call": {
+		"id": "CALL_1",
+		"type": "function",
+		"function": {
+			"name": "get_document",
+			"arguments": "{\"id\": \"001\"}"
+		}
+	},
+	"result": {
+		"document": {
+			"title": "Document 1"
+		}
+	}
+}
+```
+</ResponseExample>

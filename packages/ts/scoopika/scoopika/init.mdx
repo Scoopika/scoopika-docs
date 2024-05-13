@@ -1,0 +1,51 @@
+---
+title: Initialize Scoopika
+---
+
+`Scoopika` is the core class of Scoopika, It provides a number of core functionalities to you and the other parts of Scoopika, like the `Agent` class and the `Box` class.
+
+To get started, you need to initialize a `Scoopika` instance that's passed to any new agent or box instance you initialize later.
+
+## Arguments
+Takes one argument passed as an object during initialization with the following properties:
+
+<ParamField path="token" type="string" required>
+  Your Scoopika access token. you can generate a new one [here](https://scoopika.com/app/settings?tab=tokens). Keep your tokens in a safe place and never expose them to the public. You can delete a token and it will delete its access to any of your data.
+</ParamField>
+
+<ParamField path="store" type="string">
+  Connect to a remote data store for persistent chat history storage. We offer managed serverless data stores you can create with a single click [here](https://scoopika.com/app/data-stores). Simply copy the store URL and add it as the `store` field.
+
+  <Info>If this field is not provided Scoopika will use an in-memory store (history is not persisted).</Info>
+</ParamField>
+
+<ParamField path="engines" type="object">
+  An object containing API keys for the LLM providers your agents leverage. You can determine the host and LLM an agent uses from the agent's prompt editor. Currently supported providers include:
+
+  - openai
+  - fireworks
+  - together
+  - google (demo)
+
+  Provide keys only for the LLM providers you actually use. If you run an agent that uses a provider that you don't provide a key for, Scoopika will throw an error.
+
+  <Check>Your API keys are always secure and are never shared with our servers.</Check>
+
+</ParamField>
+
+<ResponseExample>
+```typescript Usage
+import { Scoopika } from "@scoopika/scoopika";
+
+const scoopika = new Scoopika({
+	token: "TOKEN",
+	store: "STORE_URL",
+	engines: {
+		openai: "OPENAI_KEY",
+		fireworks: "FIREWORKS_KEY",
+		together: "TOGETHER_KEY",
+		google: "GOOGLE_KEY"
+	}
+});
+```
+</ResponseExample>

@@ -1,0 +1,66 @@
+---
+title: Initialize Container
+---
+
+This section details the arguments used to initialize a Scoopika Container instance.
+
+## Arguments
+
+Takes one arguments that's an `object` with the following properties:
+
+<ParamField path="scoopika" type="Scoopika" required>
+	An instance of the Scoopika class you previously initialized.
+
+	[Reference to Scoopika](/packages/ts/scoopika/scoopika)
+</ParamField>
+
+<ParamField path="agents" type="function">
+	Whether an array of agent Ids or Async Function:
+
+	- You can provide an array containing agent IDs as strings (e.g., `["AGENT_ID-1", "AGENT_ID-2"]`).
+	- Alternatively, you can use an asynchronous function that returns an array of `Agent` instances created using the Agent class (refer to the [Agent documentation](/packages/ts/scoopika/agents) for details). This function allows for more dynamic agent setup logic if needed.
+</ParamField>
+
+<ParamField path="boxes" type="function">
+	Whether an array of box Ids or Async Function:
+
+	- You can provide an array containing box IDs as strings (e.g., `["BOX_ID-1", "BOX_ID-2"]`).
+	- Alternatively, you can use an asynchronous function that returns an array of `Box` instances created using the Box class (refer to the [Box documentation](/packages/ts/scoopika/boxes) for details). This function allows for more dynamic box setup logic if needed.
+</ParamField>
+
+<ParamField path="caching" type="boolean" default={true}>
+	Enables or disables caching of agent and box data within the container. This caching improves performance by reducing the need to load data from the Scoopika platform on every API request. However, it does not cache actual agent responses.
+</ParamField>
+
+<ParamField path="caching_limit" type="number" default={1000000}>
+	Sets the cache expiration time in milliseconds. After this duration, cached agent and box data will be reloaded from the Scoopika platform to ensure you have the latest information.
+</ParamField>
+
+<RequestExample>
+```typescript Usage
+import {
+	Container,
+	setupAgents,
+	setupBoxes
+} from "@scoopika/scoopika";
+
+// Basic usage
+const container = new Container({
+	scoopika,
+	agents: ["AGENT_ID-1", "AGENT_ID-2"],
+	boxes: ["BOX_ID-1", "BOX_ID-2"]
+});
+
+// Advanced usage
+const container = new Container({
+	scoopika,
+	agents: async (scoopika) => {
+		const myAgent = new Agent("AGENT_ID-1");
+
+		// Do anything you want here...
+
+		return [myAgent];
+	},
+});
+```
+</RequestExample>

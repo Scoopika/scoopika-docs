@@ -1,0 +1,78 @@
+---
+title: Server-side Usage
+---
+
+<Check>
+	**Prerequisite**
+
+	1. Scoopika account. create one [here](https://scoopika.com/login).
+	2. Scoopika access token. generate one [here](https://scoopika.com/settings?tab=tokens).
+	3. Initialized Scoopika instance. check the [quickstart](/quickstart).
+</Check>
+
+## Initialize Agents
+
+Before being able to use agents, you need to intialize them:
+
+```typescript
+import { Agent } from "@scoopika/scoopika";
+
+const agent = new Agent("AGENT_ID", scoopika); // replace with your Scoopika instance
+```
+
+## Run Agent
+
+```typescript
+const response = await agent.run({
+	inputs: {
+		message: "Hello!"
+	},
+	hooks: {
+		onToken: (t) => console.log(t) // capture each token the agent outputs in real-time
+	}
+})
+
+console.log(response);
+```
+
+The `agent.run` method takes an object with the properties inputs and hooks, [learn more](/packages/ts/scoopika/agents/methods/run).
+
+## Load Agent Data
+
+The agent data, like its name, are not loaded from the platform once you initialize the agent, and instead are loaded after the first time you use the agent or run it. so you can pre-load it to get access to it before making a run:
+
+```typescript
+// Pre load agent data
+await agent.load();
+const agentData = agent.agent;
+
+// get specific info (no need for pre-loading)
+const agentName = await agent.info("name"); // string
+```
+
+## Add Tools to Agent
+
+You can add custom functions as tools to agents that they can use when needed based on context.
+
+Notice that this page does not show how you can build a tool schema, check [Tools documentation](/tools) for that.
+
+```typescript
+const toolSchema = {...}; // Replace with your tool schema
+
+function toolFunc = () => {}; // Replace with your custom function
+
+agent.addTool(toolFunc, toolSchema);
+```
+
+To learn more, check the [full docs](/packages/ts/scoopika/agents/methods/add-tool).
+
+## Pass Agents as Tools to Other Agents
+
+You can pass an agent as tool to another agent, so the primary agent can call the tool agent when it needs to. You can use this in bigger systems where you have multiple agents for different tasks and set of tools.
+
+```typescript
+const agent1 = new Agent("AGENT_ID-1", scoopika);
+const agent2 = new Agent("AGENT_ID-2", scoopika);
+
+await agent1.addAgentAsTool(agent2);
+```

@@ -1,0 +1,26 @@
+---
+title: addAgentAsTool
+description: Connect Agents Together
+---
+
+Allows you to add an agent as a tool to another agent. [What are tools](/tools)
+
+By adding an agent as a tool, you empower the primary agent to communicate and potentially exchange data with the tool agent during conversation execution.
+
+## Arguments
+
+<ParamField path="agent" type="Agent" required>
+	The agent instance that you want to add as a tool.
+
+	[Reference to Agent](/packages/ts/scoopika/agents/init)
+</ParamField>
+
+<RequestExample>
+```typescript Usage example
+const agent1 = new Agent("AGENT_1", scoopika);
+const agent2 = new Agent("AGENT_2", scoopika);
+
+// agent1 will call agent2 if it needs to
+await agent1.addAgentAsTool(agent2);
+```
+</RequestExample>

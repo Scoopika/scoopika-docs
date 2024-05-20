@@ -35,12 +35,32 @@
   },
   "tabs": [
     {
+      "name": "Agents",
+      "url": "agents"
+    },
+    {
+      "name": "Multi-Agent Boxes",
+      "url": "multi-agent-boxes"
+    },
+    {
+      "name": "Tools",
+      "url": "tools"
+    },
+    {
+      "name": "History Stores",
+      "url": "history-stores"
+    },
+    {
       "name": "Packages",
       "url": "packages"
     },
     {
       "name": "API Reference",
       "url": "api-reference"
+    },
+    {
+      "name": "Guides",
+      "url": "guides"
     }
   ],
   
@@ -49,8 +69,7 @@
       "group": "Get Started",
       "pages": [
         "introduction",
-        "quickstart",
-        "understand-scoopika"
+        "quickstart"
       ]
     },
     {
@@ -58,18 +77,39 @@
       "pages": [
         "essentials/agents",
         "essentials/multi-agent-boxes",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "essentials/tools",
+        "essentials/history-stores",
+        "essentials/web-integration"
       ]
     },
     {
       "group": "Help",
       "pages": [
-        "help/account",
         "help/pricing",
         "help/contact-us"
+      ]
+    },
+    {
+      "group": "Agents",
+      "pages": [
+        "agents/get-started",
+        "agents/features",
+        {
+          "group": "Usage",
+          "pages": [
+            "agents/server-side-usage",
+            "agents/client-side-usage"
+          ]
+        },
+        {
+          "group": "How To",
+          "pages": [
+            "agents/howto/run-with-history",
+            "agents/howto/extract-data",
+            "agents/howto/equip-with-tools",
+            "agents/howto/agents-collaboration"
+          ]
+        }
       ]
     },
     {
@@ -99,6 +139,7 @@
                     "packages/ts/scoopika/agents/methods/run",
                     "packages/ts/scoopika/agents/methods/add-tool",
                     "packages/ts/scoopika/agents/methods/structured-output",
+                    "packages/ts/scoopika/agents/methods/add-agent-as-tool",
                     "packages/ts/scoopika/agents/methods/load",
                     "packages/ts/scoopika/agents/methods/info"
                   ]
@@ -115,13 +156,15 @@
                   "pages": [
                     "packages/ts/scoopika/boxes/methods/overview",
                     "packages/ts/scoopika/boxes/methods/run",
+                    "packages/ts/scoopika/boxes/methods/add-tool",
+                    "packages/ts/scoopika/boxes/methods/add-global-tool",
                     "packages/ts/scoopika/boxes/methods/load"
                   ]
                 }
               ]
             },
             {
-              "group": "History Sessions",
+              "group": "Chat Sessions",
               "icon": "database",
               "pages": [
                 "packages/ts/scoopika/scoopika/history",
@@ -132,7 +175,69 @@
                 "packages/ts/scoopika/scoopika/delete-session"
               ]
             },
+            {
+              "group": "Container",
+              "icon": "square",
+              "pages": [
+                "packages/ts/scoopika/container/overview",
+                "packages/ts/scoopika/container/init",
+                "packages/ts/scoopika/container/handle-request"
+              ]
+            },
             "packages/ts/scoopika/scoopika/create-tool-schema"
+          ]
+        },
+        {
+          "group": "@scoopika/client",
+          "pages": [
+            "packages/ts/client/overview",
+            "packages/ts/client/get-started",
+            "packages/ts/client/client",
+            {
+              "group": "Agents",
+              "icon": "robot",
+              "pages": [
+                "packages/ts/client/agents/init",
+                {
+                  "group": "Methods",
+                  "pages": [
+                    "packages/ts/client/agents/methods/overview",
+                    "packages/ts/client/agents/methods/run",
+                    "packages/ts/client/agents/methods/load",
+                    "packages/ts/client/agents/methods/add-client-action"
+                  ]
+                }
+              ]
+            },
+            {
+              "group": "Multi-agent Boxes",
+              "icon": "cube",
+              "pages": [
+                "packages/ts/client/boxes/init",
+                {
+                  "group": "Methods",
+                  "pages": [
+                    "packages/ts/client/boxes/methods/overview",
+                    "packages/ts/client/boxes/methods/run",
+                    "packages/ts/client/boxes/methods/load",
+                    "packages/ts/client/boxes/methods/add-client-action"
+                  ]
+                }
+              ]
+            },
+            {
+              "group": "Chat Sessions",
+              "icon": "database",
+              "pages": [
+                "packages/ts/client/store/overview",
+                "packages/ts/client/store/get-session",
+                "packages/ts/client/store/new-session",
+                "packages/ts/client/store/list-user-sessions",
+                "packages/ts/client/store/get-session-runs",
+                "packages/ts/client/store/delete-session"
+              ]
+            },
+            "packages/ts/client/create-action-schema"
           ]
         }
       ]
@@ -178,6 +283,18 @@
             "api-reference/box-data"
           ]
         }
+      ]
+    },
+    {
+      "group": "Guides",
+      "pages": [
+        {
+          "group": "Web Integration",
+          "pages": [
+            "guides/scoopika-for-the-web"
+          ]
+        },
+        "guides/scoopika-on-your-servers"
       ]
     }
   ],

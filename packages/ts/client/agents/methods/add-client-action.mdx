@@ -1,23 +1,25 @@
 ---
-title: addTool
+title: addClientAction
 ---
 
-Allows you to equip your agents with external tools that the agent can call based on the context. [What are tools](/tools)
+Allows you to equip your agents with external tools that the agent can call based on the context. these tools are defined executed on the client-side and called client-side actions. [What are client-side actions](/tools/client-side-actions).
 
 ## Arguments
 
 <ParamField path="func" type="Function" required>
   Specifies the function to be executed when the agent calls the added tool. This function can perform any logic you define, but it will always receive its arguments as an object that has been validated against the provided tool schema.
+
+  Remember that this function is executed on the client-side.
 </ParamField>
 
 <ParamField path="schema" type="ToolSchema" required>
-  Defines the schema for the tool. The schema is a critical element as it determines the expected parameters (inputs) for the tool function and tells the agent what the tool is about and when to call it.
+  Defines the schema for the tool. The schema is a critical element as it determines the expected parameters (inputs) for the tool function and tells the agent what the tool is about and when to call it. and is also used to validate the arguments sent from the agent.
 
   Recommended resources:
 
   [Reference to ToolSchema](/api-reference/tool-schema)
 
-  [createToolSchema](/packages/ts/scoopika/scoopika/create-tool-schema)
+  [createActionSchema](/packages/ts/client/create-action-schema)
 
   [How to build my tools](/guides/how-to-build-my-tools)
 </ParamField>
@@ -28,21 +30,22 @@ If you add more than 5 tools to an agent Scoopika will select the top 5 most rel
 
 <ResponseExample>
 ```typescript Usage
-import { createToolSchema } from "@scoopika/scoopika";
+import { createActionSchema } from "@scoopika/client";
 
 // Create a tool schema
-const toolSchema = createToolSchema({
-	name: "get_document_info",
-	description: "Get information about a document",
+const toolSchema = createActionSchema({
+	name: "sort_documents",
+	description: "Sort the user documents from latest to oldest",
 	parameters: {
 		type: "object",
 		properties: {
-			id: {
+			field: {
 				type: "string",
-				description: "The document ID to get info about",
-			}
+				description: "The field to sort the documents by",
+				enum: ["title", "date"]
+			},
 		},
-		required: ["id"]
+		required: ["field"]
 	}
 })
 
@@ -51,35 +54,36 @@ function toolFunc(args) {
 	// do anything in the function
 }
 
-agent.addTool(toolFunc, toolSchema);
+agent.addClientAction(toolFunc, toolSchema);
 ```
 
 ```typescript Type-safe usage
 import {
-	createToolSchema,
+	createActionSchema,
 	FromSchema,
 	JSONSchema
-} from "@scoopika/scoopika";
+} from "@scoopika/client";
 
 // Define the tool parameters schema
 const toolParams = {
 	type: "object",
 	properties: {
-		id: {
+		field: {
 			type: "string",
-			description: "The document ID to get info about",
-		}
+			description: "The field to sort the documents by",
+			enum: ["title", "date"]
+		},
 	},
-	required: ["id"]
+	required: ["field"]
 } as const satisfies JSONSchema;
 
 // Define the tool inputs type (from the tool parameters)
 type ToolInputs = FromSchema<typeof toolParams>;
 
 // Create the tool schema
-const toolSchema = createToolSchema({
-	name: "get_document_info",
-	description: "Get information about a document",
+const toolSchema = createActionSchema({
+	name: "sort_documents",
+	description: "Sort the user documents from latest to oldest",
 	parameters: toolParams
 })
 
@@ -88,6 +92,6 @@ function toolFunc(args: ToolInputs) {
 	// do anything in the function
 }
 
-agent.addTool<ToolInputs>(toolFunc, toolSchema);
+agent.addClientAction<ToolInputs>(toolFunc, toolSchema);
 ```
 </ResponseExample>

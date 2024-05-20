@@ -1,0 +1,19 @@
+---
+title: Features
+---
+
+The features Scoopika AI agents offer out-of-the-box:
+
+## 1. Data validation
+
+When your agent calls an external tool Scoopika validates all arguments the agent sent to the tool before executing it, and it auto heals invalid and missing data.
+
+The same thing goes for when [using agents for data extraction](/agents/howto/extract-data).
+
+## 2. Streaming hooks
+
+Scoopika provides streaming hooks to capture spcific events in the agent process, like capturing each token the agent outputs in real-time. these hooks work on both server-side and client-side, and are so useful for creating a seamless, interactive, and fast experience. See [list of available hooks](/api-reference/hooks).
+
+## 3. Auto healing
+
+Agents will auto heal in case of invalid or missing data (for tools arguments), and if a tool fails or encounters an error while executing Scoopika will also auto heal it.

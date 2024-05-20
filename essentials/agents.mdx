@@ -26,27 +26,6 @@ You can visit the [Scoopika platform](https://scoopika.com/app) to create new ag
 
 A system prompt is a set of instructions guiding the LLM's interaction and behavior with users. Learn more about system prompts in [this page](https://promptengineering.org/system-prompts-in-large-language-models/).
 
-### Prompts Variables
-
-Incorporate input variables into your prompts, allowing you to pass information during agent execution. The prompt editor enables adding new variables. Specify their ID, type, and required status. Utilize them within the prompt using the `$variable_id` syntax.
-
-When running the agent in your application, provide the variable's value within the inputs:
-
-```typescript
-const agent = new Agent("ID", scoopika);
-
-const response = agent.run({
-	inputs: {
-		variable_id: "VALUE"
-	}
-})
-```
-<Info>
-	Replace `variable_id` with the actual variable ID and ensure the value type aligns with the platform's specification.
-</Info>
-
-For in-depth exploration of prompts and variables, refer to [this guide](/guide).
-
 ## Accessing Agent Information
 
 Use the `agent.load` method to retrieve information about an agent (name, avatar, description, etc.) within your application:
@@ -95,8 +74,4 @@ agent.run({
 
 ## Using on client-side
 
-There are two approaches to running agents on the client-side:
-
-1. **API and Scoopika Integration**: Build an API and execute Scoopika under the hood, just like how you would use any other library. and handle client requests.
-
-2. **Scoopika Server-Client Solution**: Leverage Scoopika's server-client solution. Install and run a Scoopika Server alongside our client library. This approach offers advantages like out-of-the-box streaming hooks and client-side actions.
+To use agents on the client-side We recommend you check the [Scoopika for the Web](/guides/scoopika-for-the-web) guide as It will walk you through how you can setup your server and client to run agents with streaming hooks on the client-side. It takes only a few minutes ;)

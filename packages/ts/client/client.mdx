@@ -1,0 +1,21 @@
+---
+title: Initialize Client
+---
+
+`Client` is the core class of Scoopika Client, It provides a number of core functionalities to you and the other parts of Client, like the `Agent` class and the `Box` class.
+
+To get started, you need to initialize a `Client` instance that's passed to any new agent or box instance you initialize later, and used to manage chat sessions.
+
+## Arguments
+
+<ParamField path="url" type="string" required>
+  The Url to your server-side API that uses Scoopika. Learn more about how to setup Scoopika in your web application [here](/guides/scoopika-for-the-web).
+</ParamField>
+
+<ResponseExample>
+```typescript Usage
+import { Client } from "@scoopika/client";
+
+const client = new Client("API_URL");
+```
+</ResponseExample>

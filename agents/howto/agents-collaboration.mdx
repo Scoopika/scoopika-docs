@@ -1,0 +1,22 @@
+---
+title: Agents Collaboration
+---
+
+You can have smart [multi-agent boxes](/multi-agent-boxes) where agents can collaborate on complex tasks, but there's another way to do it.
+
+You can pass an agent as a tool to another agent. so the main agent can call the tool agent when needed based on context.
+
+This feature is useful for when you have two agents and you want the first agent to use the other agents when it needs to.
+
+## Usage
+
+This feature is only available on sever-side as it's not needed on the client-side, and is easy to use:
+
+```typescript
+const agent1 = new Agent("AEGNT_ID-1", scoopika);
+const agent2 = new Agent("AEGNT_ID-2", scoopika);
+
+await agent1.addAgentAsTool(agent2);
+```
+
+Now agent1 will be able to call agent2 when needed. We recommend you give yours agents clear descriptions from the platform as its used by this method.

@@ -1,0 +1,113 @@
+---
+title: Scoopika Server
+---
+
+## What is it?
+
+A Scoopika Server is just an easy way to run Scoopika on the server and start communicating with it from the client.
+
+If you're not building web applications, You won't need this feature, but running a Scoopika Server is a reasonable approach for web developers, as you just deploy the server (uses Express under the hood), and be able to use all of Scoopika's functionalities on the client-side safely.
+
+## Why Scoopika runs on the server?
+
+Scoopika runs on the server to execute the LLMs you use in your agents, It has to work on the server as it exposes your Scoopika tokens and any LLMs providers API keys you're using.
+
+You can still use Scoopika the way you want, but this is the recommended way to do it.
+
+## Installation
+
+The Scoopika Server can be created using the main `@scoopika/scoopika` package with nothing else required, first make sure you've installed the package:
+
+```bash
+npm install @scoopika/scoopika
+```
+
+## Setup
+
+Now let's setup the server
+
+```typescript
+import { Scoopika, Server } from "@scoopika/scoopika";
+
+// replace with your own Scoopika config
+const scoopika = new Scoopika({
+	token: "YOUR_SCOOPIKA_TOKEN",
+	store: "REMOTE_STORE_URL",
+	engines: {
+		openai: "OPENAI_API_KEY"
+	}
+});
+
+const server = new Server(scoopika);
+
+const app = server.app();
+app.listen(8001);
+```
+
+and We're done with the setup ;)
+
+Don't know how to initialize a Scoopika instance? see [this page](/packages/ts/scoopika/scoopika)
+
+## Config
+
+So how to add tools to agents or boxes? how to control the behaviour of this server? using the server config.
+
+Let's see an example that sets a list of allowed agents that can be executed on this server by their IDs, and equip an agent with a tool:
+
+See the [Server documentation](/packages/ts/scoopika/server) for more information on the available config and methods.
+
+<CodeGroup>
+```typescript server.ts
+import { Scoopika, Server } from "@scoopika/scoopika";
+import { toolFunc, toolSchema } from "./my_tool";
+
+const scoopika = new Scoopika({...}); // replace with your own Scoopika config
+
+const server = new Server(scoopika, {
+	allowed_agents: ["AGENT_ID-1", "AGENT_ID-2"]
+});
+
+server.addAgentTool("AGENT_ID-1", toolFunc, toolSchema);
+
+server.app().listen();
+```
+
+```typescript my_tool.ts
+// This is an example code. for full docs on tools see https://docs.scoopika.com/tools
+
+import {
+	createToolSchema,
+	FromSchema,
+	JSONSchema
+} from "@scoopika/scoopika";
+
+// Define the tool parameters schema
+const toolParams = {
+	type: "object",
+	properties: {
+		id: {
+			type: "string",
+			description: "The document ID to get info about",
+		}
+	},
+	required: ["id"]
+} as const satisfies JSONSchema;
+
+// Define the tool inputs type (from the tool parameters)
+type ToolInputs = FromSchema<typeof toolParams>;
+
+// Create the tool schema
+const toolSchema = createToolSchema({
+	name: "get_document_info",
+	description: "Get information about a document",
+	parameters: toolParams
+})
+
+// Define the tool function
+function toolFunc(args: ToolInputs) {
+	// do anything in the function
+}
+
+export { toolSchema, toolFunc };
+```
+</CodeGroup>

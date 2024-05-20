@@ -2,7 +2,7 @@
 title: Inputs
 ---
 
-`Inputs` is the primary input for running both agents and boxes through the `.run` method. It allows you to specify the message, history session ID, run ID, inject additional data, and pass variables to prompts..
+`Inputs` is the primary input for running both agents and boxes through the `.run` method. It allows you to specify the message, history session ID, run ID, and inject additional data.
 
 ## Props
 
@@ -39,12 +39,6 @@ The inputs can contain any key-value pairs, the main fields are:
   [Reference to Plug](/api-reference/plug)
 </ParamField>
 
-<ParamField path="Custom Key-Value Pairs">
-  The `Inputs` object offers flexibility by allowing you to include additional key-value pairs beyond the pre-defined fields.
-
-  This enables you to pass variables values to prompts within agents and boxes.
-</ParamField>
-
 <RequestExample>
 ```typescript Import type
 import type { Inputs } from "@scoopika/types";
@@ -58,7 +52,6 @@ import type { Inputs } from "@scoopika/types";
   "session_id": "SESSION_1",
   "run_id": "RUN_1",
   "plug": {},
-  "variable_id": "VALUE"
 }
 ```
 </ResponseExample>

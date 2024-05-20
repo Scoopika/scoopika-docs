@@ -15,22 +15,34 @@ title: Introduction
 
 ## What is Scoopika?
 
-Scoopika is your go-to platform for seamlessly adding LLM-powered agents into your applications, prioritizing web integration, data safety, validation, developer experience, and flexibility.
+Scoopika is your platform for seamlessly adding LLM-powered agents into your applications, prioritizing web integration, data validation, developer experience, and flexibility.
 
 Scoopika provides the following base features out of the box:
 
 1. **LLM Output validation**: For structured output and tools arguments, with full type-safety.
-2. **Real-time streaming hooks**: +10 hooks for streaming responses from the LLM. Works between client-server with no additional configuration.
-3. **Errors auto healing**: If an error occures, Scoopika will auto heal communicating with the user about any invalid or missing information (in case of tools invalid inputs).
-4. **Flexibility**: Scoopika agents accept plugged data, like images (if model support vission), custom data and RAG, so if you have a Vector database or want to send the agent any custom knowledge it's as easy as plugging the data into the run inputs.
+2. **Real-time streaming hooks**: +10 hooks for streaming responses from the LLM. Works between client and server with no additional configuration.
+3. **Errors auto healing**: If an error occures, Scoopika will auto heal communicating with the user about any invalid or missing information (in case of tools invalid arguments).
+4. **Flexibility**: Scoopika agents accept plugged data, like images, custom data, and RAG. So if you have a Vector database or want to send the agent any custom knowledge it's as easy as plugging the data into the run inputs. (support for audio & video coming soon).
 5. **Web-first**: Scoopika focuses on being an ideal solution for web applications, providing libraries for both server and client side, with real-time hooks between the two, and [client-side actions](/client-side-actions).
 6. **Ease of use**: No LLM or machine learning knowledge is required to work with Scoopika and build AI-powered applications.
+7. **Freedom**: All of Scoopika's code is whether open-source or source-available (based on the package). Scoopika runs completely on your servers giving you complete power to do whatever you want, with no limits over requests or runs number.
+8. **Secure**: Most AI platforms takes your OpenAI (or other providers) API keys, or serves the LLMs on their servers with their own keys. I don't need to tell you that this approach is exetrememly unsecure. how We solve that? LLMs are executed on your servers and all your LLMs prociders API keys are kept safely on your servers and never shared with ours.
 
-## Getting started
+## How to read the docs
 
-You can start with the [Quick start](/quick-start) as It will guide from creating an account to running your first agent.
+We recommend you follow this path:
+
+1. [Quickstart](/quickstart).
+2. One of these:
+    - If building web applications check [Scoopika for the web guide](/guides/scoopika-for-the-web) to setup your server-side and client-side.
+    - If building server-side only or CLI tools, check the [@scoopika/scoopika documentation](/packages/ts/scoopika). 
+3. Check the docs for each of Scoopika's features based on the ones you're using, something to start with would be the [Agents docs](/agents).
+
+and that's it, You're free to discover Scoopika's features and functionalities on your own peace, and if you ever feel stuck [contact us](/help/contact-us), We're always there for any help you need from setting up Scoopika in your project to questions about any functionality and how to use it.
 
 ## Essentials
+
+<Info>The essentials pages shows a high overview of each product explaining briefly what it is and how to use it</Info>
 
 Scoopika comes with a full bag of products, We'd like to introduce you to the essentials:
 

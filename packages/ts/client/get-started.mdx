@@ -1,0 +1,73 @@
+---
+title: Get Started
+---
+
+Install the package using your preferred package manager:
+
+```bash
+npm install @scoopika/client
+```
+```bash
+yarn add @scoopika/client
+```
+```bash
+pnpm add @scoopika/client
+```
+
+## Prerequisites
+
+Before proceeding, ensure you have already set up Scoopika within your server-side API. If you haven't, refer to [this guide](/guides/scoopika-for-the-web). This guide outlines the process for configuring Scoopika on your server to handle communication with the client-side package.
+
+## Initialization
+
+To interact with agents and boxes, you'll need to initialize a Scoopika Client instance. This instance acts as the central hub for all your Scoopika interactions, including managing history retrieval and communication with the server-side API.
+
+1. Import the Client class from the package.
+2. Create a new Scoopika Client instance, providing the URL of your API route that uses Scoopika on the server-side.
+
+```typescript
+import { Client } from '@scoopika/client';
+
+const client = new Client("API_URL"); // the exact url to your API route
+```
+
+Learn more about the server-client setup [here](/guides/scoopika-for-the-web).
+
+## Usage Example
+
+This example demonstrates how to create a session, run an agent, list user sessions, and retrieve session history using the Scoopika client:
+
+```typescript
+import { Client, Agent } from '@scoopika/client';
+
+const client = new Client("API_URL");
+const agent = new Agent('AGENT_ID', client);
+
+(async () => {
+	// Create session for user USER_1
+	const session = await client.store.newSession({
+		user_id: "USER_1"
+	});
+	console.log(session); // StoreSession
+
+	// Run agent
+	const response = await agent.run({
+		inputs: {
+			message: 'Hello!',
+			session_id: session.id
+		},
+		hooks: { // streaming hooks
+			onToken: (t) => console.log(t)
+		}
+	});
+	console.log(response); // AgentResponse
+
+	// List user sessions
+	const userSessions = await client.store.listUserSessions("USER_1");
+	console.log(userSessions); // string[]
+
+	// Get session runs (history or messages)
+	const runs = await client.store.getSessionRuns(userSessions[0]);
+	console.log(runs); // RunHistory[] (in this example, there're 2 items one for user request and one for agent response)
+})();
+```

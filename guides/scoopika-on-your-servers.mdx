@@ -1,0 +1,66 @@
+---
+title: Scoopika on your Servers
+description: Why Scoopika runs on your servers
+---
+
+This guide explores why Scoopika agents execute on your servers instead of on the Scoopika platform itself. While the platform offers agent creation, execution happens within your own server environment. Let's delve into the reasons behind this approach.
+
+## Reasons
+
+This is a list of reasons why we don't run agents on our servers:
+
+### 1. Scalability
+
+Running agents demands resources. As an open-source project, providing a robust and scalable service that execute agents on our servers becomes challenging with a growing user base. By leveraging your servers, Scoopika scales seamlessly alongside your application, ensuring a smooth and responsive experience... regardless of the traffic our platform gets.
+
+### 2. Security
+
+Agents rely on Large Language Models (LLMs) that require API keys from providers like OpenAI. For this issue we had three different options to solve it:
+
+**Option 1: Store your API keys on our servers**
+
+We avoid storing your API keys on our servers, a common practice by other platforms. Security breaches and bugs are a reality, and we prioritize user trust by not taking on this risk.
+
+**Option 2: Using our API keys**
+
+We don't use our own API keys to run LLMs on our servers. This approach compromises security, control, and scalability. Features like the free plan and using custom fine-tuned models wouldn't be feasible.
+
+**Option 3: Your API Keys, Your Servers**
+
+We believe the best approach is for you to manage your LLM API keys on your servers. This ensures their safety and allows you to monitor LLM costs separately from Scoopika costs (which can remain free with the free tier and only incur charges for additional features).
+
+With this approach your API keys are never shared with our platform or servers.
+
+### 3. Freedom & Control
+
+All parts of Scoopika are whether open-source or source-available, and by executing agents on your servers we give you full control over what's going on, all errors are logged on your servers allowing you to debug them the way you want, and allowing you to integrate Scoopika into your own web stack and development flow. You can go crazy with a lot of functionalities and customize them for your own use case.
+
+## Pros
+
+### Free Forever
+
+Enjoy unlimited requests and agent runs. Pay only for extra features... to create agents, boxes, or serverless storage for persistent chat sessions.
+
+### Control
+
+You have the control to do anything you want with Scoopika. you can go crazy and build custom AI-powered functionalities that Scoopika itself doesn't offer.
+
+### Secure
+
+Your LLM provider API keys are never shared with Scoopika, keeping your credentials safe on your servers.
+
+### Seamless Scalability
+
+Scoopika scales in tandem with your servers, eliminating the need for platform-side scaling efforts. so you don't need us to scale in order for you to scale ;).
+
+### Transparent LLM Costs
+
+Scoopika does not handle LLMs costs for you. while some people might see this as a cons, We see it as a feature, as You can manage your LLM costs directly, giving you complete ownership and avoiding hidden pricing concerns.
+
+## Cons
+
+### Responsibility
+
+Freedom comes with responsibility. Now you have the freedom to run Scoopika safely on your servers, but also the onus of proper configuration and maintenance lies with you.
+
+We provide a lot of examples to help you integrate Scoopika into your projects. and if you have any questions We're always here to help ([contact us](/help/contact-us)).

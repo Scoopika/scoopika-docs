@@ -1,0 +1,63 @@
+---
+title: setupAgents
+---
+
+The setupAgents function helps you specify the agents that your Scoopika container will manage.
+
+## Arguments
+
+Takes one argument that's whether an array of agent Ids or Async Function:
+
+- You can provide an array containing agent IDs as strings (e.g., `["AGENT_ID-1", "AGENT_ID-2"]`).
+- Alternatively, you can use an asynchronous function that returns an array of `Agent` instances created using the Agent class (refer to the [Agent documentation](/packages/ts/scoopika/agents) for details). This function allows for more dynamic agent setup logic if needed.
+
+## Usage
+
+This function is used internally by the Scoopika Container. When creating a container, you pass the result of `setupAgents` to the agents property within the container's configuration options.
+
+<RequestExample>
+```typescript Example
+import { setupAgents, Agent } from "@scoopika/scoopika";
+
+// Basic setup
+setupAgents(["AGENT_ID-1", "AGENT_ID-2"]);
+
+// Custom setup
+setupAgents(async (scoopika) => {
+	const myAgent = new Agent("AGENT_ID", scoopika);
+
+	// Do anything here like adding tools to your agents
+
+	return [myAgent]; // return array of agents
+})
+```
+
+```typescript Example with Container
+import { 
+	Scoopika, 
+	Container, 
+	setupAgents,
+	Agent
+} from "@scoopika/scoopika";
+
+const scoopika = new Scoopika({...});
+
+// Basic setup
+const container = new Container({
+	scoopika,
+	agents: setupAgents(["AGENT_ID-1", "AGENT_ID-2"])
+});
+
+// Custom setup
+const container = new Container({
+	scoopika,
+	agents: setupAgents(async (scoopika) => {
+		const myAgent = new Agent("AGENT_ID", scoopika);
+
+		// Do anything here like adding tools to your agents
+
+		return [myAgent]; // return array of agents
+	})
+});
+```
+</RequestExample>

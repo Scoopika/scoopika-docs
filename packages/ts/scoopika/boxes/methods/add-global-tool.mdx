@@ -1,17 +1,19 @@
 ---
-title: addTool
+title: addGlobalTool
 ---
 
-Allows you to equip your agents with external tools that the agent can call based on the context. [What are tools](/tools)
+Allows you to equip all agents under a box with an external tool that the agents can call based on the context. [What are tools](/tools)
+
+All agents under the box will have access to a global tool.
 
 ## Arguments
 
 <ParamField path="func" type="Function" required>
-  Specifies the function to be executed when the agent calls the added tool. This function can perform any logic you define, but it will always receive its arguments as an object that has been validated against the provided tool schema.
+  Specifies the function to be executed when the agents call the tool. This function can perform any logic you define, but it will always receive its arguments as an object that has been validated against the provided tool schema.
 </ParamField>
 
 <ParamField path="schema" type="ToolSchema" required>
-  Defines the schema for the tool. The schema is a critical element as it determines the expected parameters (inputs) for the tool function and tells the agent what the tool is about and when to call it.
+  Defines the schema for the tool. The schema is a critical element as it determines the expected parameters (inputs) for the tool function and tells the agents what the tool is about and when to call it.
 
   Recommended resources:
 
@@ -21,10 +23,6 @@ Allows you to equip your agents with external tools that the agent can call base
 
   [How to build my tools](/guides/how-to-build-my-tools)
 </ParamField>
-
-## Behaviour
-
-If you add more than 5 tools to an agent Scoopika will select the top 5 most relevant tools for each run based on the inputs.
 
 <ResponseExample>
 ```typescript Usage
@@ -51,7 +49,7 @@ function toolFunc(args) {
 	// do anything in the function
 }
 
-agent.addTool(toolFunc, toolSchema);
+box.addGlobalTool(toolFunc, toolSchema);
 ```
 
 ```typescript Type-safe usage
@@ -88,6 +86,6 @@ function toolFunc(args: ToolInputs) {
 	// do anything in the function
 }
 
-agent.addTool<ToolInputs>(toolFunc, toolSchema);
+box.addGlobalTool<ToolInputs>(toolFunc, toolSchema);
 ```
 </ResponseExample>

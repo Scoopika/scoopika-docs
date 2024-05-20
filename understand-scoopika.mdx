@@ -3,6 +3,19 @@ title: Understanding Scoopika
 description: Welcome to the world of Scoopika
 ---
 
+## How it works
+
+Scoopika provides you with a platform where you can create agents, multi-agent boxes, and history stores.
+
+Using Scoopika in your application is simple, but you need to understand that the agents and boxes are executed on your servers and not ours. why? for security and scalability reasons ([learn more](/guides/scoopika-on-your-server)).
+
+To start integrating Scoopika into your application, you can first create an agent from the [platform](https://scoopika.com/app), and while agents need to run on the server, and in order for Scoopika to be an ideal solution for the web, We provide you with 2 main packages under the `@scoopika` scope:
+
+- [scoopika](/packages/ts/scoopika): This package has all the core functionalities for running Scoopika on the server.
+- [client](/packages/ts/client): This package is used to use Scoopika on the client-side. It mainly communicates with a [Scoopika Server](/scoopika-server).
+
+So how to get started? run a server using `@scoopika/scoopika`, and use the `@scoopika/client` to communicate with it from the client-side with real-time streaming hooks and client-side actions supported out-of-the-box.
+
 ## Products
 
 Scoopika offers a number of products, but the star of the show is [AI Agents](/agents), The other products either enhance your agents' capabilities or provide additional features. Let's take a quick peek:

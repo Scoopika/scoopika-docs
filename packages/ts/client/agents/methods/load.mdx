@@ -1,0 +1,19 @@
+---
+title: load
+description: Load Agent Data
+---
+
+Allows you to load the agent's data and access it on the client-side.
+
+This method does not take any arguments and returns the agent data.
+
+[Reference to AgentData](/api-reference/agent-data)
+
+<RequestExample>
+```typescript Usage example
+const agent = new Agent("ID", client);
+const agentData = await agent.load();
+
+console.log(agentData.name); // string
+```
+</RequestExample>

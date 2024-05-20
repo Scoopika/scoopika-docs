@@ -1,0 +1,56 @@
+---
+title: getSessionRuns
+description: Retrieve History (runs) for a Chat Session
+---
+
+Allows you to retrieve a list of interaction records (runs) associated with a specific chat session. This can be useful for displaying chat messages to the user, analyzing conversation history, understanding user behavior within a session, and potentially debugging agent interactions.
+
+## Arguments
+
+<ParamField path="id" type="string">
+	The session ID to get the runs of.
+</ParamField>
+
+## Response
+
+<ResponseField name="runs" type="RunHistory[]">
+	Returns a list of runs, usually following the patter `user` -> `agent` -> `user` -> `agent` when running individual agents reflecting a basic back-and-forth conversation flow.
+
+	[Reference to RunHistory](/api-reference/run-history)
+</ResponseField>
+
+<RequestExample>
+```typescript Usage example
+const runs = await client.store.getSessionRuns(
+	"SESSION_ID"
+);
+```
+</RequestExample>
+
+<ResponseExample>
+```json Response example
+[
+	{
+		"at": 000,
+		"role": "user",
+		"user_id": "USER_ID",
+		"request": {
+			"message": "Hello!"
+		}
+	},
+	{
+		"at": 000,
+		"role": "agent",
+		"run_id": "RUN_1",
+		"session_id": "SESSION_1",
+		"agent_id": "AGENT_1",
+		"agent_name": "Agent",
+		"response": {
+			"type": "text",
+			"content": "Hey, how can I assist you today?"
+		},
+		"tools": []
+	}
+]
+```
+</ResponseExample>

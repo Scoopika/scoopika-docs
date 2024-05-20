@@ -1,0 +1,60 @@
+---
+title: setupBoxes
+---
+
+Used to pass boxes to a [Scoopika Container](/packages/ts/scoopika/container). Takes an array of boxes IDs or a custom function.
+
+## Arguments
+
+Takes one argument that's whether an array of boxes IDs, or a custom `async` function that return an array of boxes (instances of [Box](/packages/ts/scoopika/boxes/init) class).
+
+## Usage
+
+You won't need to use this function on its own, but when using a [Scoopika Container](/packages/ts/scoopika/container) to handle API requests, you need to use this function to pass your boxes to the container.
+
+<RequestExample>
+```typescript Example
+import { setupBoxes, Box } from "@scoopika/scoopika";
+
+// Basic setup
+setupBoxes(["BOX_ID-1", "BOX_ID-2"]);
+
+// Custom setup
+setupBoxes(async (scoopika) => {
+	const myBox = new Box("BOX_ID", scoopika);
+
+	// Do anything here like adding tools to your boxes
+
+	return [myBox]; // return array of boxes
+})
+```
+
+```typescript Example with Container
+import { 
+	Scoopika, 
+	Container, 
+	setupBoxes,
+	Box
+} from "@scoopika/scoopika";
+
+const scoopika = new Scoopika({...});
+
+// Basic setup
+const container = new Container({
+	scoopika,
+	boxes: setupBoxes(["BOX_ID-1", "BOX_ID-2"])
+});
+
+// Custom setup
+const container = new Container({
+	scoopika,
+	boxes: setupBoxes(async (scoopika) => {
+		const myBox = new Box("BOX_ID", scoopika);
+
+		// Do anything here like adding tools to your boxes
+
+		return [myBox]; // return array of boxes
+	})
+});
+```
+</RequestExample>

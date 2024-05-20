@@ -1,0 +1,77 @@
+---
+title: Extract Structured Data
+---
+
+You can use agents to extract structured JSON objects from any piece of data. learn more about data extraction.
+
+<Warning>This feature is currently only available on server-side, support for client-side is coming soon</Warning>
+
+## Define schema
+
+First, you need to define the schema of the data you want to extract. This is just a [JSON Schema](https://json-schema.org/) that's passed to the agent and also used to validate the agent's output... yes all agents outputs are validated ensuring stability and type-safety.
+
+Example schema:
+
+```json
+{
+	"type": "object",
+	"properties": {
+		"id": {
+			"type": "string",
+			"description": "The user ID"
+		},
+		"number": {
+			"type": "number",
+			"description": "The user number"
+		}
+	},
+	"required": ["id", "number"]
+}
+```
+
+A data object that matches this schema would be something like this:
+
+```json
+{
+	"id": "ID",
+	"number": 1
+}
+```
+
+## Type-safe Usage
+
+So now let's see a type-safe usage example:
+
+```typescript
+import { JSONSchema, FromSchema } from "@scoopika/scoopika"
+
+const schema = {
+	"type": "object",
+	"properties": {
+		"id": {
+			"type": "string",
+			"description": "The user ID"
+		},
+		"number": {
+			"type": "number",
+			"description": "The user number"
+		}
+	},
+	"required": ["id", "number"]
+} as const satisfies JSONSchema;
+
+type Schema = FromSchema<typeof schema>;
+
+const data = await agent.structuredOutput<Schema>({
+	schema,
+	inputs: {
+		message: "The user ID is U123 and the user number is 123123123"
+	}
+});
+
+// data is type-safe and validated here
+console.log(data.id); // string
+console.log(data.number); // number
+```
+
+Refer to [structuredOutput documentation](/packages/ts/scoopika/agents/methods/structured-output) for full docs.

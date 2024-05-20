@@ -3,9 +3,9 @@ title: getSession
 description: Retreive a chat session by ID
 ---
 
-Allows you to retrieve a chat session by its unique identifier within Scoopika. This can be useful for accessing specific session data like its ID and user ID.
+Allows you to retrieve a chat session by its unique identifier within Scoopika. This can be useful for accessing specific session info like its ID and user ID.
 
-This method does not return the actual session history (runs or messages), But it returns a [StoreSession object](/api-reference/store-session), to get the session's runs, refer to [getSessionRuns](/package/ts/scoopika/scoopika/get-session-runs).
+This method does not return the actual session history (runs or messages), But it returns a [StoreSession object](/api-reference/store-session), to get the session's runs, refer to [getSessionRuns](/package/ts/client/store/get-session-runs).
 
 ## Arguments
 
@@ -20,7 +20,7 @@ This method does not return the actual session history (runs or messages), But i
 ## Return Value
 
 <ResponseField name="response" type="Promise<StoreSession>">
-	Returns a `Promise` that resolves to a `StoreSession object` containing information about the retrieved session, including its ID, user ID (if available), user name (if available), and saved prompts (if any).
+	Returns a `Promise` that resolves to a `StoreSession` object containing information about the retrieved session, including its ID, user ID (if available), user name (if available), and saved prompts (if any).
 
 	[Reference to StoreSession](/api-reference/store-session)
 </ResponseField>
@@ -28,10 +28,10 @@ This method does not return the actual session history (runs or messages), But i
 <RequestExample>
 ```typescript Usage example
 // Retrieve session, creating a new one if not found (default behavior)
-const session = await scoopika.getSession("SESSION_ID");
+const session = await client.store.getSession("SESSION_ID");
 
 // Retrieve session, throw error if not found
-const session = await scoopika.getSession(
+const session = await client.store.getSession(
 	"SESSION_ID",
 	false
 );

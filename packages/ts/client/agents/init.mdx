@@ -10,17 +10,17 @@ An `Agent` instance enables you to interact with individual agents. [What are ag
   The agent ID. your agent ID is shown under its name in the [platform](https://scoopika.com/app), just click it to copy.
 </ParamField>
 
-<ParamField path="scoopika" type="Scoopika" required>
-  An instance of the Scoopika class that you previously initialized.
+<ParamField path="client" type="Client" required>
+  An instance of the Scoopika Client class that you previously initialized.
 
-  [Reference to Scoopika instance](/packages/ts/scoopika/scoopika)
+  [Reference to Client instance](/packages/ts/client/client)
 </ParamField>
 
 <RequestExample>
 ```typescript Usage example
-import { Scoopika, Agent } from "@scoopika/scoopika";
+import { Client, Agent } from "@scoopika/client";
 
-const scoopika = new Scoopika({...}); // set your scoopika config
-const agent = new Agent("AGENT_ID", scoopika);
+const client = new Client("API_URL"); // Replace with your Scoopika API route
+const agent = new Agent("AGENT_ID", client);
 ```
 </RequestExample>

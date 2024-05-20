@@ -8,15 +8,15 @@ description: 'Start building AI-powered applications in under 5 minutes'
     Visit the [Scoopika platform](https://scoopika.com/app) and sign up using your Google or Github account.
   </Step>
   <Step title="Create your first agent">
-    Creating a new agent is a breeze. Simply provide a name, optional description, avatar, and a system prompt to guide its behavior. You can even generate agent avatars using AI directly from the platform. [learn more about system prompts and variables]().
+    Creating a new agent is a breeze. Simply provide a name, optional description, avatar, and a system prompt to guide its behavior. You can even generate agent avatars using AI directly from the platform. [learn more about system prompts]().
 
     <Tip>Choose the LLM that will drive the agent from a selection of available hosts and models.</Tip>
 
     <Frame>
       <img src="images/new-agent.gif" />
     </Frame>
-
   </Step>
+
   <Step title="Generate token">
     Generate an access token to be able to use Scoopika in your applications
 
@@ -25,10 +25,9 @@ description: 'Start building AI-powered applications in under 5 minutes'
     <Frame>
       <img src="images/generate-token.gif" />
     </Frame>
-
   </Step>
-  <Step title="Run the agent">
-    Start running the agent in your application. First, install the Scoopika package:
+  <Step title="Intialize Scoopika">
+    First, install the Scoopika package:
 
 ```bash
 npm i @scoopika/scoopika
@@ -47,40 +46,53 @@ const scoopika = new Scoopika({
 });
 ```
 
-    <Info>
-      Notice that We added openai to our engines because We're using OpenAI's gpt-3.5 in this example (default option). [learn more about engines]()
-    </Info>
+    Notice that We added `openai` to our engines because We're using OpenAI's gpt-3.5 in this example (default option). You should setup your engines based on the LLMs providers or hosts your agents use, so if your agents use openai it would be:
+```typescript
+engines: {
+  openai: "YOUR_OPENAI_KEY"
+}
+```
 
+    But if they use Fireworks:
+
+```typescript
+engines: {
+  fireworks: "YOUR_FIREWORKS_KEY"
+}
+```
+
+    And if some of them use OpenAI and others use Fireworks, it would be like this:
+
+```typescript
+engines: {
+  openai: "YOUR_OPENAI_KEY",
+  fireworks: "YOUR_FIREWORKS_KEY"
+}
+```
+
+    [learn more about engines](/packages/ts/scoopika/scoopika).
+  </Step>
+
+  <Step title="Run the agent">
+    
     Now utilize the agent and make the first run:
 
 ```typescript
 const agent = new Agent("AGENT_ID", scoopika);
 
-const run = await agent.run({
-  inputs: {
-    message: "Hello"
-  }
-});
+(async () => {
+  const response = await agent.run({
+    inputs: {
+      message: "Hello"
+    }
+  });
 
-console.log(run);
+  console.log(response);
+})();
 ```
 
-    <Info>Agent ID can be found under the agent name, just click it to copy!</Info>
-
-  </Step>
-
-  <Step
-    title="Next steps"
-  >
-    We recommend you check these resources next:
-
-    * [Understand Scoopika](/understand-scoopika).
-    * [How to work with agents](/agents).
-    * [Scoopika for the web](/scoopika-for-the-web)
-
-    Key features:
-    * [History stores](/history-stores): To have persistent chat history.
-    * [Tools](/history-stores): Connect your agents to custom functions.
+    To run agents on the client-side you need to add Scoopika to one of your API routes. It's an easy process that takes few moments, check [Scoopika the the web](/guides/scoopika-for-the-web) for more info based on the framework you're using.
+    
   </Step>
 
 </Steps>

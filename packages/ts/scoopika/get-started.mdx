@@ -21,7 +21,7 @@ Before interacting with agents and boxes, you'll need to initialize a Scoopika i
 1. Import the Scoopika class from the package.
 2. Create a new Scoopika instance, providing the following configuration options:
 	- token: Your unique Scoopika token. [generate token](https://scoopika.com/app/settings?tab=tokens).
-	- engines: An object containing API keys for the LLM providers your agents utilize (refer to the [engines documentation]() for details).
+	- engines: An object containing API keys for the LLM providers your agents utilize (refer to the [engines documentation](/packages/ts/scoopika/scoopika) for details).
 
 ```typescript
 import { Scoopika } from '@scoopika/scoopika';
@@ -34,11 +34,11 @@ const scoopika = new Scoopika({
 });
 ```
 
-Notice that in the engines, you need to provide keys for the providers your agents use, Check [engines](/packages/ts/scoopika/Scoopika/engines).
+Notice that in the engines, you need to provide keys for the providers your agents use.
 
-Check all options you can pass to a Scoopika instance [here](/packages/ts/scoopika/options).
+Check all options you can pass to a Scoopika instance [here](/packages/ts/scoopika/scoopika).
 
-## Basic usage
+## Usage Example
 
 ```typescript
 import { Scoopika, Agent, Box } from '@scoopika/scoopika';
@@ -50,19 +50,33 @@ const scoopika = new Scoopika({
 	}
 });
 
-// Run agent
 const agent = new Agent('AGENT_ID', scoopika);
-const agentResponse = await agent.run({
-	inputs: {
-		message: 'Hello!'
-	}
-});
 
-// Run box
-const box = new Box('BOX_ID', scoopika);
-const boxResponse = await box.run({
-	inputs: {
-		message: 'Hello!'
-	}
-})
+(async () => {
+	// Create session for user USER_1
+	const session = await scoopika.newSession({
+		user_id: "USER_1"
+	});
+	console.log(session); // StoreSession
+
+	// Run agent
+	const response = await agent.run({
+		inputs: {
+			message: 'Hello!',
+			session_id: session.id
+		},
+		hooks: { // streaming hooks
+			onToken: (t) => console.log(t)
+		}
+	});
+	console.log(response); // AgentResponse
+
+	// List user sessions
+	const userSessions = await scoopika.listUserSessions("USER_1");
+	console.log(userSessions); // string[]
+
+	// Get session runs (history or messages)
+	const runs = await scoopika.getSessionRuns(userSessions[0]);
+	console.log(runs); // RunHistory[] (in this example, there're 2 items one for user request and one for agent response)
+})();
 ```

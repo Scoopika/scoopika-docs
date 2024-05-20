@@ -1,0 +1,58 @@
+---
+title: run
+description: Run the Agent from client-side
+---
+
+The run method is the primary way to interact with an agent. It initiates the agent's processing based on the provided inputs and returns the generated textual response.
+
+<Tip>Agents can call client-side actions that are defined and executed on client-side. check [addClientAction](/packages/ts/client/agents/methods/add-client-action)</Tip>
+
+## Arguments
+
+Takes one argument passed as an object with the following properties:
+
+<ParamField path="inputs" type="Inputs" required>
+  Specifies the input properties for the agent run. It should be an object adhering to the `Inputs` structure.
+
+  [Reference to Inputs](/api-reference/inputs)
+</ParamField>
+
+<ParamField path="hooks" type="Hooks">
+  Allows you to provide a `Hooks object` to establish real-time communication channels with the agent during its processing (using HTTP streaming).
+
+  [Reference to Hooks](/api-reference/hooks)
+</ParamField>
+
+## Response
+
+<ParamField path="response" type="Promise<AgentResponse>">
+  The run method returns a `Promise` that resolves to an `AgentResponse` object upon successful agent run completion. This object contains the agent's generated response (always text-based) and other relevant information about the run.
+
+  [Reference to AgentResponse](/api-reference/agent-response)
+</ParamField>
+
+<RequestExample>
+```typescript Usage example
+await agent.run({
+	inputs: {
+		message: "Hello!"
+	},
+	hooks: {
+		onToken: (token) => console.log(token)
+	}
+});
+```
+</RequestExample>
+
+<ResponseExample>
+```json Response example
+{
+	"run_id": "RUN_1",
+	"session_id": "SESSION_1",
+	"response": {
+		"type": "text",
+		"content": "Hey, how can I assist you?"
+	}
+}
+```
+</ResponseExample>

@@ -1,0 +1,47 @@
+---
+title: handleRequest
+---
+
+Responsible for processing requests sent using the Scoopika client library. You can integrate this method within your API route dedicated to handling Scoopika functionalities. This route can then perform actions like:
+
+- Running agents and boxes
+- Managing history and chat sessions
+- Facilitating real-time streaming between client and server
+- Enabling client-side actions.
+
+## Arguments
+
+<ParamField path="request" type="Object" required>
+	The parsed JSON body of the HTTP request sent from the Scoopika client.
+</ParamField>
+
+<ParamField path="stream" type="function" required>
+	A function used to write data to the HTTP stream in chunks. The implementation of this function will vary depending on your web framework. For example, in Express, this function would be:
+
+	`(s) => res.write(s)`
+</ParamField>
+
+<ParamField path="end" type="function">
+	In some web frameworks, an additional function might be needed to signal the end of the HTTP stream after processing is complete. This function's implementation depends on your framework, for example in Express:
+
+	`() => res.end()`
+</ParamField>
+
+## Framework Flexibility
+
+Scoopika aims to support a wide range of web frameworks by allowing you to provide custom stream handling functions. If you encounter any difficulties with this approach, please feel free to contact us for support.
+
+You can find examples of using this with popular web frameworks [here](/guides/APIs).
+
+<RequestExample>
+```typescript Express Example
+// Example usage with an Express route
+app.post("/scoopika", (req, res) => {
+	container.handleRequest({
+		request: req.body,
+		stream: (s) => res.write(s),
+		end: () => res.end()
+	});
+});
+```
+</RequestExample>

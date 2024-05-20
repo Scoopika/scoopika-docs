@@ -2,12 +2,16 @@
 title: addTool
 ---
 
-Allows you to equip your agents with external tools that the agent can call based on the context. [What are tools](/tools)
+Allows you to equip a specific agent under a box with an external tool that the agent can call based on the context. [What are tools](/tools)
 
 ## Arguments
 
+<ParamField path="agent_id" type="string" required>
+	The agent ID to add the tool to. only agents with this specific ID can access this tool.
+</ParamField>
+
 <ParamField path="func" type="Function" required>
-  Specifies the function to be executed when the agent calls the added tool. This function can perform any logic you define, but it will always receive its arguments as an object that has been validated against the provided tool schema.
+  Specifies the function to be executed when the agent calls the tool. This function can perform any logic you define, but it will always receive its arguments as an object that has been validated against the provided tool schema.
 </ParamField>
 
 <ParamField path="schema" type="ToolSchema" required>
@@ -22,10 +26,6 @@ Allows you to equip your agents with external tools that the agent can call base
   [How to build my tools](/guides/how-to-build-my-tools)
 </ParamField>
 
-## Behaviour
-
-If you add more than 5 tools to an agent Scoopika will select the top 5 most relevant tools for each run based on the inputs.
-
 <ResponseExample>
 ```typescript Usage
 import { createToolSchema } from "@scoopika/scoopika";
@@ -35,7 +35,7 @@ const toolSchema = createToolSchema({
 	name: "get_document_info",
 	description: "Get information about a document",
 	parameters: {
-		type: "object",
+	type: "object",
 		properties: {
 			id: {
 				type: "string",
@@ -51,7 +51,7 @@ function toolFunc(args) {
 	// do anything in the function
 }
 
-agent.addTool(toolFunc, toolSchema);
+box.addTool("AGENT_ID", toolFunc, toolSchema);
 ```
 
 ```typescript Type-safe usage
@@ -88,6 +88,6 @@ function toolFunc(args: ToolInputs) {
 	// do anything in the function
 }
 
-agent.addTool<ToolInputs>(toolFunc, toolSchema);
+box.addTool<ToolInputs>("AGENT_ID", toolFunc, toolSchema);
 ```
 </ResponseExample>

@@ -1,0 +1,91 @@
+---
+title: Client-side Actions
+description: Tools defined and exectued on the client-side
+---
+
+This page delves into the exciting world of Client-side Actions, a powerful feature within Scoopika that empowers you to extend the capabilities of your agents directly within the user's browser. By leveraging client-side actions, you can create dynamic and interactive AI-powered experiences for your users.
+
+## What are Client-Side Actions?
+
+Client-side actions are essentially custom functions defined and executed on the client-side. Unlike server-side tools, their results are not returned to the agent for further processing. This makes them ideal for scenarios where you want your agent to directly interact with the user's web browser, performing actions like:
+
+**Simulating User Interactions**: Mimic user behavior by clicking buttons, filling out forms, or triggering other user interface elements.
+
+**DOM Manipulation**: Modify the Document Object Model (DOM) of the web page, allowing the agent to dynamically adjust the user interface based on the context.
+
+## Key Advantages
+
+**Enhanced User Experience**: Create dynamic and interactive experiences where agents can directly interact with the web page, going beyond simply processing data.
+
+**Reduced Server Load**: Client-side actions offload tasks from the server, improving overall performance and scalability.
+
+**Real-time Interaction**: Once the agent calls the tool, its executed on the client in real-time after being validated, allowing you to provide immediate feedback to users within the browser, fostering a more engaging experience.
+
+## When to Use Client-Side Actions
+
+Client-side actions shine in situations where you want your agent to directly influence the user's web page. Here are some examples:
+
+**Interactive Tutorials**: An agent can guide users through complex processes by simulating user interactions, highlighting specific elements, or filling out forms.
+
+**Assistance**: Agents can assist users with a lot of tasks from filtering and sorting items in the browser, to filling out forms, selecting options, and clicking buttons based on the provided context.
+
+**Reports**: Agents can generate and display custom reports or analytics widgets for the user in the browser.
+
+This feature possibilities stop right where you imagination stops, so It's up to you to go build amazing things with it.
+
+## Adding Client-Side Actions to Agents
+
+The process for adding client-side actions to agents is similar to adding server-side tools. You define a JavaScript function that encapsulates the desired client-side logic and the tool's schema. However, instead of using `agent.addTool`, you'll use `agent.addClientAction`:
+
+```typescript
+import { Client, Agent } from "@scoopika/client";
+
+const client = new Client("API_URL");
+const agent = new Agent("AGENT_ID", client);
+
+const actionSchema = {...}; // Replace with the tool schema
+
+const actionFunction = () => {} // Replace with the too function
+
+agent.addClientAction(actionFunction, actionSchema);
+```
+
+Here's a full example with type-safety:
+
+```typescript
+import { createActionSchema, JSONSchema, FromSchema } from "@scoopika/client";
+
+const actionParams = {
+	type: "object",
+	properties: {
+		task: {
+			type: "string",
+			description: "The task to be added"
+		},
+		deadline: {
+			type: "string",
+			description: "By when should this task be done"
+		}
+	}
+} as const satisfies JSONSchema;
+
+type ActionInputsType = FromSchema<typeof actionParams>;
+
+const actionFunction = (args: ActionInputsType) => {
+	// your tool logic goes here
+	console.log(args.task); // This is always string
+	console.log(args.deadline); // This is string | undefined (because it's not required)
+}
+
+// Define the Scoopika tool schema
+const actionSchema = createActionSchema({
+	name: "add_task",
+	description: "Add a user's task to be done later",
+	parameters: actionParams
+})
+
+// Add the tool to your agent
+agent.addClientAction<ToolInputsType>(
+	actionFunction, actionSchema
+);
+```

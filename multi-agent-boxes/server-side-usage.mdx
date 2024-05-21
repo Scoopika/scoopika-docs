@@ -1,0 +1,71 @@
+---
+title: Server-side Usage
+---
+
+<Check>
+	**Prerequisite**
+
+	1. Scoopika account. create one [here](https://scoopika.com/login).
+	2. Scoopika access token. generate one [here](https://scoopika.com/settings?tab=tokens).
+	3. Initialized Scoopika instance. check the [quickstart](/quickstart).
+</Check>
+
+## Initialize Boxes
+
+Before being able to use boxes, you need to intialize them:
+
+```typescript
+import { Box } from "@scoopika/scoopika";
+
+const box = new Box("BOX_ID", scoopika); // replace with your Scoopika instance
+```
+
+## Run Box
+
+```typescript
+const response = await box.run({
+	inputs: {
+		message: "Hello!"
+	},
+	hooks: {
+		onSelectAgent: (agent) => console.log(`Selected ${agent.name}`), // Capture when the box selects an agent to execute
+		onToken: (t) => console.log(t) // capture each token any agent under the box outputs in real-time
+	}
+})
+
+console.log(response);
+```
+
+The `box.run` method takes an object with the properties inputs and hooks, [learn more](/packages/ts/scoopika/boxes/methods/run).
+
+## Load Box Data
+
+The box data, like its ID and list of agents under it, are not loaded from the platform once you initialize the box, and instead are loaded after the first time you use the box or run it. so you can pre-load it to get access to it before making a run:
+
+```typescript
+// Pre load box data
+await box.load();
+const boxData = box.box;
+```
+
+## Add Tools to Box
+
+You can add custom functions as tools to boxes in two ways:
+
+- Global tools: Those tools will be added to all agents under the box. [See how](/packages/ts/boxes/methods/add-global-tool)
+
+- Specific tools: Those tools are added to only the Agent you specific by its ID. [See how](/packages/ts/boxes/methods/add-tool)
+
+Notice that this page does not show how you can build a tool schema, check [Tools documentation](/tools) for that.
+
+```typescript
+const toolSchema = {...}; // Replace with your tool schema
+
+function toolFunc = () => {}; // Replace with your custom function
+
+// Add tool to all agents
+box.addGlobalTool(toolFunc, toolSchema);
+
+// Add tool to a specific agent
+box.addTool("AGENT_ID", toolFunc, toolSchema);
+```

@@ -27,7 +27,7 @@ Agents are intelligent assistants powered by large language models (LLMs). You c
 Once you've logged in, you can create a new agent [here](https://scoopika.com/app).
 
 <Frame>
-	<img src="images/new-agent.gif" />
+	<img src="/images/new-agent.gif" />
 </Frame>
 
 **Agent name**: Enter a name for your agent.
@@ -52,7 +52,10 @@ Scoopika agents are designed to run on the server side. We offer packages for bo
 
 ### Web Usage (server-client)
 
-If you want to add a route to your API that can handle everything related to Scoopika, and then be able to run the agents on the client-side, you can check the [Scoopika for the web guide](/guides/scoopika-for-the-web).
+To run agents on the client-side, you first need to add a route to your API that can handle everything related to Scoopika, and then be able to run the agents on the client-side. Steps:
+
+1. [Scoopika for the web guide](/guides/scoopika-for-the-web): Setup your server-side and client-side.
+2. [Agents client-side usage page](/agents/client-side-usage): Learn how to use agents on client-side.
 
 ### Server-side Usage
 
@@ -62,7 +65,7 @@ First install the server-side package:
 npm install @scoopika/scoopika
 ```
 
-Then initializing a Scoopika instance, the agent, and running it:
+Then initializing a Scoopika instance, the agent, and run it:
 
 ```typescript
 import { Scoopika, Agent } from "@scoopika/scoopika";
@@ -85,7 +88,10 @@ const agent = new Agent("AGENT_ID", scoopika);
 })();
 ```
 
-**Further Exploration**: For comprehensive server-side documentation, refer to the  [full documentation](/packages/ts/scoopika).
+**Further Exploration**: For comprehensive server-side documentation, refer to:
+
+- [Full Scoopika documentation for server-side](/packages/ts/scoopika).
+- [How to use agents on server-side](/agents/server-side-usage).
 
 **Utilizing Streaming Hooks (Optional):**
 

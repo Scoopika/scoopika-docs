@@ -1,0 +1,52 @@
+---
+title: Other Frameworks
+description: Use Scoopika with any web framework
+---
+
+You can run a Scoopika API with any web framework that supports HTTP streaming. The setup of your Scoopika and Container remains the same (refer to [this guide](/guides/scoopika-for-the-web)). You only need to create a ReadableStream and send it as a response using your chosen framework.
+
+Here’s how to do it:
+
+```typescript
+import container from "./scoopika"; // path to your container setup
+
+const stream = new ReadableStream({
+	start(controller) {
+		container.handleRequest({
+			request: {}, // the request body (JSON object)
+			stream: (s) => controller.enqueue(s),
+			end: () => controller.end()
+		})
+	}
+});
+```
+
+## Example with Fastify
+
+For Fastify, you can handle the stream like this:
+
+```typescript
+import Fastify from 'fastify';
+import container from "./scoopika"; // Path to your container setup
+
+const fastify = Fastify();
+
+fastify.post("/scoopika", async (request, reply) => {
+	const body = request.body;
+
+	// Same as described above
+	const stream = new ReadableStream({
+		start(controller) {
+			container.handleRequest({
+				request: body,
+				stream: (s) => controller.enqueue(s),
+				end: () => controller.end()
+			})
+		}
+	});
+
+	return reply.send(stream);
+})
+```
+
+and the same goes for any other framework, if you face any issues with this feel free to [contact us](/help/contact-us).

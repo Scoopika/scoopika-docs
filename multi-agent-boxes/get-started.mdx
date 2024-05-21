@@ -1,0 +1,112 @@
+---
+title: Getting Started
+description: Let your agents collaborate in smart boxes
+---
+
+## What are multi-agent boxes?
+
+Multi-agent boxes are virtual containers that house multiple agents, enabling you to group multiple agents and leverage their combined capabilities. The box intelligently selects the most suitable agent for the task in hand based on context.
+
+Agents in one box share history, so each agent have access to what other agents said in the past. they can also share tools that are added globally to the box.
+
+## How it works
+
+When you run a box, first it selects what agents to execute from the available agents in the box. taking into consideration the current inputs and any historical context in the chat session.
+
+If the LLM powering the box supports [parallel function-calling](https://platform.openai.com/docs/guides/function-calling/parallel-function-calling), the box might actually select multiple agents for one run based on the context. the agents are executed in order one by one, and each agent will have access to the results of the previous agent.
+
+## Use cases
+
+If your application has a lot of features, and you need to create multiple agents with certain tasks and tools, You'll end up making multiple agents, so how to serve these agents to your users? you can get them in one box, so users interact with one interface and based on context one of the agents is selected to perform the task.
+
+## Create a box
+
+Creating a box is easy, go to the [platform](https://scoopika.com/boxes), give your box name, the LLM that'll drive it, and add agents to it from the list of agents you've created in Scoopika.
+
+Remember that boxes can't executed multiple agents for one request unless the LLM powering it supports [parallel function-calling](https://platform.openai.com/docs/guides/function-calling/parallel-function-calling).
+
+## Run your box
+
+Multi-agent boxes are designed to run on the server side. We offer packages for both the server and client, supporting features like real-time streaming hooks and client-side actions out of the box.
+
+### Web Usage (server-client)
+
+Running boxes is the same process as running agents, you can add a route to your API that can handle everything related to Scoopika, and then be able to run the boxes on the client-side, you can check the [Scoopika for the web guide](/guides/scoopika-for-the-web) to setup your server and client, and then move on to the [Boxes client-side usage page](/mutli-agent-boxes/client-side-usage).
+
+### Server-side usage
+
+First install the server-side package:
+
+```bash
+npm install @scoopika/scoopika
+```
+
+Then initializing a Scoopika instance, the box, and run it:
+
+```typescript
+import { Scoopika, Box } from "@scoopika/scoopika";
+
+const scoopika = new Scoopika({
+	token: "YOUR_SCOOPIKA_TOKEN",
+	engines: {
+		openai: "YOUR_OPENAI_KEY" // Replace based on the LLMs providers you're using
+	}
+});
+
+const box = new Box("BOX_ID", scoopika);
+
+(async () => {
+	const response = await box.run({
+		inputs: { message: "Hello!" }
+	});
+
+	console.log(response);
+})();
+```
+
+For full server-side usage guide check [this page](/multi-agent-boxes/server-side-usage).
+
+## How history is managed
+
+### On your side
+
+For you it's same, though take into consideration that when you list a session messages or runs using [getSessionRuns](/packages/ts/scoopika/scoopika/get-session-runs), The items might not follow the patter `user` -> `agent` -> `user` -> `agent`. if the box supports parallel function-calling you might find yourself in a situation where you have `user` -> `agent` -> `agent` showing that two agents were executed to achieve the users' request. and notice that all items or records that belong to the same run action has the same `run_id`.
+
+### On Scoopika's side
+
+On Scoopika's side things get interesting, you don't have to do anything with this as it's fully managed by Scoopika out-of-the-box. so you can skip this section if you don't want to know about how it works.
+
+Agents in one box need to share history so they can keep up with the historical context of previous conversations with the user. so not all agents see the same exact history, But shows it based on the agent that's looking at it. let's take this example:
+
+```
+User: Hello @agent1, I'm Kais
+Agent1: Hey Kais, how can I assist you?
+```
+
+Now if agent1 looks at this conversation It will see it like this:
+
+```json
+[
+	{
+		"role": "user",
+		"content": "Hello @agent1, I'm Kais"
+	},
+	{
+		"role": "assistant",
+		"content": "Hey Kais, how can I assist you?"
+	}
+]
+```
+
+But if agent2 (for example) looks at it, it will see it like this:
+
+```json
+[
+	{
+		"role": "user",
+		"content": "This is a previous converation between the user and another AI assistant called agent1:...."
+	}
+]
+```
+
+Why? We don't want agent2 to see the messages of agent1 as its own messages, otherwise agent2 will eventually become agent1.

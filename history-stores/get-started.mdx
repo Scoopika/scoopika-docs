@@ -1,0 +1,55 @@
+---
+title: Getting Started
+description: Add long-term memory to your agents
+---
+
+<Check>
+	**Prerequisite**
+
+	1. Scoopika account. create one [here](https://scoopika.com/login).
+	2. Scoopika access token. generate one [here](https://scoopika.com/settings?tab=tokens).
+	3. Scoopika Pro plan. check [pricing](https://scoopika.com/pricing).
+	4. Initialized Scoopika and Agent (or Box) instances. check [quickstart](/quickstart)
+</Check>
+
+History stores are a powerful feature within Scoopika Pro that grants your agents long-term memory capabilities. By leveraging history stores, you can enable your agents to remember past interactions with users, fostering a more natural and engaging conversational experience.
+
+## What are History Stores
+
+Imagine a user interacting with your agent.. By default, Scoopika uses an in-memory store, meaning past conversations are forgotten. History stores offer a persistent solution, allowing you to record chat history and enable your agents to access and reference previous interactions. This empowers your agents to:
+
+**Maintain Context**: Agents can remember past conversations and user preferences, leading to more meaningful and personalized interactions.
+
+**Improve Agent Performance**: Over time, agents can learn from past interactions, allowing them to provide more relevant and accurate responses.
+
+## Create History Store
+
+Scoopika Pro provides a user-friendly interface for creating history stores. Here's how to get started:
+
+1. Go to the platform [here](https://scoopika.com/app/data-stores).
+2. Assign a unique name to your store. This name will be used as the store URL.
+3. Click on "Create" to establish a new history store.
+
+This will deploy a managed Serverless data store only for you.
+
+## Connecting your Store
+
+Once your history store is created, you can integrate it with your Scoopika instance on the server-side. Here's a code snippet demonstrating the process using TypeScript:
+
+```typescript
+import { Scoopika } from "@scoopika/scoopika";
+
+const scoopika = new Scoopika({
+	token: "SCOOPIKA_TOKEN",
+	engines: {...}, // Your engines
+	store: "STORE_URL"
+});
+```
+
+By providing the history store URL during Scoopika instance initialization, you instruct Scoopika to utilize this persistent storage for managing chat sessions and conversation history.
+
+With your history store connected, explore the comprehensive documentation to learn more about:
+
+[Server-side Session Management](/packages/ts/scoopika/scoopika/history)
+
+[Client-side Session Management](/packages/ts/client/store/overview)

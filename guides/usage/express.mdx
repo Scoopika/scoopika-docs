@@ -1,0 +1,52 @@
+---
+title: Express
+description: Use Scoopika with Express
+---
+
+See a full example that uses Scoopika [here](/guides/scoopika-for-the-web).
+
+## Server-side
+
+```bash
+npm install @scoopika/scoopika
+```
+
+```typescript
+import express from "express";
+import container from "./scoopika"; // path to your Scoopika Container
+
+const app = express();
+app.use(express.json()); // Required middleware
+
+app.post("/scoopika", (req, res) => {
+	container.handleRequest({
+		request: req.body,
+		stream: (s) => res.write(s),
+		end: () => res.end()
+	});
+})
+```
+
+## Client-side
+
+```bash
+npm install @scoopika/client
+```
+
+```typescript
+import { Client, Agent } from "@scoopika/client";
+
+const client = new Client("API_URL");
+const agent = new Agent("AGENT_ID", client);
+
+(async () => {
+	const response = await agent.run({
+		inputs: { message: "Hello!" },
+		hooks: {
+			onToken: (t) => console.log(t)
+		}
+	});
+
+	console.log(response);
+})();
+```

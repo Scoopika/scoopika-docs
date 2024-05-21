@@ -1,0 +1,21 @@
+---
+title: Features
+---
+
+The features Scoopika Multi-agents offer out-of-the-box.
+
+All AI agents features shown in [this page](/agents/features) exist in boxes, plus:
+
+## 1. Agents selection
+
+The first step the box does when it receives a new run or request is that it selects the agents needed for the task in hand taking into consideration the context from the latest request and any previous coversations in the session. boxes can select multiple agents to handle one request, [learn more](/packages/ts/scoopika/boxes/methods/run).
+
+The same thing goes for when [using agents for data extraction](/agents/howto/extract-data).
+
+## 2. Extra Streaming hooks
+
+Boxes provide extra hooks for capturing when the box selects an agent to run, and for when the box finishes processing. Check them [here](/api-reference/hooks#box-specific-hooks).
+
+## 3. Tools
+
+You can add tools that all agents under a box share, or equip specific agents with specific tools based on the agent ID.

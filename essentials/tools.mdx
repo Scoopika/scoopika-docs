@@ -1,0 +1,37 @@
+---
+title: Tools
+icon: screwdriver-wrench
+description: Equip agents with tools to perform actions and fetch data
+---
+
+<Info>See how to build tools and equip agents with them [here](/tools).</Info>
+
+## What are Tools?
+
+Imagine equipping your agents with a toolbox filled with specialized functions. These functions, called tools, allow agents to extend their capabilities beyond basic conversation by:
+
+**Performing Actions**: Tools can execute specific tasks within your application, such as sending emails, triggering API calls, or interacting with databases.
+
+**Fetching Data**: Tools can retrieve data from various sources, empowering agents to access and integrate information from external systems.
+
+By providing agents with a diverse set of tools, you can significantly enhance their ability to interact with the world and deliver a more comprehensive user experience. [Learn more](/tools)
+
+## Creating and Using Tools:
+
+While tool creation cannot be directly performed within the Scoopika platform, the process is straightforward and well-documented. Here's a simplified breakdown:
+
+1. **Tool Schema Design**: Define the expected inputs of your tool using a JSON schema. This schema guide the agents to provide valid data when calling the tool and used by Scoopika to validate the agent call making sure your tools never receive unexpected inputs, with full type-safety.
+
+2. **Tool Function Implementation**: Create a JavaScript function that encapsulates the core logic of your tool. This function will receive the agent's provided data (based on the schema) and perform the desired actions or data retrieval.
+
+For a more in-depth guide on creating and using tools, refer to the comprehensive documentation available [here](/tools).
+
+## Client-Side Actions
+
+Scoopika offers an additional layer of functionality with client-side actions. These are essentially tools designed to operate within the user's web browser. those actions are defined and executed on client-side, empowering your agents to:
+
+**Simulate User Interactions**: Mimic user behavior by clicking buttons, filling out forms, or triggering other user interface elements.
+
+**Dynamic UI Manipulation**: Modify the Document Object Model (DOM) of the web page, allowing agents to adjust the user interface based on the conversational context.
+
+Client-side actions add a real-time and interactive dimension to your agents' capabilities. Explore the dedicated documentation to learn more about creating and utilizing client-side actions [here](/tools/client-side-actions).

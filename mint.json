@@ -1,10 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
   "name": "Scoopika",
-  "logo": {
-    "dark": "/logo/scoopika-white.png",
-    "light": "/logo/scoopika-black.png"
-  },
   "favicon": "/scoopika.svg",
   "colors": {
     "primary": "#8f70f5",
@@ -110,6 +106,33 @@
             "agents/howto/agents-collaboration"
           ]
         }
+      ]
+    },
+    {
+      "group": "Multi-agent Boxes",
+      "pages": [
+        "multi-agent-boxes/get-started",
+        "multi-agent-boxes/features",
+        {
+          "group": "Usage",
+          "pages": [
+            "multi-agent-boxes/server-side-usage",
+            "multi-agent-boxes/client-side-usage"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Tools",
+      "pages": [
+        "tools/get-started",
+        "tools/client-side-actions"
+      ]
+    },
+    {
+      "group": "History Stores",
+      "pages": [
+        "history-stores/get-started"
       ]
     },
     {
@@ -291,7 +314,15 @@
         {
           "group": "Web Integration",
           "pages": [
-            "guides/scoopika-for-the-web"
+            "guides/scoopika-for-the-web",
+            {
+              "group": "Usage",
+              "pages": [
+                "guides/usage/express",
+                "guides/usage/next-js",
+                "guides/usage/other-frameworks"
+              ]
+            }
           ]
         },
         "guides/scoopika-on-your-servers"

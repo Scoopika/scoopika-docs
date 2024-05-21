@@ -1,0 +1,55 @@
+---
+title: Web Integration
+icon: globe
+description: Integrate Scoopika into web applications
+---
+
+Scoopika focuses on being an ideal solution for web developers, by providing an easy way to setup Scoopika on the server-side by just adding a single route to your API, and using the client library with real-time streaming hooks and client-side actions supported out-of-the-box.
+
+Scoopika should work with any web framwork that supports HTTP streaming, and We provide guides for integrating Scoopika with popular frameworks that you can find [here](/guides).
+
+## Minimal Setup Example (Express)
+
+Here's a minimal setup with Express:
+
+```typescript
+// Server-side
+
+import { Scoopika, Container } from "@scoopika/scoopika"
+
+const scoopika = new Scoopika({...}); // Replace with your scoopika config
+
+const container = new Container({
+	scoopika,
+	agents: ["AGENT_ID-1"] // Replace with your agents IDs or custom setup function
+});
+
+// Add route to your Express API
+app.post("/scoopika", (req, res) => container.handleRequest({
+	request: req.body,
+	stream: (s) => res.write(s),
+	end: () => res.end()
+}));
+```
+
+```typescript
+// Client-side
+
+import { Client, Agent } from "@scoopika/client";
+
+const client = new Client("API_URL");
+const agent = new Agent("AGENT_ID", client);
+
+(async () => {
+	const response = await agent.run({
+		inputs: { message: "Hello!" },
+		hooks: { // real-time hooks
+			onToken: (t) => console.log(t)
+		}
+	});
+
+	console.log(response);
+})();
+```
+
+For in-depth documentation, refer to the [guides](/guides).

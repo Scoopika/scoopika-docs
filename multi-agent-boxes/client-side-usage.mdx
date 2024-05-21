@@ -1,0 +1,61 @@
+---
+title: Client-side Usage
+---
+
+<Check>
+	**Prerequisite**
+
+	1. Scoopika account. create one [here](https://scoopika.com/login).
+	2. Scoopika access token. generate one [here](https://scoopika.com/settings?tab=tokens).
+	3. Scoopika setup for client-server usage. check this [guide](/guides/scoopika-for-the-web).
+</Check>
+
+Make sure you have a ready setup on your server-side and client-side before you continue with this page.
+
+## Intialize
+
+```typescript
+import { Client, Box } from "@scoopika/client";
+
+const client = new Client("http://localhost:4149/scoopika"); // Full URL to your API route that handles Scoopika functionalities
+const box = new Box("BOX_ID", client);
+```
+
+## Run Box
+
+```typescript
+const response = await box.run({
+	inputs: {message: "Hello!"},
+	hooks: {
+		onSelectAgent: (agent) => console.log(`Selected ${agent.name}`), // Capture when the box selects an agent to execute
+		onToken: (t) => console.log(t) // capture each token any agent under the box outputs in real-time
+	}
+});
+
+console.log(response);
+```
+
+## Access Box Data
+
+You can load and access box data on the client-side:
+
+```typescript
+const boxData = await box.load();
+console.log(boxData);
+```
+
+## Add Client-side Actions (Tools)
+
+[Client-side actions](/tools/client-side-actions) are [external tools](/tools) that are defined and executed on the client-side. giving all agents under a box the power to execute actions on the client-side in real-time.
+
+Notice that when adding a client-side action to a box, it's available to all agents under it, and can't be assigned to specific agents.
+
+Notice that this page does not show how you can build a client-side action schema, check [Tools documentation](/tools) for that.
+
+```typescript
+const actionSchema = {...}; // Replace with your tool schema
+
+function actionFunc = () => {}; // Replace with your custom function
+
+box.addClientAction(actionFunc, actionSchema);
+```

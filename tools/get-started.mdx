@@ -1,0 +1,156 @@
+---
+title: Getting Started
+description: Equip agents with custom external tools
+---
+
+<Check>
+	**Prerequisite**
+
+	1. Scoopika account. create one [here](https://scoopika.com/login).
+	2. Scoopika access token. generate one [here](https://scoopika.com/settings?tab=tokens).
+	3. Initialized Scoopika and Agent (or Box) instances. check [quickstart](/quickstart)
+</Check>
+
+## What are Tools
+
+Tools are custom functions you can equip your agents with to give them the power the perform actions or fetch data based on context. [Learn more about function-calling](https://www.hopsworks.ai/dictionary/function-calling-with-llms).
+
+## Understanding Tools
+
+Tools are essentially functions you can add to your agents, granting them the ability to execute specific tasks or retrieve data relevant to the situation.
+
+Each tool comprises two parts: a function that defines the logic, and a schema that outlines the expected arguments for the function.
+
+### Tool Schema
+
+JSON schema acts as a blueprint, specifying the arguments (parameters) that the tool's function expects. It also enforces type safety by validating the data sent from the agent to the function.
+
+<ParamField path="name" type="string" required>
+	A clear and descriptive name for your tool.
+</ParamField>
+
+<ParamField path="description" type="string" required>
+	A concise explanation of the tool's purpose, guiding the agent on when to utilize it.
+</ParamField>
+
+<ParamField path="parameters" type="JSON Schema" required>
+	A JSON schema defining the arguments the tool's function requires. This schema ensures the agent sends valid data to the function, so your function always receive type-safe validated data.
+</ParamField>
+
+### Tool Function
+
+This is the core functionality of your tool. It's a JavaScript function that receives its arguments as a JSON object, validated against the tool's schema. The function can be asynchronous and can return any value.
+
+## When to Use Tools
+
+Imagine creating an agent that assists users with managing tasks. You can equip this agent with a tool named `add_task` that handles adding tasks to a to-do list. When a user instructs the agent to add a task, the agent calls this tool, providing the relevant details (task description and deadline) as arguments based on the tool's schema.
+
+In this example the tool schema would look something like this:
+
+```json
+{
+	"name": "add_task",
+	"description": "Add a user's task to be done later",
+	"parameters": {
+		"type": "object",
+		"properties": {
+			"task": {
+				"type": "string",
+				"description": "What is the task to be added"
+			},
+			"deadline": {
+				"type": "string",
+				"description": "By when should this task be done"
+			}
+		},
+		"required": ["task"]
+	}
+}
+```
+
+So let's imagine the users says:
+
+> I need to set up a blog by tomorrow, could you add that to my tasks?
+
+Then the agent will call the tool with the right arguments to add the task, in this examples the arguments would look like this:
+
+```json
+{
+	"task": "Setup a blog",
+	"deadline": "By tomorrow"
+}
+```
+
+**Tool Arguments - Generative Power**
+
+It's important to note that tool arguments can be generative. This means the AI model powering the agent might generate values for certain arguments based on its understanding of the user's request.
+
+## Equipping Agents with Tools
+
+### Server-side Tools
+
+- These are custom functions defined and executed on your server.
+- You can leverage JSON schemas to define the tool's arguments, enabling Scoopika to validate the agent's outputs when calling the tool. This ensures stability and type safety.
+- The function's returned results are sent back to the agent for further processing.
+
+The provided code snippet showcases a type-safe approach using TypeScript and generates types from the tool schema:
+
+```typescript
+import { createToolSchema, JSONSchema, FromSchema } from "@scoopika/scoopika";
+
+const toolParams = {
+	type: "object",
+	properties: {
+		task: {
+			type: "string",
+			description: "What is the task to be added"
+		},
+		deadline: {
+			type: "string",
+			description: "By when should this task be done"
+		}
+	}
+} as const satisfies JSONSchema;
+
+type ToolInputsType = FromSchema<typeof toolParams>;
+
+const toolFunction = (args: ToolInputsType) => {
+	// your tool logic goes here
+	console.log(args.task); // This is always string
+	console.log(args.deadline); // This is string | undefined (because it's not required)
+}
+
+// Define the Scoopika tool schema
+const toolSchema = createToolSchema({
+	name: "add_task",
+	description: "Add a user's task to be done later",
+	parameters: toolParams
+})
+
+// Add the tool to your agent
+agent.addTool<ToolInputsType>(toolFunction, toolSchema);
+```
+
+The `agent.addTool` method is used to add tools to an agent, For adding tools to boxes, refer to [this documentation](/multi-agent-boxes/server-side-usage#add-tools-to-box).
+
+### Client-side Actions (Client-side Tools)
+
+Similar to server-side tools, you can equip agents with tools defined and executed on the client-side. These are known as Client-side actions.
+
+**Key Distinction**
+
+Unlike server-side tools, results from client-side actions are not returned to the agent. This makes them unsuitable for data retrieval but ideal for enabling agents to perform real-time actions on the client-side, such as simulating user interactions or manipulating the DOM.
+
+**Adding Client-side Actions**
+
+The approach for adding client-side actions is just the same as adding tools from the server-side, the only difference is that on the client-side we use `agent.addClientAction` instead of `agent.addTool`:
+
+```typescript
+agent.addClientAction<ToolInputsType>(toolFunction, toolSchema);
+```
+
+## Adding a lot of Tools
+
+Adding a lot of tools to your agent is usually not a good practice as it makes it hard for the agent to choose the right tools and they take a lot of tokens from the LLMs context window. But not with Scoopika....
+
+If you equip your agents with more than 5 tools, Scoopika will select the most suitable 5 tools to pass to the agent based on the context of the conversation.

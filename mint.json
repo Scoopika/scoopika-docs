@@ -14,7 +14,7 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "url": "mailto:team@scoopika.com"
     }
   ],
   "topbarCtaButton": {
@@ -330,7 +330,7 @@
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
+    "x": "https://x.com/scoopika_",
     "github": "https://github.com/scoopika"
   },
   "playground": {

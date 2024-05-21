@@ -9,6 +9,7 @@ Here’s how to do it:
 
 ```typescript
 import container from "./scoopika"; // path to your container setup
+import { ReadableStream } from "node:stream/web";
 
 const stream = new ReadableStream({
 	start(controller) {

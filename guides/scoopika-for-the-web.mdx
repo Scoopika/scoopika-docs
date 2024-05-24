@@ -145,7 +145,8 @@ const client = new Client(
 
 const agent = new Agent("AGENT_ID", client);
 
-async(() => {
+(async () => {
+
 	const response = await agent.run({
 		inputs: { message: "Hello!" },
 		hooks: { // real-time streaming hooks are supported

@@ -1,0 +1,99 @@
+When initialized, returns a number of properties to check, update, and manage the state (with voice).
+
+The main one is `newRequest` function that’s used instead of `agent.run` to run the agent… 
+it takes the same arguments and provides better state management.
+
+It also provides methods to manage the agent voice player, and user voice recorder.
+
+## Props
+
+All properties retruned from [useChatState](/packages/ts/react/chat-state/properties), plus:
+
+<ParamField path="newRequest" type="Function">
+    The `newRequest` in the voice state is not the same one used in the text chat state,
+    here passing inputs is optional, as the inputs are extracted from the recorded user voice.
+</ParamField>
+
+<ParamField path="voicePlaying" type="boolean">
+    Whether the agent voice is currently playing or not.
+    This is set to `true` even of the player is paused, and it indicates that the latest agent run voice
+    response has not finished playing yet.
+</ParamField>
+
+<ParamField path="recorderState" type='"stopped" | "recording" | "paused"' default="stopped">
+    The user voice recorder state.
+</ParamField>
+
+<ParamField path="supportRecognition" type="boolean">
+    Wether the browser supports in-browser speech recognition.
+    as Scoopika will try to use in-browser recognition if available for better performance.
+
+    This will be set to `true` if speech recognition is supported, if not the feature will still
+    work but Scoopika will send the voice to the cloud to be processed (done for you under the hood).
+</ParamField>
+
+<ParamField path="recognizedText" type='"string" | undefined'>
+    If in browser speech recognition is supported, this variable will hold the latest recognized text
+    the user said to the recorder.
+
+    Useful to display the recognized text to the user.
+</ParamField>
+
+<ParamField path="updateRecognizedText" type="(text: string) => void">
+    Used to update the recognized text. helpful to give the user the ability to update 
+    the recognized text manually.
+
+    Only available if in-browser speech recognition is supported.
+</ParamField>
+
+<ParamField path="working" type="boolean">
+    In the `useChatState` you see loading, and generating. this one here is set to true as long as
+    the agent is loading OR generating response OR the agent voice response is still playing and hasn't finished yet.
+</ParamField>
+
+<ParamField path="agentVoicePaused" type="boolean">
+    Set to `true` if the agent voice is currently paused.
+</ParamField>
+
+<ParamField path="pauseAgentVoice" type="() => void">
+    Used to pause the agent voice player.
+</ParamField>
+
+<ParamField path="resumeAgentVoice" type="() => void">
+    Used to resume the agent voice player after being paused.
+</ParamField>
+
+<ParamField path="agentVoicePlayer" type="RunAudioPlayer">
+    The agent voice player. in normal use cases you won't need to use this, but in case you need
+    refer to the [RunAudioPlayer documentation](/packages/ts/client/audio-player).
+</ParamField>
+
+<ParamField path="voiceRecorder" type="VoiceRecorder">
+    The user voice recorder. in normal use cases, you won't need to use this, but in case you need
+    refer to the [VoiceRecorder documentation](/packages/ts/client/voice-recorder).
+</ParamField>
+
+<ParamField path="visualizer" type="Visualizer">
+    The agent voice visualizer that's used to visualize the agent voice in the canvas if provided.
+</ParamField>
+
+<ResponseExample>
+```typescript Usage
+const {
+    // all properties from useChatState, plus:
+    working,
+    newRequest,
+    voicePlaying,
+    recorderState,
+    supportRecognition,
+    recognizedText,
+    updateRecognizedText,
+    agentVoicePaused,
+    pauseAgentVoice,
+    resumeAgentVoice,
+    agentVoicePlayer,
+    voiceRecorder,
+    visualizer
+} = useVoiceChatState(...);
+```
+</ResponseExample>

@@ -1,0 +1,126 @@
+---
+title: Overview
+description: Used to make a user voice recorder with speech recognition
+---
+
+This is useful when implementing a voice-based chat interface with an agent.
+It can be used to record the user voice and send it as input to the agent with 
+built-in speech recognition.
+
+The voice [playground](https://scoopika.com/app/playground) 
+you see in the platform was built using this.
+
+## Initialize
+
+This class takes one optional options object with the following properties:
+
+<ParamField path="onAudioChunk" type="(chunk: Blob) => any">
+    A function that's called everytime a new audio chunk is read.
+</ParamField>
+
+<ParamField path="onStateChange" type="(state: State) => any">
+    A function that's called everytime the recorder state change,
+    available states:
+
+    - **recording**: The recorder is currently recording.
+    - **stopped**: The recorder is stopped or hasn't started recording yet.
+    - **paused**: The recorder has started recording but it's paused.
+</ParamField>
+
+<ParamField path="onText" type="(text: string) => any">
+    If in-browser speech recognition is support, this function will be called
+    each time the recognized text is updated.
+</ParamField>
+
+## Controls
+
+You have methods to control the recorder:
+
+<ParamField path="start">
+    Start recording.
+</ParamField>
+
+<ParamField path="pause">
+    Pause the recorder.
+</ParamField>
+
+<ParamField path="resume">
+    Resume the recorder.
+</ParamField>
+
+## Speech recognition
+
+If in-browser speech recognition is supported, the recorder will use it,
+and if it's not, the audio will be sent to the cloud to be recognized.
+
+You can check if the recognition property is `null` to know if in-browser
+speech recognition is supported or not:
+
+```typescript
+const recognitionSupport = recorder.recognition !== null;
+```
+
+You can use the asRunInput method to get the inputs to be passed to the agent,
+this input will be built based on whether in-browser recognition is supported or not,
+example:
+
+```typescript
+const inputs = await recorder.asRunInput();
+```
+
+If in-browser speech recognition, the inputs will be like this:
+
+```json
+{
+    "message": "RECOGNIZED_TEXT"
+}
+```
+
+Otherwise It will be like this:
+
+```json
+{
+    "audio": [{
+        "type": "base64",
+        "value": "AUDIO_AS_BASE64"
+    }]
+}
+```
+
+You can pass the results of the `asRunInput` method directly to the agent like this:
+
+```typescript
+const inputs = await recorder.asRunInput();
+const response = await agent.run({
+    inputs
+});
+```
+
+<ResponseExample>
+```typescript Initialize
+import { VoiceRecorder } from "@scoopika/client";
+
+const recorder = new VoiceRecorder({
+    onStateChange: (s) => console.log(s),
+    onText: (t) => console.log(t)
+});
+
+// Start the recorder
+recorder.start();
+
+// Pause the recorder
+recorder.pause();
+
+// Resume the recorder
+recorder.resume();
+
+// Check in-browser recognition support
+const recognitionSupport = recorder.recognition !== null;
+
+// Get run inputs
+const inputs = await recorder.asRunInput();
+agent.run({
+    inputs
+})
+```
+</ResponseExample>

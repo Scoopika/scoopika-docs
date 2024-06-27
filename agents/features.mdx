@@ -4,16 +4,49 @@ title: Features
 
 The features Scoopika AI agents offer out-of-the-box:
 
-## 1. Data validation
+## Data validation
 
-When your agent calls an external tool Scoopika validates all arguments the agent sent to the tool before executing it, and it auto heals invalid and missing data.
+When your agent calls an external tool Scoopika validates all arguments the agent sent to the tool 
+before executing it, and it intelligently recovers invalid and missing data.
 
 The same thing goes for when [using agents for data extraction](/agents/howto/extract-data).
 
-## 2. Streaming hooks
+## Streaming hooks
 
-Scoopika provides streaming hooks to capture spcific events in the agent process, like capturing each token the agent outputs in real-time. these hooks work on both server-side and client-side, and are so useful for creating a seamless, interactive, and fast experience. See [list of available hooks](/api-reference/hooks).
+Scoopika provides streaming hooks to capture spcific events in the agent process, 
+like capturing each token the agent outputs in real-time. these hooks work on both server-side and client-side, 
+and are so useful for creating a seamless, interactive, and fast experience. See [list of available hooks](/api-reference/hooks).
 
-## 3. Auto healing
+## Voice
 
-Agents will auto heal in case of invalid or missing data (for tools arguments), and if a tool fails or encounters an error while executing Scoopika will also auto heal it.
+Agents can return audio response in real-time. you can select your agent's voice from its page
+in the platform. this is still a beta feature and will be improved a lot in the near future.
+To enable agent voice response, set the `voice` property to true in the run options:
+
+```typescript
+agent.run({
+    options: { voice: true },
+    inputs: { message: "Hello" }
+})
+```
+
+## Companions
+
+Each agent can have companions, other agents it can call and talk with when it needs to. this allows 
+dynamic collaboration between multiple agents.
+
+## Knowledge (beta)
+
+You can add knowledge files to your agents (PDF, Markdown, or text files).
+The agent knowledge will be extended and it will be aware of the information mentioned
+in these files. You can add knowledge files to your agent from its page in the [platform](https://scoopika.com/app/agents).
+
+This feature is still a beta, so you need to enable it in your Scoopika setup from your code to work:
+
+```typescript
+import { Scoopika } from "@scoopika/scoopika";
+
+const scoopika = new Scoopika({
+    beta_allow_knowledge: true
+});
+```

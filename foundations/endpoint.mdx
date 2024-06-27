@@ -1,0 +1,88 @@
+---
+title: Scoopika API Endpoint
+---
+
+To use Scoopika in web applications, both server-side and client-side, we recommend creating a Scoopika endpoint. This setup can be done in under 5 minutes.
+
+## Why Create a Scoopika Endpoint?
+
+Creating a Scoopika endpoint simplifies the integration process and enhances the functionality of your AI agents. Here’s why:
+
+1. **Ease of Use**: Instead of managing HTTP requests and streaming responses manually, the Scoopika endpoint handles all communication between the client and server seamlessly. This makes client-side usage as straightforward as server-side usage.
+2. **Enhanced Functionality**: The endpoint allows you to add tools to your agents from both the server and the client-side, unlocking a wide range of custom functionalities.
+3. **Flexibility**: It works out of the box with any web framework, providing a versatile solution for various application needs.
+
+## Benefits
+
+A Scoopika API endpoint offers several built-in features:
+
+- **Client-Side Usage**: Enables all Scoopika functionalities on the client-side, including agent interactions, data loading, and session management.
+- **Server-Client Streaming**: Supports real-time streaming hooks on the client-side for agent response tokens, tool calls, audio, and other events.
+- **Caching**: Caches agent data on your servers to improve performance and reduce load usage.
+- **Client-Side Actions**: Allows agents to execute tools safely in the user's browser in real-time.
+
+## Example usage (with express)
+
+Here’s a simple example of setting up a Scoopika endpoint using Express
+
+### Server-side
+
+```base
+npm install @scoopika/scoopika
+```
+
+```typescript
+import express from "express";
+import { Scoopika, Endpoint } from "@scoopika/scoopika";
+
+// Setup Scoopika
+const scoopika = new Scoopika(); // requires SCOOPIKA_TOKEN env variable
+const endpoint = new Endpoint({
+    scoopika,
+    agents: ["AGENT_ID_1"] // List of agent IDs that can be used through this endpoint
+});
+
+const app = express();
+app.use(express.json()); // required middleware
+
+// Define the Scoopika endpoint
+app.post("/scoopika", (req, res) => {
+    endpoint.handleRequest({
+        request: req.body,
+        stream: (s) => res.write(s),
+        end: () => res.end()
+    });
+});
+
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
+});
+```
+
+### Client-side
+
+```base
+npm install @scoopika/client
+```
+
+```typescript
+import { Client, Agent } from "@scoopika/client";
+
+const client = new Client("API_URL/scoopika");
+const agent = new Agent(client, "AGENT_ID");
+
+(async () => {
+    const res = await agent.run({
+        inputs: { message: "Hello" },
+        hooks: {
+            onToken: (t) => console.log(t) // Streaming hooks
+        }
+    });
+
+    console.log(res);
+})();
+```
+
+## Learn more
+
+For detailed instructions on using Scoopika with web applications and adding tools to agents on the server-side, see the full guide [here](/guides/scoopika-for-the-web).

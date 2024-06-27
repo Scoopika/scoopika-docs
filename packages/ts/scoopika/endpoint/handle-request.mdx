@@ -5,6 +5,7 @@ title: handleRequest
 Responsible for processing requests sent using the Scoopika client library. You can integrate this method within your API route dedicated to handling Scoopika functionalities. This route can then perform actions like:
 
 - Running agents and boxes
+- Agents speech
 - Managing history and chat sessions
 - Facilitating real-time streaming between client and server
 - Enabling client-side actions.
@@ -29,7 +30,7 @@ Responsible for processing requests sent using the Scoopika client library. You 
 
 ## Framework Flexibility
 
-Scoopika aims to support a wide range of web frameworks by allowing you to provide custom stream handling functions. If you encounter any difficulties with this approach, please feel free to contact us for support.
+Scoopika aims to support a wide range of web frameworks by allowing you to provide custom stream handling functions. If you encounter any difficulties with this approach, please feel free to [contact us](/help/contact-us) for support.
 
 You can find examples of using this with popular web frameworks [here](/guides/APIs).
 
@@ -37,7 +38,7 @@ You can find examples of using this with popular web frameworks [here](/guides/A
 ```typescript Express Example
 // Example usage with an Express route
 app.post("/scoopika", (req, res) => {
-	container.handleRequest({
+	server.handleRequest({
 		request: req.body,
 		stream: (s) => res.write(s),
 		end: () => res.end()

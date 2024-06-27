@@ -1,0 +1,80 @@
+---
+path: Properties
+---
+
+When initialized, returns a number of properties to check, update, and manage the state.
+
+The main one is `newRequest` function that's used instead of `agent.run` to run the agent...
+it takes the same arguments and provides better state management.
+
+## Props
+
+<ParamField path="newRequest" type="Function">
+    Used to send a new message to the agent or run it. works the same way as [agent.run](/packages/ts/client/agents/methods/run).
+
+    Returns [AgentResponse](/api-reference/agent-response) or `undefined` in case of errors. notice that the 
+    `onError` was made to be used with this to capture any errors.
+
+    If the agent is working and you call the `newRequest` before it finishes, it will wait until the previous run is finished before processing the new one.
+</ParamField>
+
+<ParamField path="messages" type="RunHistory[]">
+    A list of previous messages in the current session.
+
+    [Reference to RunHistory](/api-reference/run-history)
+</ParamField>
+
+<ParamField path="streamPlaceholder" type="AgentResponse | undefined">
+    Used for streaming. while the agent is generating tokens and calling tools,
+    this will contain the agent response while it gets updated in real-time.
+
+    When the agent is not working this will be `undefined`.
+
+    Please see [this page](/packages/ts/react/chat-state/streaming) to understand how it works.
+
+    [Reference to AgentResponse](/api-reference/agent-response)
+</ParamField>
+
+<ParamField path="generating" type="boolean">
+    Wether the agent is generating tokens or not (working or idle).
+</ParamField>
+
+<ParamField path="loading" type="boolean">
+    Wether the agent is loading (started the run but still did not start to generate tokens).
+</ParamField>
+
+<ParamField path="status" type="string | undefined">
+    The agent status, if the agent is idle it's `undefined`, if loading it's `"Thinking"`, or if it's 
+    calling a tool it's `"Talking with <TOOL_NAME>"`.
+
+    You can use this to display the agent status directly to the end user.
+</ParamField>
+
+<ParamField path="session" type="string">
+    The current session ID.
+</ParamField>
+
+<ParamField path="changeSession" type="(id: string) => void">
+    Change the session. just provide another session ID, and it will load its history and update the state.
+</ParamField>
+
+<ParamField path="loadingSession" type="boolean">
+    When you provide a `session_id` in initialization or call `changeSession`, We need to load the session history (messages),
+    and while the session history is loading this will be set to `true`, otherwise it's `false`.
+</ParamField>
+
+<ResponseExample>
+```typescript Usage
+const {
+    newRequest,
+    messages,
+    streamPlaceholder,
+    generating,
+    loading,
+    status,
+    session,
+    changeSession,
+    loadingSession
+} = useChatState(...);
+```
+</ResponseExample>

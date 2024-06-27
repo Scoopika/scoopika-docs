@@ -3,6 +3,8 @@ title: Getting Started
 description: Create personalized LLM-powered agents in seconds
 ---
 
+For an introduction for what AI agents are what they can do, refer to [this page](/foundations/agents).
+
 <Check>
 	**Prerequisite**
 
@@ -10,43 +12,33 @@ description: Create personalized LLM-powered agents in seconds
 	2. Scoopika access token. generate one [here](https://scoopika.com/settings?tab=tokens).
 </Check>
 
-## What are agents?
+## Create an AI agent
 
-Agents are intelligent assistants powered by large language models (LLMs). You can customize them to specialize in specific areas, equipping them with tools, functions, and APIs. This enables them to perform actions or retrieve data based on the context of a conversation.
+Once you've logged in, you can create a new agent [here](https://scoopika.com/app/new-agent).
 
-## What can agents do?
-
-- Act as assistants for specific tasks, leveraging their tools to perform actions or retrieve necessary data based on the conversation.
-- Extract structured JSON data. (see [structuredOutput](/packages/ts/scoopika/agents/methods/structured-output)).
-- Collaborate in [Multi-agent smart boxes](/multi-agent-boxes) to tackle complex tasks.
-- Serve as tools for other agents, allowing the primary agent to call the tool agent when needed (see [addAgentAsTool](/packages/ts/scoopika/agents/methods/add-agent-as-tool)).
-- Perform actions on client-side in real-time like clicking a button ([learn more](/tools/client-side-actions))
-
-## Create an agent
-
-Once you've logged in, you can create a new agent [here](https://scoopika.com/app).
-
-<Frame>
-	<img src="/images/new-agent.gif" />
-</Frame>
-
-**Agent name**: Enter a name for your agent.
-
-**Agent description**: Provide a brief description of your agent's functionality. This description is not the system prompt but helps when adding the agent to a multi-agent box or as a tool.
-
-**Avatar**: Assign a visual identity to your agent by uploading an avatar or using the platform's avatar generation feature.
-
-### Prompt the agent
-
-Every agent requires a system prompt, which is a set of instructions guiding its behavior and task fulfillment. Click on "Add Prompt" to define a prompt for your agent. You can also choose the LLM that will drive this agent from the prompt editor options. Remember to provide the API keys for the LLM providers you're using within your code.
+- **Name**: The name of the agent. agents are aware of their own names and their companions names.
+- **Description**: Briefly describe the agent. notice that this is not the agent’s prompt, and only useful when using companions.
+- **Avatar**: The agent’s avatar. only useful to display it.
+- **LLM**: The large language model that powers the agent (its brain).
+- **Prompt**: A set of instructions that the agent will act and behave based on.
+- **Voice**: Select your agent’s voice. it will be used in voice-based interaction (we provide 2 voices options for now).
 
 ## Selecting the LLM
 
-LLMs are the underlying technology powering your agents. You can choose from a list of available LLMs and providers within the prompt editor. Ensure you provide the corresponding API keys in your code for the chosen LLM providers when initializing a Scoopika instance ([see how](/packages/ts/scoopika/scoopika)).
+LLMs are the underlying technology powering your agents. 
+You can choose from a list of available LLMs and providers. Ensure you provide the corresponding API keys in your code for the chosen LLM providers when initializing a Scoopika instance ([see how](/packages/ts/scoopika/scoopika)).
 
-<Check>API keys are securely kept on your servers and never shared with our platform.</Check>
+<Check>API keys are securely kept on your servers and never shared with our platform unless you add them to your account (optional choice).</Check>
 
 ## Run your agent
+
+Before moving to your app, you can test your agent in the [playground](https://scoopika.com) (sepports both text and voice interaction).
+
+<Check>
+	**FUN FACT**
+
+	The playground was built using Scoopika itself (with [Scoopika React library](/packages/ts/react) on the front-end).
+</Check>
 
 Scoopika agents are designed to run on the server side. We offer packages for both the server and client, supporting features like real-time streaming hooks and client-side actions out of the box.
 

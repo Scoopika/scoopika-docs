@@ -2,11 +2,19 @@
 title: Run With History
 ---
 
-This guide shows how to run agents with history by using chat sessions.
+<Check>
+	**Prerequisite**
 
-First initialize Scoopika (or Client) and the agent. this works on both server-side and client-side.
+	A running Scoopika API endpoint. see this [page](/foundations/endpoint).
+</Check>
 
-In your server-side Scoopika initialization, you can pass a remote store URL that you can create [here](https://scoopika.com/app/data-stores) to have persistent chat sessions, otherwise Scoopika will use an in-memory store.
+This guide shows how to run agents with long-term memory by using sessions. This works on both server-side and client-side.
+
+In your server-side Scoopika initialization, you can pass a remote store ID that you can create [here](https://scoopika.com/app/data-stores) to have persistent memory and chat sessions, otherwise Scoopika will use an in-memory store (not persistent).
+
+<Check>
+	All data in remote memory stores is encrypted and never accessed by our team!
+</Check>
 
 ## Create session
 
@@ -30,9 +38,11 @@ Now we can pass that session's id to each agent run to save the run to that sess
 
 ```typescript
 await agent.run({
-	inputs: {
-		message: "Explain LLMs to me like I'm 5",
+	options: {
 		session_id: session.id
+	},
+	inputs: {
+		message: "Hello, I'm Kais",
 	}
 });
 ```
@@ -41,23 +51,25 @@ Notice that we passed the `session_id` as the session's ID we previously created
 
 ```typescript
 await agent.run({
-	inputs: {
-		message: "What?",
+	options: {
 		session_id: session.id
+	},
+	inputs: {
+		message: "Who am I?",
 	}
 });
 ```
 
-## Get session runs
+## Get session messages
 
-Now we can check that session's runs (history or messages, it contains the user request and agent response):
+Now we can check that session's messages (history, it contains the user request and agent response):
 
 ```typescript
 // On Server-side
-await scoopika.getSessionRuns(session.id);
+await scoopika.getSessionMessages(session.id);
 
 // Or Client-side
-await client.store.getSessionRuns(session.id);
+await client.store.getSessionMessages(session.id);
 ```
 
 ## List user sessions

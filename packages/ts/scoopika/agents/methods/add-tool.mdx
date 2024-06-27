@@ -2,24 +2,30 @@
 title: addTool
 ---
 
-Allows you to equip your agents with external tools that the agent can call based on the context. [What are tools](/tools)
+Allows you to equip your agents with custom functions as tools that the agent can call based on context. [What are tools](/tools)
 
 ## Arguments
 
-<ParamField path="func" type="Function" required>
-  Specifies the function to be executed when the agent calls the added tool. This function can perform any logic you define, but it will always receive its arguments as an object that has been validated against the provided tool schema.
+Takes on argument passed as an object with the following properties:
+
+<ParamField path="name" type="string" required>
+  The name of tool. it has to be unique in the agent's scope.
 </ParamField>
 
-<ParamField path="schema" type="ToolSchema" required>
-  Defines the schema for the tool. The schema is a critical element as it determines the expected parameters (inputs) for the tool function and tells the agent what the tool is about and when to call it.
+<ParamField path="description" type="string">
+  Describe briefly what the tool does and when the agent should call it in natural language. make the description clear so the agent understands when to call the tool.
+</ParamField>
+
+<ParamField path="schema" type="Zod Schema" required>
+  A Zod schema that defines the parameters. It is converted to a JSON schema that is passed to the LLM, and used to validate the LLM tool calls.
 
   Recommended resources:
 
-  [Reference to ToolSchema](/api-reference/tool-schema)
-
-  [createToolSchema](/packages/ts/scoopika/scoopika/create-tool-schema)
-
   [How to build my tools](/guides/how-to-build-my-tools)
+</ParamField>
+
+<ParamField path="execute" type="Function" required>
+	The function that will be executed when the agent calls this tool. it will be passed validated type-safe inputs based on the provided zod schema.
 </ParamField>
 
 ## Behaviour
@@ -27,67 +33,16 @@ Allows you to equip your agents with external tools that the agent can call base
 If you add more than 5 tools to an agent Scoopika will select the top 5 most relevant tools for each run based on the inputs.
 
 <ResponseExample>
-```typescript Usage
-import { createToolSchema } from "@scoopika/scoopika";
+```typescript Example
+import { z } from "zod";
 
-// Create a tool schema
-const toolSchema = createToolSchema({
+agent.addTool({
 	name: "get_document_info",
 	description: "Get information about a document",
-	parameters: {
-		type: "object",
-		properties: {
-			id: {
-				type: "string",
-				description: "The document ID to get info about",
-			}
-		},
-		required: ["id"]
-	}
-})
-
-// Define the tool function
-function toolFunc(args) {
-	// do anything in the function
-}
-
-agent.addTool(toolFunc, toolSchema);
-```
-
-```typescript Type-safe usage
-import {
-	createToolSchema,
-	FromSchema,
-	JSONSchema
-} from "@scoopika/scoopika";
-
-// Define the tool parameters schema
-const toolParams = {
-	type: "object",
-	properties: {
-		id: {
-			type: "string",
-			description: "The document ID to get info about",
-		}
-	},
-	required: ["id"]
-} as const satisfies JSONSchema;
-
-// Define the tool inputs type (from the tool parameters)
-type ToolInputs = FromSchema<typeof toolParams>;
-
-// Create the tool schema
-const toolSchema = createToolSchema({
-	name: "get_document_info",
-	description: "Get information about a document",
-	parameters: toolParams
-})
-
-// Define the tool function
-function toolFunc(args: ToolInputs) {
-	// do anything in the function
-}
-
-agent.addTool<ToolInputs>(toolFunc, toolSchema);
+	execute: async ({ id }) => {...}, // tool logic goes here
+	parameters: z.object({
+		id: z.string().describe("The document ID to get information about")
+	})
+});
 ```
 </ResponseExample>

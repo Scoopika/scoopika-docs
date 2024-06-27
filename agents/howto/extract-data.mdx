@@ -2,76 +2,98 @@
 title: Extract Structured Data
 ---
 
-You can use agents to extract structured JSON objects from any piece of data. learn more about data extraction.
+You can use agents to extract structured JSON objects from any data (text, audio, or images).
 
-<Warning>This feature is currently only available on server-side, support for client-side is coming soon</Warning>
+<Check>
+	The examples shown in this page works just the same on both the server-side and client-side
+</Check>
 
-## Define schema
+## Usage
 
-First, you need to define the schema of the data you want to extract. This is just a [JSON Schema](https://json-schema.org/) that's passed to the agent and also used to validate the agent's output... yes all agents outputs are validated ensuring stability and type-safety.
+All you need to do is define a zod schema of the data structure you want to get back,
+the zod schema is then converted into a JSON schema and passed to the agent, 
+it's also used to validate the agent's output... 
+yes all agents outputs are not only typed, but also validated ensuring reliability.
 
-Example schema:
-
-```json
-{
-	"type": "object",
-	"properties": {
-		"id": {
-			"type": "string",
-			"description": "The user ID"
-		},
-		"number": {
-			"type": "number",
-			"description": "The user number"
-		}
-	},
-	"required": ["id", "number"]
-}
-```
-
-A data object that matches this schema would be something like this:
-
-```json
-{
-	"id": "ID",
-	"number": 1
-}
-```
-
-## Type-safe Usage
-
-So now let's see a type-safe usage example:
+Example usage:
 
 ```typescript
-import { JSONSchema, FromSchema } from "@scoopika/scoopika"
+import { z } from "zod";
 
-const schema = {
-	"type": "object",
-	"properties": {
-		"id": {
-			"type": "string",
-			"description": "The user ID"
-		},
-		"number": {
-			"type": "number",
-			"description": "The user number"
-		}
-	},
-	"required": ["id", "number"]
-} as const satisfies JSONSchema;
-
-type Schema = FromSchema<typeof schema>;
-
-const data = await agent.structuredOutput<Schema>({
-	schema,
+const data = await agent.structuredOutput({
 	inputs: {
-		message: "The user ID is U123 and the user number is 123123123"
-	}
+		message: "My ID is u123, my number is 9^2, and I use Typescript",
+		audio: [], // you can input audio files
+		images: [], // you can input images (if the LLM supports vision)
+	},
+	schema: z.object({
+		id: z.string().describe("The user ID"),
+		number: z.number().describe("The user number").optional(),
+		language: z.enum(["js", "ts"]).describe("The language the user prefers working with (javascript/typescript)")
+	})
 });
 
-// data is type-safe and validated here
-console.log(data.id); // string
-console.log(data.number); // number
+console.log(data.id); // string a 100%
+console.log(data.language); // 'js' or 'ts' a 100%
+console.log(data.number); // number or undefined because it's optional
 ```
 
+the output of the above code would be this:
+
+```json
+{
+	"id": "user123",
+	"number": 81,
+	"language": "ts"
+}
+```
+
+## Validation
+
+The data you get back is validated against the schema you provide, 
+for now if the validation fails an error will be thrown, and we're working on better error handling for this case.
+
+## Context-aware extraction
+
+This is a really fun part, let's say that the user has an ongoing coversation with your agent in the session `session_1233`,
+and you want to generate some JSON data to do some smart behavior or analytics in your app, well, it's as simple as adding one line of code:
+
+```typescript
+agent.structuredOutput({
+	options: {
+		session_id: "session_1233"
+	},
+	// the rest is the same
+});
+```
+
+yes, you just add the session ID and the output will ne generative based on the conversation context.
+
+For example you can extract a list of suggested messages that the user could ask next (suggestions) based on the ongoing coversation:
+
+```typescript
+const data = await agent.structuredOutput({
+	options: {
+		session_id: "SESSION_ID"
+	},
+	inputs: {
+		message: "What could the user ask next?"
+	},
+	schema: z.object({
+		suggestions: z.array(z.string()).describe(
+			"A list of suggestions that the user could ask next based on the conversation"
+		)
+	})
+});
+
+console.log(data.suggestions); // string[]
+```
+
+## Full docs
+
 Refer to [structuredOutput documentation](/packages/ts/scoopika/agents/methods/structured-output) for full docs.
+
+## Limitations
+
+Most LLMs can't perform well on complex data structures and nested objects, so it's recommended to keep
+your schema as simple and clear as possible.

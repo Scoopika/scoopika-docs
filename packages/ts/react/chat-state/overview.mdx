@@ -1,0 +1,48 @@
+---
+title: Initialize hook
+---
+
+The `useChatState` hook is used for chat-based interaction with agents from your React application.
+
+To initialize, you need to call the hook from inside your React component, passing the required arguments.
+
+## Arguments
+
+<ParamField path="client" type="Client" required>
+    Your Scoopika client, initialized using [@scoopika/client](/packages/ts/client/client).
+</ParamField>
+
+<ParamField path="agent" type="Agent" required>
+    Your Scoopika agent, initialized using [@scoopika/client](/packages/ts/client/agents).
+</ParamField>
+
+<ParamField path="options" type="Object">
+    Configuration options for the state:
+
+    - **session_id**: The session ID for the current state. For more on sessions, see [this page](/foundations/memory)
+    - **scroll**: A custom function to scroll to the bottom of the page while the agent is generating a response in real-time.
+</ParamField>
+
+<ResponseExample>
+```typescript Usage example
+import { Client, Agent } from "@scoopika/client";
+import { useChatState } from "@scoopika/react";
+
+// Better to move this to another file (e.g., scoopika.ts)
+const client = new Client("API_URL");
+const agent = new Agent("AGENT_ID", client);
+
+export default function Component() {
+    const state = useChatState(client, agent, {
+        session_id: "SESSION_12345",
+        scroll: () => {
+            // Example scrolling function
+            document.getElementById("bottom").scrollIntoView();
+        }
+    });
+
+    // Your component implementation
+    // Go to Examples for full usage example
+}
+```
+</ResponseExample>

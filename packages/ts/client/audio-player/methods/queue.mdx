@@ -1,0 +1,24 @@
+---
+title: queue
+description: Queue an audio chunk
+---
+
+Audio is streamed from the Scoopika endpoint while the LLM is generating tokens.
+
+You can use the `queue` method along with the `onAudio` hook to play audio chunks in real-time.
+
+<ResponseExample>
+```typescript
+import { RunAudioPlayer } from "@scoopika/client";
+
+const player = new RunAudioPlayer("audio-player");
+
+await agent.run({
+    options: {voice: true}, // Enable agent audio response
+    inputs: {message: "Hello!"},
+    hooks: {
+        onAudio: (audio) => player.queue(audio) // Queue audio chunks as we receive them in real-time
+    }
+});
+```
+</ResponseExample>

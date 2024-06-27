@@ -1,0 +1,45 @@
+---
+title: Get Started
+---
+
+## Installation
+
+Install the package using your preferred package manager:
+
+```bash
+npm install @scoopika/react
+```
+
+```bash
+yarn add @scoopika/react
+```
+
+```bash
+pnpm add @scoopika/react
+```
+
+## Hooks
+
+This package currently provides two main hooks:
+
+- `useChatState`: Manages state for text-based interaction with agents, supporting streaming and tool calls.
+- `useVoiceChatState`: Manages state for voice-based interaction with agents, 
+including all necessary components for recording, speech recognition, 
+agent voice playback, streaming, and a voice visualizer (like the one in GPT4-o).
+
+<ResponseExample>
+```typescript Hooks
+"use client";
+
+import {
+    useChatState,
+    useVoiceChatState,
+} from "@scoopika/react";
+```
+</ResponseExample>
+
+## Custom Hooks
+
+These hooks are designed to simplify building chat interfaces like those in the [platform's playground](https://scoopika.com/app/playground). They handle the complete interaction cycle but may not be highly customizable.
+
+We're working on more customizable hooks to be released soon. In the meantime, you can review the current hook implementations and create your own custom hooks. Check out the code [here](https://github.com/scoopika/react).

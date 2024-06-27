@@ -14,11 +14,16 @@ Imagine equipping your agents with a toolbox filled with specialized functions. 
 
 **Fetching Data**: Tools can retrieve data from various sources, empowering agents to access and integrate information from external systems.
 
-By providing agents with a diverse set of tools, you can significantly enhance their ability to interact with the world and deliver a more comprehensive user experience. [Learn more](/tools)
+By providing agents with tools, you can significantly enhance their ability to interact with your application and deliver a more comprehensive user experience. [Learn more](/tools)
 
 ## Creating and Using Tools:
 
-While tool creation cannot be directly performed within the Scoopika platform, the process is straightforward and well-documented. Here's a simplified breakdown:
+You can create tools from the platform (APIs), or directly from your code (custom functions), here's a breakdown:
+
+- From the platform you can add external APIs to your agent as tools that it can call based on context with no code.
+- From your code you can pass any custom function as a tool that the agent will also call when needed.
+
+For adding API tools from the platform, check [this guide](/tools/api-tools).
 
 1. **Tool Schema Design**: Define the expected inputs of your tool using a JSON schema. This schema guide the agents to provide valid data when calling the tool and used by Scoopika to validate the agent call making sure your tools never receive unexpected inputs, with full type-safety.
 

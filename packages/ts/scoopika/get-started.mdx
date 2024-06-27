@@ -16,37 +16,82 @@ pnpm add @scoopika/scoopika
 
 ## Initialization
 
-Before interacting with agents and boxes, you'll need to initialize a Scoopika instance. This instance acts as a central hub for managing your Scoopika interactions, including functionalities like history retrieval.
+Let's initialize a Scoopika class:
 
 1. Import the Scoopika class from the package.
 2. Create a new Scoopika instance, providing the following configuration options:
-	- token: Your unique Scoopika token. [generate token](https://scoopika.com/app/settings?tab=tokens).
-	- engines: An object containing API keys for the LLM providers your agents utilize (refer to the [engines documentation](/packages/ts/scoopika/scoopika) for details).
+	- token: Your unique Scoopika token, or you can just the `SCOOPIKA_TOKEN` envrionment variable. [generate token](/guides/tokens).
+	- keys: An object containing API keys for the LLM providers your agents utilize. or you can just add them to your account. (refer to the [keys documentation](/guides/keys) for details).
 
 ```typescript
 import { Scoopika } from '@scoopika/scoopika';
 
 const scoopika = new Scoopika({
 	token: 'YOUR_SCOOPIKA_TOKEN',
-	engines: {
-		openai: 'OPENAI_KEY' // replace with your key
+	keys: {
+		openai: 'OPENAI_KEY' // replace with your keys based on the providers you're using
 	}
 });
 ```
 
-Notice that in the engines, you need to provide keys for the providers your agents use.
+Notice that in the keys, you need to provide keys for the providers your agents use. if you've already added an API key to your account in the platform there's no need to pass it again.
 
 Check all options you can pass to a Scoopika instance [here](/packages/ts/scoopika/scoopika).
 
 ## Usage Example
+
+### Web usage (API endpoint)
+
+Let's setup a Scoopika API endpoint to use it for web usage (server-client):
+
+```typescript
+import { Scoopika, Endpoint, Agent } from "@scoopika/scoopika";
+
+const scoopika = new Scoopika({...});
+
+// Simple setup
+const endpoint = new Endpoint({
+	scoopika,
+	agents: ["AGENT_ID_1"] // list of agents that can be used throught this endpoint
+});
+
+// Custom setup
+const endpoint = new Endpoint({
+	scoopika,
+	agents: (scoopika) => {
+		const agent = new Agent("AGENT_ID");
+		
+		// you can do anything here, like adding tools to agents
+		agent.addTool({...});
+
+		return [agent]; // return a list of agents
+	}
+})
+```
+
+This nedpoint should work with any web framework that supports HTTP streaming, we recommend you check the [guides for different frameworks](/guides/web). but this is an example with express:
+
+```typescript
+app.use(express.json()); // required middleware
+
+app.post("/scoopika", (req, res) => endpoint.handleRequest({
+	request: req.body,
+	stream: (s) => res.write(s),
+	end: () => res.end()
+}))
+```
+
+and you're good, you can start using the [client library](/packages/ts/client) with this endpoint.
+
+### Custom usage
 
 ```typescript
 import { Scoopika, Agent, Box } from '@scoopika/scoopika';
 
 const scoopika = new Scoopika({
 	token: 'YOUR_SCOOPIKA_TOKEN',
-	engines: {
-		openai: 'OPENAI_KEY'
+	keys: {
+		openai: 'OPENAI_KEY' // reaplce with your keys
 	}
 });
 
@@ -75,8 +120,8 @@ const agent = new Agent('AGENT_ID', scoopika);
 	const userSessions = await scoopika.listUserSessions("USER_1");
 	console.log(userSessions); // string[]
 
-	// Get session runs (history or messages)
-	const runs = await scoopika.getSessionRuns(userSessions[0]);
+	// Get session messages
+	const runs = await scoopika.getSessionMessages(userSessions[0]);
 	console.log(runs); // RunHistory[] (in this example, there're 2 items one for user request and one for agent response)
 })();
 ```

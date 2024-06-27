@@ -1,0 +1,18 @@
+---
+title: Memory
+icon: database
+---
+
+Agents can have memory to remember conversations with users and actions they took before, or even communications they before made with other agents.
+
+If you want your agent to have memory, It's managed for you in Scoopika, so you don't need to save and pass previous messages to keep the agent aware of the context. you just need to manage users and sessions IDs.
+
+You can create a chat sessions that acts as a container of an agent-user set of interaction, it works the same way as ChatGPT chats, it keeps track of everything happens in the process, from messages to tools calls.
+
+Each session is separated from other sessions, and can have a user ID that you can use to easily manage users sessions in your application with zero setup.
+
+We provide Serverless managed history or chat stores that you can create with one click. this is an extra paid feature, and if not used, Scoopika will automatically an in-memory history store, so sessions are not persistent.
+
+The Serverless stores we provider are served edge-close to users, and all data is fully encrypted and never accessed by our team (one guy btw).
+
+Using memory is not required to run agents in your app.

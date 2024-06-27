@@ -1,0 +1,58 @@
+---
+title: Initialize
+description: Used to play the audio agent response of a run
+---
+
+This is useful when implementing a voice-based chat interface with an agent, it can be used to play the agent audio response in real-time.
+
+The voice [playground](https://scoopika.com/app/playground) you see in the platform was built using this.
+
+## Initialize
+
+This class takes one argument, an audio player HTML element:
+
+<ParamField path="elm" type="HTMLAudioElement | string" required>
+    Pass the audio HTML element or its ID.
+</ParamField>
+
+## Usage
+
+Each audio player instance should only be used with one agent run, we're working to solve this issue. but for now you can just init a new player with each new run as shown in the example.
+
+## Using with React
+
+To use the player with React We recommend you use the [React library](/packages/ts/react) as it does everything for you under the hood. that's exactly how the Scoopika playground was built.
+
+## Streaming
+
+As you see in the example, we're using the `onAudio` hook to capture and play audio chunks in real-time while the agent is generating its response.
+
+The `onAudio` actually doesn't receive the audio chunk itself, but a url to read the audio chunk as a stream, this url can be read once (because we don't store the data for security reasons). 
+
+The audio player will queue the chunks for you and play them in the right order.
+
+<ResponseExample>
+```typescript Example
+import { RunAudioPlayer } from "@scoopika/client";
+
+const player = new RunAudioPlayer("audio-player");
+
+const run = async () => {
+    // required for each new run
+    player.newRun();
+
+    const response = await agent.run({
+        options: {voice: true}, // Enable agent audio response
+        inputs: {message: "Hello!"},
+        hooks: {
+            onAudio: (audio) => player.queue(audio) // Queue audio chunks as we receive them in real-time
+        }
+    });
+
+    // Optional: wait until all audio chunks are 'finished playing'
+    await player.finish(response.audio.length);
+
+    return response;
+}
+```
+</ResponseExample>

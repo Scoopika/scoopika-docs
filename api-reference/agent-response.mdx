@@ -2,7 +2,7 @@
 title: AgentResponse
 ---
 
-`AgentResponse` is the object that the agent returns as a response after a successfull `.run` method call.
+`AgentResponse` is the object that the agent returns as a response after a successfull run.
 
 ## Props
 
@@ -16,12 +16,23 @@ An `object` with the following properties:
   This field indicates the session ID associated with the run. The `session_id` plays a crucial role in maintaining conversation context across multiple runs within the same session.
 </ResponseField>
 
-<ResponseField name="response" type="LLMResponse">
-  This property contains the core agent response, represented by an LLMResponse object (refer to [LLMResponse](/api-reference/llm-response)).
+<ResponseField name="content" type="string">
+	The generated text response.
+</ResponseField>
 
-  The `response` object provides the LLM's generated text content and any external tools it called during processing.
+<ResponseField name="audio" type="AudioRes[]">
+	The generated audio chunks. (if using voice).
 
-  [Reference to LLMResponse](/api-reference/llm-response)
+	To understand what this is, you need to know how Scoopika generates audio. while the LLM is generating tokens, 
+	it takes sentences and create urls to read them as audio in real-time, allowing streaming for better performance. the url is returned as the `read` property and can only be read once.
+
+	[Reference to AudioRes](/api-reference/audio-res)
+</ResponseField>
+
+<ResponseField name="tools_calls" type="ToolHistory[]">
+	A record of the called tools during the run and their results.
+
+	[Reference to ToolHistory](/api-reference/tool-history)
 </ResponseField>
 
 <RequestExample>
@@ -35,10 +46,9 @@ import type { AgentResponse } from "@scoopika/types";
 {
 	"run_id": "RUN_1",
 	"seession_id": "SESSION_1",
-	"response": {
-		"type": "text",
-		"content": "Hey, how can I assist you today?"
-	}
+	"content": "Hey, how can I assist you today?",
+	"audio": [],
+	"tools_calls": []
 }
 ```
 </ResponseExample>

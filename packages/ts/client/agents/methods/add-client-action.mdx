@@ -2,26 +2,29 @@
 title: addClientAction
 ---
 
-Allows you to equip your agents with external tools that the agent can call based on the context. these tools are defined executed on the client-side and called client-side actions. [What are client-side actions](/tools/client-side-actions).
+Allows you to equip your agents with external tools that the agent can call based on the context. 
+these tools are defined and executed safely on the client-side without any insecure eval or code execution. [What are client-side actions](/tools/client-side-actions).
 
 ## Arguments
 
-<ParamField path="func" type="Function" required>
-  Specifies the function to be executed when the agent calls the added tool. This function can perform any logic you define, but it will always receive its arguments as an object that has been validated against the provided tool schema.
-
-  Remember that this function is executed on the client-side.
+<ParamField path="name" type="string" required>
+  The name of tool. it has to be unique in the agent's scope.
 </ParamField>
 
-<ParamField path="schema" type="ToolSchema" required>
-  Defines the schema for the tool. The schema is a critical element as it determines the expected parameters (inputs) for the tool function and tells the agent what the tool is about and when to call it. and is also used to validate the arguments sent from the agent.
+<ParamField path="description" type="string">
+  Describe briefly what the tool does and when the agent should call it in natural language. make the description clear so the agent understands when to call the tool.
+</ParamField>
+
+<ParamField path="schema" type="ZodSchema" required>
+  A Zod schema that defines the parameters. It is converted to a JSON schema that is passed to the LLM, and used to validate the LLM tool calls.
 
   Recommended resources:
 
-  [Reference to ToolSchema](/api-reference/tool-schema)
-
-  [createActionSchema](/packages/ts/client/create-action-schema)
-
   [How to build my tools](/guides/how-to-build-my-tools)
+</ParamField>
+
+<ParamField path="execute" type="Function" required>
+	The function that will be executed when the agent calls this tool. it will be passed validated type-safe inputs based on the provided zod schema and will be executed on the client-side.
 </ParamField>
 
 ## Behaviour
@@ -29,69 +32,16 @@ Allows you to equip your agents with external tools that the agent can call base
 If you add more than 5 tools to an agent Scoopika will select the top 5 most relevant tools for each run based on the inputs.
 
 <ResponseExample>
-```typescript Usage
-import { createActionSchema } from "@scoopika/client";
+```typescript Example
+import { z } from "zod";
 
-// Create a tool schema
-const toolSchema = createActionSchema({
+agent.addClientAction({
 	name: "sort_documents",
-	description: "Sort the user documents from latest to oldest",
-	parameters: {
-		type: "object",
-		properties: {
-			field: {
-				type: "string",
-				description: "The field to sort the documents by",
-				enum: ["title", "date"]
-			},
-		},
-		required: ["field"]
-	}
-})
-
-// Define the tool function
-function toolFunc(args) {
-	// do anything in the function
-}
-
-agent.addClientAction(toolFunc, toolSchema);
-```
-
-```typescript Type-safe usage
-import {
-	createActionSchema,
-	FromSchema,
-	JSONSchema
-} from "@scoopika/client";
-
-// Define the tool parameters schema
-const toolParams = {
-	type: "object",
-	properties: {
-		field: {
-			type: "string",
-			description: "The field to sort the documents by",
-			enum: ["title", "date"]
-		},
-	},
-	required: ["field"]
-} as const satisfies JSONSchema;
-
-// Define the tool inputs type (from the tool parameters)
-type ToolInputs = FromSchema<typeof toolParams>;
-
-// Create the tool schema
-const toolSchema = createActionSchema({
-	name: "sort_documents",
-	description: "Sort the user documents from latest to oldest",
-	parameters: toolParams
-})
-
-// Define the tool function
-function toolFunc(args: ToolInputs) {
-	// do anything in the function
-}
-
-agent.addClientAction<ToolInputs>(toolFunc, toolSchema);
+	description: "Sort the user documents",
+	execute: ({ order }) => {...}, // action logic goes here
+	parameters: z.object({
+		order: z.enum(["asc", "desc"]).describe("The order to sort documents in based on date")
+	})
+});
 ```
 </ResponseExample>

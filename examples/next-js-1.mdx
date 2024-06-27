@@ -1,0 +1,95 @@
+---
+title: NextJS Starter Template
+---
+
+[<Icon icon="github" /> Github Repository](https://github.com/Scoopika/nextjs-starter-1)
+
+A simple NextJS starter template that uses the app router with Next 14.
+
+It shows how to create chat sessions for users, display, them, 
+and create an AI chatting interface with agents with streaming.
+
+## Prerequisite
+
+You need to have an account in [Scoopika](https://scoopika.com) and an AI agent ready to be used. 
+See the [quickstart](/quickstart) to get started.
+
+Having a remote history store is recommended but not required at all.
+
+## Getting Started
+
+### 1. Clone repository
+
+First, clone the GitHub repository to your local machine:
+
+```bash
+git clone https://github.com/Scoopika/nextjs-starter-1
+```
+
+### 2. Setup environment
+
+Install all dependencies using your preferred package manager:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+Then, rename the file `.env.example` to `.env` and fill in the variables:
+
+- SCOOPIKA_TOKEN: Your Scoopika token. Navigate to the [platform](https://scoopika.com/app) and 
+click on the settings icon to generate a token.
+- STORE_ID: Optional. If you have a remote history store for long-term persistent memory, 
+input the ID of the store here. Otherwise, keep it set to `"memory"`.
+
+Enter your agent ID in `src/utils/scoopika.ts` and `src/components/chat.tsx`:
+
+```typescript
+// replace with your own Agent ID
+const agent = new Agent("AGENT_ID", ...);
+```
+
+### 3. Run dev server
+
+Now you can run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+## Structure
+
+The project uses the NextJS app router. You can find the Scoopika setup for both 
+server-side and client-side under the `src/utils` directory. 
+The Scoopika API endpoint is found in `src/app/api/scoopika/route.ts`.
+
+The components for sessions and chat are located in the `src/components` directory. 
+This project follows a simple structure similar to any basic app that uses NextJS.
+
+## Development
+
+The only step you need to do before this app becomes ready to be published to users is to 
+add your authentication logic to manage user sessions. 
+
+When it comes to your project, this is optional based on your use case, if you want users to have multiple
+chat sessions and display them (like ChatGPT) then it's required, otherwise it's not.
+
+You'll find a function called `getUser` where you can add your authentication logic. 
+Scoopika doesn't care what frameowrk or authentication provider you use, just give it a user ID in the session
+creation and that's it.
+
+<Info>
+    Scoopika doesn't provide an authentication solution or user management, only chat sessions management. 
+    However, sessions can have a `user_id` so you can list sessions associated with a user and 
+    display the right sessions to the right users.
+</Info>
+Note that this template is a basic example of what you can do with Scoopika. It was created in about 20 minutes and is not meant for direct deployment to users, but rather to show you how easy it is to integrate Scoopika into your NextJS application.

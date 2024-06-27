@@ -1,0 +1,23 @@
+---
+title: Streaming
+icon: paper-plane
+---
+
+Streaming is one the most beautiful things in Scoopika, at least in my opinion :)
+
+Instead of waiting for the LLM to finish generating the response, or for the agent to finish executing tools, we stream the events in real-time.
+
+Scoopika provides +10 hooks to capture specific events during the agent process, like generated tokens, called tools, called tools results, audio chunks, and more.
+
+This takes the agent response **latency from few seconds to few milliseconds**.
+
+Streaming hooks work both on the server-side and client-side out of the box. example usage:
+
+```typescript
+{
+    onToken: (token) => {...},
+    onToolCall: (call) => {...},
+    onToolResult: (res) => {...},
+    onAudio: (audio) => {...}
+}
+```

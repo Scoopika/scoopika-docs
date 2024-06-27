@@ -3,7 +3,7 @@ title: run
 description: Run the Agent
 ---
 
-The run method is the primary way to interact with an agent. It initiates the agent's processing based on the provided inputs and returns the generated textual response.
+The run method is the primary way to interact with an agent. It initiates the agent's processing based on the provided inputs and returns the generated response.
 
 <Tip>Agents can call external tools. check [addTool](/packages/ts/scoopika/agents/methods/add-tool)</Tip>
 
@@ -12,9 +12,16 @@ The run method is the primary way to interact with an agent. It initiates the ag
 Takes one argument passed as an object with the following properties:
 
 <ParamField path="inputs" type="Inputs" required>
-  Specifies the input properties for the agent run. It should be an object adhering to the `Inputs` structure.
+  Used to specify the input properties for the agent run. It should be an object adhering to the `Inputs` structure.
+  You can pass a text message, list of audio files, and a list of images.
 
   [Reference to Inputs](/api-reference/inputs)
+</ParamField>
+
+<ParamField path="options" type="RunOptions">
+	Used to specify the run options, like the session ID, run ID, voice output, and some other options.
+
+	[Reference to RunOptions](/api-reference/run-options)
 </ParamField>
 
 <ParamField path="hooks" type="Hooks">
@@ -26,7 +33,7 @@ Takes one argument passed as an object with the following properties:
 ## Response
 
 <ParamField path="response" type="Promise<AgentResponse>">
-  The run method returns a `Promise` that resolves to an `AgentResponse` object upon successful agent run completion. This object contains the agent's generated response (always text-based) and other relevant information about the run.
+  The run method returns a `Promise` that resolves to an `AgentResponse` object upon successful agent run completion. This object contains the agent's generated response and other relevant information about the run.
 
   [Reference to AgentResponse](/api-reference/agent-response)
 </ParamField>
@@ -34,6 +41,9 @@ Takes one argument passed as an object with the following properties:
 <RequestExample>
 ```typescript Usage example
 await agent.run({
+	options: {
+		voice: true // allow audio output
+	},
 	inputs: {
 		message: "Hello!"
 	},
@@ -49,10 +59,9 @@ await agent.run({
 {
 	"run_id": "RUN_1",
 	"session_id": "SESSION_1",
-	"response": {
-		"type": "text",
-		"content": "Hey, how can I assist you?"
-	}
+	"content": "Hey, how can I assist you?",
+	"audio": [],
+	"tools_calls": []
 }
 ```
 </ResponseExample>

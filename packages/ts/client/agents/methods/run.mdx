@@ -26,7 +26,7 @@ Takes one argument passed as an object with the following properties:
 ## Response
 
 <ParamField path="response" type="Promise<AgentResponse>">
-  The run method returns a `Promise` that resolves to an `AgentResponse` object upon successful agent run completion. This object contains the agent's generated response (always text-based) and other relevant information about the run.
+  The run method returns a `Promise` that resolves to an `AgentResponse` object upon successful agent run completion. This object contains the agent's generated response and other relevant information about the run.
 
   [Reference to AgentResponse](/api-reference/agent-response)
 </ParamField>
@@ -34,6 +34,7 @@ Takes one argument passed as an object with the following properties:
 <RequestExample>
 ```typescript Usage example
 await agent.run({
+	options: {}, // optional
 	inputs: {
 		message: "Hello!"
 	},
@@ -49,10 +50,9 @@ await agent.run({
 {
 	"run_id": "RUN_1",
 	"session_id": "SESSION_1",
-	"response": {
-		"type": "text",
-		"content": "Hey, how can I assist you?"
-	}
+	"content": "Hey, how can I assist you?",
+	"audio": [],
+	"tools_calls": []
 }
 ```
 </ResponseExample>

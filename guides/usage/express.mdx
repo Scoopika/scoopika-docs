@@ -13,13 +13,13 @@ npm install @scoopika/scoopika
 
 ```typescript
 import express from "express";
-import container from "./scoopika"; // path to your Scoopika Container
+import endpoint from "./scoopika"; // path to your Scoopika endpoint
 
 const app = express();
 app.use(express.json()); // Required middleware
 
 app.post("/scoopika", (req, res) => {
-	container.handleRequest({
+	endpoint.handleRequest({
 		request: req.body,
 		stream: (s) => res.write(s),
 		end: () => res.end()

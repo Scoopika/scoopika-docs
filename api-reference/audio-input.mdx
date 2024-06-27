@@ -1,0 +1,42 @@
+---
+title: AudioInput
+---
+
+Used to pass audio input to agents.
+
+One of the following types:
+
+## Remote audio (url)
+
+<ParamField path="type" type='"remote"' required>
+    The type of the audio input, has to always be `"remote"`
+</ParamField>
+
+<ParamField path="path" type='string' required>
+    The path or url to the audio file.
+</ParamField>
+
+## Base64
+
+<ParamField path="type" type='"base64"' required>
+    The type of the audio input, has to always be `"base64"`
+</ParamField>
+
+<ParamField path="value" type='string' required>
+    The base64 value of the audio.
+</ParamField>
+
+<ResponseExample>
+```json Example
+[
+    {
+        "type": "remote",
+        "path": "https://scoopika.com/path-to-audio-file"
+    },
+    {
+        "type": "base64",
+        "value": "BASE64_DATA"
+    }
+]
+```
+</ResponseExample>

@@ -1,0 +1,48 @@
+---
+title: RunOptions
+---
+
+## Props
+
+<ParamField path="session_id" type="string">
+  An identifier for the chat session. Providing a `session_id` helps maintain context across multiple runs within the same conversation. This allows agents to access previous history messages, enhancing its understanding of the ongoing interaction.
+
+  > If this field is not provided, a new session with a random ID will be created for each run.
+
+  > Providing a non-existent `session_id` will create a new session with the provided ID.
+</ParamField>
+
+<ParamField path="run_id" type="string">
+  A unique identifier for the specific run. If you don't provide a `run_id`, a random one will be generated.
+
+  This field can be useful for tracking individual runs within your application logic, particularly when interacting between client and server.
+</ParamField>
+
+<ParamField path="voice" type="boolean" default={false}>
+  Whether you want to agent to return an audio response along with the text response.
+
+  Useful for voice-based interaction with agents.
+</ParamField>
+
+<ParamField path="save_history" type="boolean" default={true}>
+  Determines whether to save the current run to the associated session's history.
+
+  The default behavior is `true`, ensuring historical data is preserved.
+</ParamField>
+
+<RequestExample>
+```typescript Import type
+import { RunOptions } from "@scoopika/types";
+```
+</RequestExample>
+
+<ResponseExample>
+```json Example
+{
+    "session_id": "session_1",
+    "run_id": "run_1",
+    "voice": true,
+    "save_history": true
+}
+```
+</ResponseExample>

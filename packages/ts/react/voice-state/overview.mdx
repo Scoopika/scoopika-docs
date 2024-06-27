@@ -1,0 +1,85 @@
+---
+title: Initialize hook
+---
+
+The `useVoiceChatState` hook is designed for voice-based interaction with agents in your React application.
+
+## Arguments
+
+<ParamField path="client" type="Client" required>
+    Your Scoopika client, initialized using [@scoopika/client](/packages/ts/client/client).
+</ParamField>
+
+<ParamField path="agent" type="Agent" required>
+    Your Scoopika agent, initialized using [@scoopika/client](/packages/ts/client/agents).
+</ParamField>
+
+<ParamField path="options" type="Object">
+    Configuration options for the state, 
+    this can include all the [options available to useChatState](/packages/ts/react/chat-state/overview#arguments), 
+    plus:
+
+    - **auto_play_audio**: Automatically play the agent's audio response in real-time (defaults to `true`).
+    - **agent_voice**: An object defining the settings for the agent voice player. 
+    See [agent voice options](#agent-voice-options) for more information.
+
+</ParamField>
+
+## Agent voice options
+
+These options are passed to the state options under `agent_voice`. 
+If not provided, the agent's voice will not be played.
+
+<ParamField path="audio" type="HTMLAudioElement | string" required>
+    The audio element that the agent voice player will use to play the audio response.
+
+    You can provide the element itself or its ID. 
+    Typically, you'll create an `audio` element specifically for the agent voice player and pass its ID.
+</ParamField>
+
+<ParamField path="canvas" type="HTMLCanvasElement | string">
+    An HTML canvas element or its ID. If provided, the agent's voice will be visualized in real-time.
+
+    The visualized voice will be drawn on the canvas. 
+    The visualizer is similar to the one shown in the GPT4-o promotion videos 
+    and is the same one used in the [Scoopika playground](https://scoopika.com/app/playground):
+
+    ![Scoopika voice visualizer](/images/visualizer.png)
+</ParamField>
+
+<ParamField path="wave_color" type="string">
+    The color of the visualizer wave. If not provided, it defaults to black.
+</ParamField>
+
+<ResponseExample>
+```typescript Usage example
+import { Client, Agent } from "@scoopika/client";
+import { useVoiceChatState } from "@scoopika/react";
+
+// Better to move this to another file (e.g., scoopika.ts)
+const client = new Client("API_URL");
+const agent = new Agent("AGENT_ID", client);
+
+export default function Component() {
+    const state = useVoiceChatState(client, agent, {
+        session_id: "SESSION_12345",
+        agent_voice: {
+            audio: "agent-voice-player",
+            canvas: "agent-voice-canvas",
+            wave_color: "#fff"
+        }
+    });
+
+    return (
+        <>
+            <audio id="agent-voice-player" />
+            <canvas id="agent-voice-canvas" width="600" height="400" />
+            {/* 
+                The rest of your component implementation
+                Go to Examples for a full usage example
+            */}
+        </>
+    )
+}
+```
+</ResponseExample>

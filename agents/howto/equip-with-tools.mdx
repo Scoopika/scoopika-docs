@@ -4,70 +4,30 @@ title: Equip Agents with Tools
 
 You can equip agents with custom functions as tools so your agent can call these functions to perform actions or fetch data when needed based on context.
 
-The process of adding a tool is simple, you define a schema for the arguments that your function expects so its sent to the agent and used by Scoopika to validate all arguments before seding them to your function.
+The process of adding a tool is simple, you define a zod schema for the arguments that your function expects so its sent to the agent and used by Scoopika to validate all arguments before seding them to your function.
 
-The tool schema is just a [JSON schema](https://json-schema.org/).
+Your agents can have 3 types of tools, API tools, server-side tools, and client-side actions.
+API tools are defined with no code from the platform, while the only difference between the server-side and client-side tools is that the agents calls a client-side action It's executed on client-side in real-time and its result is not sent back to the agent ([learn more](/tools/client-side-actions)).
 
-Tool Schema example:
-
-```json
-{
-	"type": "object",
-	"properties": {
-		"query": {
-			"type": "string",
-			"description": "The search query"
-		}
-	},
-	"required": ["query"]
-}
-```
-
-The top-level property in your schema should be an `object` that has all properties under it.
-
-Your agents can have two types of tools, server-side tools and client-side actions. the only difference between the two is that the agents calls a client-side action It's executed on client-side in real-time and its result is not sent back to the agent ([learn more](/tools/client-side-actions)).
-
-Let's see a type-safe example of adding a too to an agent:
+Let's see a an example:
 
 ```typescript
-import {
-	createToolSchema,
-	FromSchema,
-	JSONSchema
-} from "@scoopika/scoopika";
-
-// Define the tool arguments schema
-const toolParams = {
-	type: "object",
-	properties: {
-		query: {
-			type: "string",
-			description: "The search query",
-		}
-	},
-	required: ["query"]
-} as const satisfies JSONSchema;
-
-// Define the tool inputs type (from the tool parameters)
-type ToolInputs = FromSchema<typeof toolParams>;
-
-// Create the tool schema
-const toolSchema = createToolSchema({
-	name: "search_web",
-	description: "Search the web for information",
-	parameters: toolParams
-})
-
-// Define the tool function
-function toolFunc(args: ToolInputs) {
-	// Here args are validated and type-safe
-}
+import { z } from "zod";
 
 // On Sever-side
-agent.addTool<ToolInputs>(toolFunc, toolSchema);
+agent.addTool({
+	name: "search_the_web",
+	description: "Search the web given a search query",
+	parameters: z.object({
+		query: z.string().describe("The search query")
+	}),
+	execute: ({ query }) => {
+		console.log(query); // string a 100%
+	}
+});
 
-// Or On Client-side (the same approach)
-agent.addClientAction<ToolInputs>(toolFunc, toolSchema);
+// Or On Client-side (the same thing)
+agent.addClientAction({...});
 ```
 
 For more info, check the [Tools documentation](/tools).

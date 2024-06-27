@@ -1,9 +1,9 @@
 ---
-title: getSessionRuns
-description: Retrieve History (runs) for a Chat Session
+title: getSessionMessages
+description: Retrieve History (messages) for a Session
 ---
 
-Allows you to retrieve a list of interaction records (runs) associated with a specific chat session. This can be useful for displaying chat messages to the user, analyzing conversation history, understanding user behavior within a session, and potentially debugging agent interactions.
+Allows you to retrieve a list of interaction records (runs) associated with a specific chat session within Scoopika. This can be useful for displaying chat messages to the user, analyzing conversation history, understanding user behavior within a session, and potentially debugging agent interactions.
 
 ## Arguments
 
@@ -21,7 +21,7 @@ Allows you to retrieve a list of interaction records (runs) associated with a sp
 
 <RequestExample>
 ```typescript Usage example
-const runs = await client.store.getSessionRuns(
+const messages = await scoopika.getSessionRuns(
 	"SESSION_ID"
 );
 ```
@@ -46,8 +46,9 @@ const runs = await client.store.getSessionRuns(
 		"agent_id": "AGENT_1",
 		"agent_name": "Agent",
 		"response": {
-			"type": "text",
-			"content": "Hey, how can I assist you today?"
+			"content": "Hey, how can I assist you today?",
+			"audio": [],
+			"tools_calls": []
 		},
 		"tools": []
 	}

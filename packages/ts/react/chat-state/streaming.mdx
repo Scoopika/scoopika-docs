@@ -1,0 +1,85 @@
+Streaming allows you to start displaying the agent's response as it is being generated, rather than waiting for the entire response to be completed. This significantly reduces latency, potentially from seconds to milliseconds, enhancing the user experience.
+
+While streaming might seem daunting, we’ve simplified the process. 
+Though we provide streaming hooks that work on the client-side, 
+this page focuses on displaying responses to users in real-time with React and how `streamPlaceholder` works.
+
+When you call `newRequest` and send a message, like this:
+
+```typescript
+newRequest({
+    inputs: {message: "Hello!"}
+});
+```
+
+Instead of waiting for the entire agent response, 
+you can start displaying it as soon as the first token is received.
+
+The `messages` property contains all the completed messages in the session and does not 
+include the ongoing response. To handle this, we use `streamPlaceholder`.
+
+The `streamPlaceholder` property holds the state of the response being generated, 
+including text, audio, and tool calls made during the run.
+
+Once the response is finished, it's moved to the finished messages list (under the `messages` property).
+
+## Example
+
+Here's an example to illustrate how it works:
+
+```tsx
+"use client";
+
+import { Client, Agent } from "@scoopika/client";
+import { useChatState } from "@scoopika/react";
+import { RunHistory } from "@scoopika/types";
+
+const client = new Client("SCOOPIKA_ENDPOINT_URL");
+const agent = new Agent("AGENT_ID", client);
+
+const Message = ({ msg } : {msg: RunHistory}) => {
+    // Render the message, this is a simple example:
+
+    // User message
+    if (msg.role === "user") {
+        return <div>User: {msg.request.message}</div>
+    }
+
+    // Agent message
+    return <div>Agent: {msg.response.content}</div>
+}
+
+export default function ChatComponent() {
+    const {
+        newRequest,
+        messages,
+        streamPlaceholder
+    } = useChatState(client, agent);
+
+    const run = () => {
+        // Hardcoded input for simplicity, you can add an input field later
+        newRequest({
+            inputs: {
+                message: "Hello!"
+            }
+        });
+    }
+
+    return (
+        <div>
+            {/* Display previous messages */}
+            {messages.map((msg, index) => (
+                <Message key={`msg-${index}`} msg={msg} />
+            ))}
+
+            {/* Display the response being generated, updated in real time */}
+            {streamPlaceholder && (
+                <Message msg={streamPlaceholder} />
+            )}
+
+            <button onClick={run}>Send</button>
+        </div>
+    );
+}
+
+```

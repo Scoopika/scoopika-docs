@@ -14,9 +14,15 @@ yarn add @scoopika/client
 pnpm add @scoopika/client
 ```
 
+or from a CDN:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@scoopika/client/index.global.js"></script>
+```
+
 ## Prerequisites
 
-Before proceeding, ensure you have already set up Scoopika within your server-side API. If you haven't, refer to [this guide](/guides/scoopika-for-the-web). This guide outlines the process for configuring Scoopika on your server to handle communication with the client-side package.
+Before proceeding, ensure you have already set up a Scoopika API Endpoint. If you haven't, refer to [this guide](/guides/scoopika-for-the-web). This guide outlines the process for configuring Scoopika on your server to handle communication with the client-side package.
 
 ## Initialization
 
@@ -52,10 +58,8 @@ const agent = new Agent('AGENT_ID', client);
 
 	// Run agent
 	const response = await agent.run({
-		inputs: {
-			message: 'Hello!',
-			session_id: session.id
-		},
+		options: { session_id: session.id },
+		inputs: { message: 'Hello!' },
 		hooks: { // streaming hooks
 			onToken: (t) => console.log(t)
 		}
@@ -67,7 +71,7 @@ const agent = new Agent('AGENT_ID', client);
 	console.log(userSessions); // string[]
 
 	// Get session runs (history or messages)
-	const runs = await client.store.getSessionRuns(userSessions[0]);
+	const runs = await client.store.getSessionMessages(userSessions[0]);
 	console.log(runs); // RunHistory[] (in this example, there're 2 items one for user request and one for agent response)
 })();
 ```

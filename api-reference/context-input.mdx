@@ -1,0 +1,43 @@
+---
+title: ContextInput
+---
+
+Used to define extra context you want the agent to be aware of.
+
+## Props
+
+<ParamField path="description" type="string" required>
+    Describe what the data you're passing is about.
+</ParamField>
+
+<ParamField path="value" type="string" required>
+    The information you want the agent to be aware of.
+</ParamField>
+
+<ParamField path="scope" type='"run" | "session"' required>
+    The scope of the context. This will affect how and when the agent is aware of this info. here's a breakdown:
+
+    **run**: The agent will only be aware of this info for this run, and the info won't be saved to its memory.
+    This is useful for passing info that could change with each run, like for example the current date or the user's monthly plan.
+    So it doesn't count to the LLM's context window each time.
+
+    **session**: The agent will always be aware of this info in the next runs, and it will be saved to its memory.
+    This is useful for passing info that you only need to pass once or not too often, like the user email or ID.
+</ParamField>
+
+<ResponseExample>
+```typescript
+const context = [
+    {
+        "scope": "run",
+        "description": "The current date",
+        "value": new Date() // just example :)
+    },
+    {
+        "scope": "session",
+        "description": "The user ID",
+        "value": "user_123"
+    }
+]
+```
+</ResponseExample>

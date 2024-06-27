@@ -1,100 +1,91 @@
 ---
 title: 'Quickstart'
-description: 'Start building AI-powered applications in under 5 minutes'
+description: 'Start building AI agents & applications in under 5 minutes'
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/T9f7-x0EMyI?si=3a_LbPdR4CMVHkxI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+## 1. Create your account
 
-<Steps>
-  <Step title="Create your account">
-    Visit the [Scoopika platform](https://scoopika.com/app) and sign up using your Google or Github account.
-  </Step>
-  <Step title="Create your first agent">
-    Creating a new agent is a breeze. Simply provide a name, optional description, avatar, and a system prompt to guide its behavior. You can even generate agent avatars using AI directly from the platform. [learn more about system prompts]().
+Visit the [Scoopika platform](https://scoopika.com/app) and create a free account.
 
-    <Tip>Choose the LLM that will drive the agent from a selection of available hosts and models.</Tip>
+## 2. Create your first agent
 
-    <Frame>
-      <img src="images/new-agent.gif" />
-    </Frame>
-  </Step>
+Creating a new agent is a breeze. 
+Simply provide a name, optional description, avatar, and a system prompt to guide its behavior. 
+You can even generate agent avatars using AI directly from the platform.
 
-  <Step title="Generate token">
-    Generate an access token to be able to use Scoopika in your applications
+- **Name**: The name of the agent. agents are aware of their own names and their companions names.
+- **Description**: Briefly describe the agent. notice that this is not the agent's prompt, and only useful when using companions.
+- **Avatar**: The agent's avatar. only useful to display it.
+- **LLM**: The large language model that powers the agent (its brain).
+- **Prompt**: A set of instructions that the agent will act and behave based on.
+- **Voice**: Select your agent's voice. it will be used in voice-based interaction (we provide 2 voices options for now).
 
-    <Warning>Remember to keep your tokens secure and never expose them to the public or client-side.</Warning>
+## 3. Manage & Test your agent
 
-    <Frame>
-      <img src="images/generate-token.gif" />
-    </Frame>
-  </Step>
-  <Step title="Intialize Scoopika">
-    First, install the Scoopika package:
+After creating an AI agent, You'll be redirected to its page, where you can manage everything related to it from settings, to tools, and companions. you'll find links to the documentation in each tab so you never get lost.
+
+Now you can test your agent in the playground. 
+The playground provides both text-based and voice-based interfaces for testing your agent, 
+both of them were built with Scoopika itself (using the [React library](/packages/ts/react)).
+
+Notice that you need to provide an API key for the LLM provider the agent uses, 
+You'll see an interface guiding you through what to do, 
+just pay attention that if you choose (add to my account) you won't need to pass the key again from your code.
+
+## 4. Setup your app
+
+For React or NextJS applications, refer to this [guide](/guides/react).
+
+### Generate token
+
+Generate a Scoopika access token, you can click on the settings icon in the platform, give your token a label, copy it and add it to your env file as `SCOOPIKA_TOKEN`.
+
+### Installation
+
+Now let's install Scoopika in your project (server-side environment):
 
 ```bash
-npm i @scoopika/scoopika
+npm install @scoopika/scoopika
 ```
 
-    Then initialize a Scoopika instance:
+### Initialize
+
+Now it's time to initialize Scoopika in your project:
 
 ```typescript
-import { Scoopika, Agent } from "@scoopika/scoopika";
+import { Scoopika } from "@scoopika/scoopika";
 
 const scoopika = new Scoopika({
-  token: "YOUR_SCOOPIKA_TOKEN",
-  engines: {
-    openai: "YOUR_OPENAI_KEY"
+  keys: {
+    openai: "OPENAI_KEY" // just example
   }
 });
 ```
 
-    Notice that We added `openai` to our engines because We're using OpenAI's gpt-3.5 in this example (default option). You should setup your engines based on the LLMs providers or hosts your agents use, so if your agents use openai it would be:
-```typescript
-engines: {
-  openai: "YOUR_OPENAI_KEY"
-}
-```
+Replace the keys with the name-key of the LLMs providers you're using, see this [page](/packages/ts/scoopika/scoopika) to see an example.
+again if you added the API key to your account you don't need to pass it again from the code.
 
-    But if they use Fireworks:
+See all properties the Scoopika class accepts [here](/packages/ts/scoopika/scoopika).
 
-```typescript
-engines: {
-  fireworks: "YOUR_FIREWORKS_KEY"
-}
-```
+## Run agents in your app
 
-    And if some of them use OpenAI and others use Fireworks, it would be like this:
+Now you can start running agent in your application (server-side):
 
 ```typescript
-engines: {
-  openai: "YOUR_OPENAI_KEY",
-  fireworks: "YOUR_FIREWORKS_KEY"
-}
-```
+import { Scoopika, Agent } from "@scoopika/scoopika";
 
-    [learn more about engines](/packages/ts/scoopika/scoopika).
-  </Step>
-
-  <Step title="Run the agent">
-    
-    Now utilize the agent and make the first run:
-
-```typescript
+const scoopika = new Scoopika({...});
 const agent = new Agent("AGENT_ID", scoopika);
 
-(async () => {
-  const response = await agent.run({
-    inputs: {
-      message: "Hello"
-    }
-  });
+const response = await agent.run({
+	inputs: {
+		message: "Hello!"
+	}
+});
 
-  console.log(response);
-})();
+console.log(response);
 ```
 
-    To run agents on the client-side you need to add Scoopika to one of your API routes. It's an easy process that takes few moments, check [Scoopika the the web](/guides/scoopika-for-the-web) for more info based on the framework you're using.
-    
-  </Step>
+## Web usage
 
-</Steps>
+Now you have an agent running on the server-side, but you're here for web usage, which involves running agents on the client-side too, for that matter keep going to the [next page](/foundations/endpoint).

@@ -4,8 +4,8 @@
   "favicon": "/scoopika.svg",
   "colors": {
     "primary": "#8f70f5",
-    "light": "#a48bf7",
-    "dark": "#8f70f5",
+    "light": "#fff",
+    "dark": "#000",
     "anchors": {
       "from": "#a48bf7",
       "to": "#6a40f2"
@@ -51,7 +51,7 @@
       "url": "packages"
     },
     {
-      "name": "API Reference",
+      "name": "Reference",
       "url": "api-reference"
     },
     {
@@ -62,20 +62,34 @@
   
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Scoopika",
       "pages": [
-        "introduction",
-        "quickstart"
+        "scoopika"
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Foundations",
       "pages": [
-        "essentials/agents",
-        "essentials/multi-agent-boxes",
-        "essentials/tools",
-        "essentials/history-stores",
-        "essentials/web-integration"
+        "foundations/overview",
+        "foundations/agents",
+        "foundations/providers",
+        "foundations/tools",
+        "foundations/streaming",
+        "foundations/memory"
+      ]
+    },
+    {
+      "group": "Getting Started",
+      "pages": [
+        "quickstart",
+        "foundations/endpoint"
+      ]
+    },
+    {
+      "group": "Examples & Templates",
+      "pages": [
+        "examples/overview",
+        "examples/next-js-1"
       ]
     },
     {
@@ -146,6 +160,7 @@
       "pages": [
         {
           "group": "@scoopika/scoopika",
+          "icon": "server",
           "pages": [
             "packages/ts/scoopika/overview",
             "packages/ts/scoopika/get-started",
@@ -194,24 +209,24 @@
                 "packages/ts/scoopika/scoopika/get-session",
                 "packages/ts/scoopika/scoopika/new-session",
                 "packages/ts/scoopika/scoopika/list-user-sessions",
-                "packages/ts/scoopika/scoopika/get-session-runs",
+                "packages/ts/scoopika/scoopika/get-session-messages",
                 "packages/ts/scoopika/scoopika/delete-session"
               ]
             },
             {
-              "group": "Container",
-              "icon": "square",
+              "group": "Endpoint",
+              "icon": "server",
               "pages": [
-                "packages/ts/scoopika/container/overview",
-                "packages/ts/scoopika/container/init",
-                "packages/ts/scoopika/container/handle-request"
+                "packages/ts/scoopika/endpoint/overview",
+                "packages/ts/scoopika/endpoint/init",
+                "packages/ts/scoopika/endpoint/handle-request"
               ]
-            },
-            "packages/ts/scoopika/scoopika/create-tool-schema"
+            }
           ]
         },
         {
           "group": "@scoopika/client",
+          "icon": "window-maximize",
           "pages": [
             "packages/ts/client/overview",
             "packages/ts/client/get-started",
@@ -256,11 +271,59 @@
                 "packages/ts/client/store/get-session",
                 "packages/ts/client/store/new-session",
                 "packages/ts/client/store/list-user-sessions",
-                "packages/ts/client/store/get-session-runs",
+                "packages/ts/client/store/get-session-messages",
                 "packages/ts/client/store/delete-session"
               ]
             },
-            "packages/ts/client/create-action-schema"
+            {
+              "group": "RunAudioPlayer",
+              "icon": "volume-high",
+              "pages": [
+                "packages/ts/client/audio-player/init",
+                "packages/ts/client/audio-player/properties",
+                {
+                  "group": "Methods",
+                  "pages": [
+                    "packages/ts/client/audio-player/methods/overview",
+                    "packages/ts/client/audio-player/methods/queue",
+                    "packages/ts/client/audio-player/methods/new-run",
+                    "packages/ts/client/audio-player/methods/resume",
+                    "packages/ts/client/audio-player/methods/pause"
+                  ]
+                }
+              ]
+            },
+            {
+              "group": "VoiceRecorder",
+              "icon": "microphone",
+              "pages": [
+                "packages/ts/client/voice-recorder/init"
+              ]
+            }
+          ]
+        },
+        {
+          "group": "@scoopika/react",
+          "icon": "react",
+          "pages": [
+            "packages/ts/react/overview",
+            "packages/ts/react/get-started",
+            {
+              "group": "useChatState",
+              "pages": [
+                "packages/ts/react/chat-state/overview",
+                "packages/ts/react/chat-state/properties",
+                "packages/ts/react/chat-state/streaming"
+              ]
+            },
+            {
+              "group": "useVoiceChatState",
+              "pages": [
+                "packages/ts/react/voice-state/overview",
+                "packages/ts/react/voice-state/properties",
+                "packages/ts/react/chat-state/streaming"
+              ]
+            }
           ]
         }
       ]
@@ -272,7 +335,9 @@
           "group": "Inputs",
           "pages": [
             "api-reference/inputs",
-            "api-reference/plug"
+            "api-reference/run-options",
+            "api-reference/audio-input",
+            "api-reference/context-input"
           ]
         },
         "api-reference/hooks",
@@ -280,8 +345,8 @@
           "group": "Agents",
           "pages": [
             "api-reference/agent-response",
-            "api-reference/llm-response",
-            "api-reference/agent-data"
+            "api-reference/agent-data",
+            "api-reference/audio-res"
           ]
         },
         {

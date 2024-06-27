@@ -1,0 +1,22 @@
+---
+title: newRun
+---
+
+Used to get the audio player ready for a new run. you just need to call this method before each new agent run. if interested to learn why keep reading.
+
+<Info>
+    Once you call this, if there's chunks still playing they will stop and be ignored.
+</Info>
+
+The audio player needs to queue and play audio chunks in the right order based on the chunk index, we will receive chunks from the server before previous chunks have finished playing so we need to queue them. That's why the player keeps a record of received and finished chunks.
+
+When a new run starts, we need to clear the player current record and reset it to be ready for new chunks starting at the index `0`.
+
+<ResponseExample>
+```typescript
+const run = async () => {
+    player.newRun();
+    agent.run({...});
+}
+```
+</ResponseExample>

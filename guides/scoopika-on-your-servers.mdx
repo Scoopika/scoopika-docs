@@ -3,7 +3,7 @@ title: Scoopika on your Servers
 description: Why Scoopika runs on your servers
 ---
 
-This guide explores why Scoopika agents execute on your servers instead of on the Scoopika platform itself. While the platform offers agent creation, execution happens within your own server environment. Let's delve into the reasons behind this approach.
+In this page we talk about why Scoopika agents execute on your servers instead of on the Scoopika platform itself. While the platform offers agent creation and a playground, when integrating agents into your app the execution happens within your own server environment. Let's dive into the reasons behind this approach.
 
 ## Reasons
 
@@ -16,6 +16,12 @@ Running agents demands resources. As an open-source project, providing a robust 
 ### 2. Security
 
 Agents rely on Large Language Models (LLMs) that require API keys from providers like OpenAI. For this issue we had three different options to solve it:
+
+<Check>
+	**UPDATE**
+
+	Now you can add your API keys to the platform (if you want to)
+</Check>
 
 **Option 1: Store your API keys on our servers**
 
@@ -61,6 +67,6 @@ Scoopika does not handle LLMs costs for you. while some people might see this as
 
 ### Responsibility
 
-Freedom comes with responsibility. Now you have the freedom to run Scoopika safely on your servers, but also the onus of proper configuration and maintenance lies with you.
+So you have the freedom to run Scoopika safely on your servers, but also the onus of proper configuration and maintenance lies with you.
 
 We provide a lot of examples to help you integrate Scoopika into your projects. and if you have any questions We're always here to help ([contact us](/help/contact-us)).

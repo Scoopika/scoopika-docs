@@ -1,0 +1,118 @@
+---
+title: Welcome to Scoopika
+---
+
+Your open source platform for building and integrating AI agents into your applications.
+
+## What is Scoopika?
+
+We already see hundreds of wrappers around LLMs so users can automate their tasks or developers can code faster. **THIS IS NOT ONE OF THEM**.
+
+Scoopika is an open-source platform that provides developers with building blocks to create and integrate AI agents or assistants into their applications. These agents can **see, talk, listen, take actions, learn, and collaborate together**. Scoopika is designed for the web and works perfect in edge environments with real-time streaming.
+
+- **See, talk, and listen**: Agents can accept text, audio, and images as inputs and can output text and audio in real-time (with video support coming soon).
+- **Take actions**: Effortlessly equip your agents with APIs and custom functions to talk with your app, perform actions, or fetch data based on context.
+- **Learn**: Personalize your agents with custom knowledge files, enabling them to understand more about you, your application, or any specific domain.
+- **Collaborate**: Agents can interact with companions—other agents with different capabilities to tackle complex and diverse tasks.
+- **Generate JSON data**: Agents can produce generative type-safe validated JSON objects. enhancing smart analytics, decision making, and applications.
+
+<Check>
+**Fun Fact**
+
+95% of the LLM wrappers available in the market can be built using Scoopika within just one day.
+</Check>
+
+## Why use Scoopika?
+
+With Scoopika, creating advanced multimodal AI agents is straightforward and efficient. Here’s what makes it special:
+
+1. **Validation**: LLM output validation with full type-safety and intelligent error recovery.
+2. **Real-time Streaming**: Listen to specific events during the agent process using streaming hooks that work on both server and client sides.
+3. **Flexibility**: Compatible with your server and LLMs, and works seamlessly with any web framework.
+4. **Web-first**: Designed specifically for web applications, Scoopika empowers developers to easily build interactive AI features.
+5. **Ease of Use**: No prior LLM or machine learning expertise is required. Basic knowledge of JavaScript (and TypeScript for type-safety) is enough.
+6. **Open Source & Secure**: Scoopika’s codebase is open-source, giving you complete control. LLMs execute on your servers, and your LLM provider API keys are securely stored there – never shared with us.
+7. **Affordable**: Use Scoopika for free on your servers. Note that we don't cover LLM costs; that’s on you. Scoopika doesn't send extra tokens to the LLM, so you get all its features at the same cost as running the LLM without Scoopika.
+
+<Check>
+**Fun Fact**
+
+If your app uses function calling or tools, Scoopika will take your costs down because it selects the tools suitable for each coversation based on context resulting in less tokens usage.
+</Check>
+
+## Who's Scoopika for?
+
+Scoopika is designed for developers and startups building AI-powered applications or looking to add AI features or assistants to their existing applications. We promise an easy and straightforward development process.
+
+Small development teams should also consider using Scoopika—it will save you hours of work.
+
+Scoopika is not intended for end-users. If you're looking to create a personal agent to automate your tasks, this is not the right platform. We emphasize this to avoid misunderstandings about the purpose of this project.
+
+## How it works
+
+You can create, edit, and manage your agents from the platform, you also can add API tools to your agents, and test agents in the playground, no code is needed. check this [guide to get started](/guides/starting).
+
+To integrate the agent into your application, you move to the coding part:
+
+- [Web usage](/guides/web): Setup a Scoopika API endpoint and start using agents safely on the client-side. Recommended for web applications.
+
+- [Custom usage](/guides/custom-usage): Use agents for custom server-side usage. Not recommneded in most cases, but you're free to do the crazy stuff you want to 😁.
+
+### Packages
+
+We built TS packages for you to use Scoopika in your project and make amazing AI-powered features (using Typescript is not required):
+
+<CardGroup cols={1}>
+  <Card title="@scoopika/scoopika" href="/packages/ts/scoopika">
+    <div className="text-sm mt-2">
+      Used to run agents on the server side and to create a Scoopika API
+      endpoint.
+    </div>
+  </Card>
+  <Card title="@scoopika/client" href="/packages/ts/scoopika">
+    <div className="text-sm mt-2">
+      Used to run agents on the client side with real-time streaming. Requires a
+      running Scoopika API endpoint to function.
+    </div>
+  </Card>
+  <Card title="@scoopika/react" href="/packages/ts/scoopika">
+    <div className="text-sm mt-2">
+      Building blocks to easily create interactive AI UIs with React. with built-in
+      state management (the Scoopika playground was built with this).
+    </div>
+  </Card>
+</CardGroup>
+
+## What Can I Build Here?
+
+The possibilies are endless with Scoopika, and here are some examples and ideas of what can be done with Scoopika:
+
+- Add an AI assistant to your web application so users can interact with your app in natural language using text & voice.
+- Build an AI system that simulates user interactions in a website.
+- Build an AI system that extracts generative structured data from users data or chat for enhanced analytics & smart products.
+- Create a voice AI smartwatch assistant that can perform actions on behalf of users.
+- Build next-level products that uses mutli-agent systems where multiple agents can collaborate to achieve tasks on behalf of users.
+
+## How to Read the Docs
+
+1. **Getting started**: Check the [Quickstart Guide](/quickstart).
+2. **Choose your path**:
+   - **Web usage**: Explore the [Scoopika for the Web guide](/guides/scoopika-for-the-web) to set up both your server-side and client-side environment.
+   - **Custom usage**: Refer to the [@scoopika/scoopika documentation](/packages/ts/scoopika) for comprehensive server-side instructions.
+3. **Deep Dive into Features**: Dive into the documentation for specific functionalities you'll be using. We recommend starting with the [Agents documentation](/agents).
+
+## Examples & Templates
+
+We've created a number of examples and templates to help you get started quickly with Scoopika:
+
+<Card title="NextJS Starter" href="/examples/next-js-1">
+  A simple Next 14 starter template with Scoopika AI agents.
+</Card>
+
+<Info>
+  We're working on more templates to be shared soon!
+</Info>
+
+## Need Help?
+
+Feel free to explore Scoopika's features and functionalities at your own pace. If you ever get stuck, We're always here to assist you, from setting up Scoopika to navigating any functionality and answering any questions you have. feel free to [contact us](/help/contact-us) if you need help.

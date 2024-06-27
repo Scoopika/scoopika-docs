@@ -10,11 +10,19 @@ icon: 'robot'
 
 ## What are Agents?
 
-Agents are intelligent assistants powered by Large Language Models (LLMs). You can customize them to excel in specific areas and equip them with tools, functions, and APIs to perform actions or retrieve data based on context.
+Agents are intelligent assistants powered by Large Language Models (LLMs) that can:
+
+- Collaborate together
+- Use external tools & APIs to perform actions or fetch data
+- See (Vission)
+- Listen (Audio input)
+- Talk (TTS with custom voices)
+
+and do more crazy things that I still don't know about :)
 
 ## Creating Agents
 
-You can visit the [Scoopika platform](https://scoopika.com/app) to create new agents, The process takes mere seconds. Once created, define a system prompt instructing the agent on how to interact and behave.
+You can visit the [Scoopika platform](https://scoopika.com/app) to create new agents, The process takes mere seconds. You give your agent an avatar, name, and description; define the LLM powering it and give it a system prompt.
 
 <Tip>See the [quickstart](/quickstart) to learn how to start running agents in your applications</Tip>
 
@@ -61,7 +69,7 @@ Here's a basic example:
 
 ```typescript
 const agent = new Agent("ID", scoopika);
-agent.run({
+await agent.run({
 	inputs: {
 		message: "Hello"
 	},
@@ -71,6 +79,20 @@ agent.run({
 	}
 })
 ```
+
+## Speech
+
+You can make your agents talk in custom voices now! learn more about [Agents speaking](/agents/speak). this is a simple example:
+
+```typescript
+// English
+await agent.speak("Good morning");
+
+// French
+await agent.speak("Bonjour", "fr");
+```
+
+`.speak` returns the URL to the audio generated from the text provided.
 
 ## Using on client-side
 

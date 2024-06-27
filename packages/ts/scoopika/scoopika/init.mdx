@@ -4,33 +4,42 @@ title: Initialize Scoopika
 
 `Scoopika` is the core class of Scoopika, It provides a number of core functionalities to you and the other parts of Scoopika, like the `Agent` class and the `Box` class.
 
-To get started, you need to initialize a `Scoopika` instance that's passed to any new agent or box instance you initialize later.
+To get started, you need to initialize a `Scoopika` instance that's passed to any new agent or box instance or endpoint you initialize later.
 
 ## Arguments
 Takes one argument passed as an object during initialization with the following properties:
 
-<ParamField path="token" type="string" required>
-  Your Scoopika access token. you can generate a new one [here](https://scoopika.com/app/settings?tab=tokens). Keep your tokens in a safe place and never expose them to the public. You can delete a token and it will delete its access to any of your data.
+<ParamField path="token" type="string">
+  Your Scoopika access token. you can generate a new one from the [platform](https://scoopika.com/app) by clicking on the settings icon. Keep your tokens in a safe place and never expose them to the public. You can delete a token and it will delete its access to any of your data.
+
+  You can add `SCOOPIKA_TOKEN` to your env file instead of passing it here.
 </ParamField>
 
 <ParamField path="store" type="string">
-  Connect to a remote data store for persistent chat history storage. We offer managed serverless data stores you can create with a single click [here](https://scoopika.com/app/data-stores). Simply copy the store URL and add it as the `store` field.
+  Connect to a remote data store for persistent chat history storage. We offer managed serverless data stores you can create with a single click [here](https://scoopika.com/app/data-stores). Simply copy the store ID and add it as the `store` field.
 
   <Info>If this field is not provided Scoopika will use an in-memory store (history is not persisted).</Info>
 </ParamField>
 
-<ParamField path="engines" type="object">
+<ParamField path="keys" type="object">
   An object containing API keys for the LLM providers your agents leverage. You can determine the host and LLM an agent uses from the agent's prompt editor. Currently supported providers include:
 
   - openai
   - fireworks
   - together
-  - google (demo)
+
+  You can extend these providers by any other provider that's compatible with OpenAI's API.
+
+  If you've added an API key for the provider to your account in the platform, there's no need to pass it again here.
 
   Provide keys only for the LLM providers you actually use. If you run an agent that uses a provider that you don't provide a key for, Scoopika will throw an error.
 
-  <Check>Your API keys are always secure and are never shared with our servers.</Check>
+  <Check>When passing keys from your code (not the platform) they're never shared with us</Check>
 
+</ParamField>
+
+<ParamField path="beta_allow_knowledge" type="boolean">
+  If you've added custom knowledge files to your agent, you need to set this option to `true` to enable the knowledge feature.
 </ParamField>
 
 <ResponseExample>
@@ -39,8 +48,9 @@ import { Scoopika } from "@scoopika/scoopika";
 
 const scoopika = new Scoopika({
 	token: "TOKEN",
-	store: "STORE_URL",
-	engines: {
+	store: "STORE_ID",
+    beta_allow_knowledge: true,
+	keys: {
 		openai: "OPENAI_KEY",
 		fireworks: "FIREWORKS_KEY",
 		together: "TOGETHER_KEY",

@@ -15,17 +15,17 @@ Here's a minimal setup with Express:
 ```typescript
 // Server-side
 
-import { Scoopika, Container } from "@scoopika/scoopika"
+import { Scoopika, Server } from "@scoopika/scoopika"
 
 const scoopika = new Scoopika({...}); // Replace with your scoopika config
 
-const container = new Container({
+const scoopikaServer = new Server({
 	scoopika,
 	agents: ["AGENT_ID-1"] // Replace with your agents IDs or custom setup function
 });
 
 // Add route to your Express API
-app.post("/scoopika", (req, res) => container.handleRequest({
+app.post("/scoopika", (req, res) => scoopikaServer.handleRequest({
 	request: req.body,
 	stream: (s) => res.write(s),
 	end: () => res.end()

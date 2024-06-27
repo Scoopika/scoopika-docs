@@ -1,0 +1,59 @@
+---
+title: Overview
+description: Setup Scoopika API endpoint for web usage
+---
+
+The Scoopika endpoint acts as a central component for handling API requests related to Scoopika functionalities,
+and allows you to use Scoopika on the client-side using the [client library](/packages/ts/client). 
+
+The endpoint provides built-in support for real-time streaming hooks, client-side actions, 
+and caching to streamline your development process. It can be integrated with any web framework that supports HTTP streaming. 
+We offer additional usage examples in the [Guides](/guides) section.
+
+## Initialize
+
+You can initialize a Scoopika endpoint by passing it your scoopika instance, agents, boxes, and some other properties, see [Initialize Endpoint](/packages/ts/scoopika/endpoint/init) for full docs.
+
+## Main Method: handleRequest
+
+The Endpoint class primarily exposes the [handleRequest](/packages/ts/scoopika/endpoint/handle-request) method. 
+This method handles API requests sent from the Scoopika client and routes them to the appropriate functionality within your Scoopika setup. It can handle tasks like running agents, boxes, managing chat or history sessions, and more.
+It takes one argument passed as an object with the following properties:
+
+- `request`: An object containing the actual API request data (body) sent from the Scoopika client (the request body).
+- `stream`: A function that allows the endpoint to send data back to the client in chunks, enabling real-time communication (HTTP streaming).
+- `end`: (Optional) A function to signal the end of the stream. some web frameworks requires this to end the stream (like Express).
+
+<RequestExample>
+```typescript Example
+// Full example usage with Express
+
+import experss from "express";
+import {
+	Scoopika,
+	Endpoint
+} from "@scoopika/scoopika";
+
+const scoopika = new Scoopika({...});
+
+// Basic setup
+const endpoint = new Endpoint({
+	scoopika,
+	agents: ["AGENT_ID-1", "AGENT_ID-2"],
+	boxes: ["BOX_ID-1", "BOX_ID-2"] // optional
+})
+
+const app = express();
+app.use(express.json()); // required
+
+app.post("/scoopika", (req, res) => {
+	endpoint.handleRequest({
+		request: req.body,
+		stream: (s) => res.write(s),
+		end: () => res.end()
+	});
+});
+
+app.listen(4049);
+```
+</RequestExample>

@@ -1,0 +1,56 @@
+---
+title: getSessionMessages
+description: Retrieve history (messages) of a session
+---
+
+Allows you to retrieve the list of messages associated with a specific chat session (user requests and agents responses). This can be useful for displaying chat messages to the user, analyzing conversation history, understanding user behavior within a session, and potentially debugging agent interactions.
+
+## Arguments
+
+<ParamField path="id" type="string">
+	The session ID to get the messages of.
+</ParamField>
+
+## Response
+
+<ResponseField name="messages" type="RunHistory[]">
+	Returns a list of messages, usually following the pattern `user` -> `agent` -> `user` -> `agent` when running individual agents reflecting a basic back-and-forth conversation flow.
+
+	[Reference to RunHistory](/api-reference/run-history)
+</ResponseField>
+
+<RequestExample>
+```typescript Usage example
+const messages = await client.store.getSessionRuns(
+	"SESSION_ID"
+);
+```
+</RequestExample>
+
+<ResponseExample>
+```json Response example
+[
+	{
+		"at": 000,
+		"role": "user",
+		"user_id": "USER_ID",
+		"request": {
+			"message": "Hello!"
+		}
+	},
+	{
+		"at": 000,
+		"role": "agent",
+		"run_id": "RUN_1",
+		"session_id": "SESSION_1",
+		"agent_id": "AGENT_1",
+		"agent_name": "Agent",
+		"response": {
+			"content": "Hey, how can I assist you today?",
+			"audio": [],
+			"tools_calls": []
+		}
+	}
+]
+```
+</ResponseExample>

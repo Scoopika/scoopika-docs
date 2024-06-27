@@ -1,0 +1,45 @@
+---
+title: Tools
+icon: screwdriver-wrench
+---
+
+Tools are APIs or custom functions the agent can use to perform actions or fetch data. Once you equip an agent with a tool, it will use it automatically when it needs to based on context.
+
+You can turn any API or function into a tool the agent can use, you just need to define the schema of the inputs the tool expects to receive from the LLM.
+
+## Validation
+
+All data is type-safe and VALIDATED... so you can build reliable LLM-powered applications and your tools never receives unexpected inputs.
+
+## Errors recovery
+
+Validation errors and tool execution errors are handled intelligently by Scoopika... how? well it's based on the type of the error.
+
+If an input is missing we try to figure it out or ask the user to provide it, if a value is invalid we try to solve the issue, and if the tool execution failed we investigate the issue and maybe try later or just tell the user about it.
+
+All of that is done for you under the hood, from the tool execution, to the validation, type-safety, and errors recovery.
+
+## Types of tools
+
+There are different types of tools that agents can call in Scoopika:
+
+### API tools
+
+These tools are defined from the platform with no code, and allows the agent to send HTTP requests to external APIs.
+
+The response of the HTTP request is returned back to the agent to process it.
+Can be used to perform actions or fetch data.
+
+### Custom functions (server)
+
+Custom JS functions defined and executed on the server-side. you can turn any function into a tool the agent can use.
+
+The result of the function is returned back to the agent to process it.
+Can be used to perform actions or fetch data.
+
+### Client-side actions
+
+Custom JS functions defined and executed safely on the client-side by the agent in real-time (no eval or anything unsafe is used).
+
+The result of the function is NOT returned back to the agent.
+Can only be used to perform actions on the client-side like clicking buttons or generating UI.

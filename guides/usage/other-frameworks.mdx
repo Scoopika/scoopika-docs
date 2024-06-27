@@ -3,17 +3,22 @@ title: Other Frameworks
 description: Use Scoopika with any web framework
 ---
 
-You can run a Scoopika API with any web framework that supports HTTP streaming. The setup of your Scoopika and Container remains the same (refer to [this guide](/guides/scoopika-for-the-web)). You only need to create a ReadableStream and send it as a response using your chosen framework.
+## Readable Stream
+
+You can run a Scoopika API with any web framework that supports HTTP streaming. 
+The setup of your Scoopika Endpoint remains the same 
+(refer to [this guide](/guides/scoopika-for-the-web)). 
+You only need to create a `ReadableStream` and send it as a response using your chosen framework.
 
 Here’s how to do it:
 
 ```typescript
-import container from "./scoopika"; // path to your container setup
+import scoopikaEndpoint from "./scoopika"; // path to your endpoint setup
 import { ReadableStream } from "node:stream/web";
 
 const stream = new ReadableStream({
 	start(controller) {
-		container.handleRequest({
+		scoopikaEndpoint.handleRequest({
 			request: {}, // the request body (JSON object)
 			stream: (s) => controller.enqueue(s),
 			end: () => controller.end()
@@ -28,7 +33,7 @@ For Fastify, you can handle the stream like this:
 
 ```typescript
 import Fastify from 'fastify';
-import container from "./scoopika"; // Path to your container setup
+import scoopikaEndpoint from "./scoopika"; // Path to your endpoint setup
 
 const fastify = Fastify();
 
@@ -38,7 +43,7 @@ fastify.post("/scoopika", async (request, reply) => {
 	// Same as described above
 	const stream = new ReadableStream({
 		start(controller) {
-			container.handleRequest({
+			scoopikaEndpoint.handleRequest({
 				request: body,
 				stream: (s) => controller.enqueue(s),
 				end: () => controller.end()
@@ -50,4 +55,34 @@ fastify.post("/scoopika", async (request, reply) => {
 })
 ```
 
-and the same goes for any other framework, if you face any issues with this feel free to [contact us](/help/contact-us).
+## Example with Hono (with Deno)
+
+```typescript
+import { Hono } from "https://deno.land/x/hono/mod.ts";
+import { cors } from "https://deno.land/x/hono/middleware.ts";
+import { stream } from "https://deno.land/x/hono/helper.ts";
+import scoopikaEndpoint from "./scoopika"; // Path to your endpoint setup
+
+const app = new Hono();
+app.use("/*", cors()); // Adjust this as you want
+
+app.post("/scoopika", async (c) => {
+	const req = await c.req.json();
+
+	return stream(c, async (stream) => {
+		await scoopikaEndpoint.handleRequest({
+			request: req,
+			stream: (s) => stream.write(s),
+			end: () => stream.close()
+		})
+	});
+});
+
+Deno.serve(app.fetch);
+```
+
+and the same goes for any other framework.
+
+## Need Help?
+
+If you face any issues with this feel free to [contact us](/help/contact-us).

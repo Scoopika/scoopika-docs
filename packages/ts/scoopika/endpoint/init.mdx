@@ -1,12 +1,12 @@
 ---
-title: Initialize Container
+title: Initialize Endpoint
 ---
 
-This section details the arguments used to initialize a Scoopika Container instance.
+This section details the arguments used to initialize a Scoopika Endpoint.
 
 ## Arguments
 
-Takes one arguments that's an `object` with the following properties:
+Takes one arguments passed as an `object` with the following properties:
 
 <ParamField path="scoopika" type="Scoopika" required>
 	An instance of the Scoopika class you previously initialized.
@@ -14,14 +14,14 @@ Takes one arguments that's an `object` with the following properties:
 	[Reference to Scoopika](/packages/ts/scoopika/scoopika)
 </ParamField>
 
-<ParamField path="agents" type="function">
+<ParamField path="agents" type="string[] | function">
 	Whether an array of agent Ids or Async Function:
 
 	- You can provide an array containing agent IDs as strings (e.g., `["AGENT_ID-1", "AGENT_ID-2"]`).
 	- Alternatively, you can use an asynchronous function that returns an array of `Agent` instances created using the Agent class (refer to the [Agent documentation](/packages/ts/scoopika/agents) for details). This function allows for more dynamic agent setup logic if needed.
 </ParamField>
 
-<ParamField path="boxes" type="function">
+<ParamField path="boxes" type="string[] | function">
 	Whether an array of box Ids or Async Function:
 
 	- You can provide an array containing box IDs as strings (e.g., `["BOX_ID-1", "BOX_ID-2"]`).
@@ -29,7 +29,7 @@ Takes one arguments that's an `object` with the following properties:
 </ParamField>
 
 <ParamField path="caching" type="boolean" default={true}>
-	Enables or disables caching of agent and box data within the container. This caching improves performance by reducing the need to load data from the Scoopika platform on every API request. However, it does not cache actual agent responses.
+	Enables or disables caching of agent and box data within the endpoint. This caching improves performance by reducing the need to load data from the Scoopika platform on every API request. However, it does not cache actual agent responses.
 </ParamField>
 
 <ParamField path="caching_limit" type="number" default={1000000}>
@@ -38,28 +38,27 @@ Takes one arguments that's an `object` with the following properties:
 
 <RequestExample>
 ```typescript Usage
-import {
-	Container,
-	setupAgents,
-	setupBoxes
-} from "@scoopika/scoopika";
+import { Scoopika, Endpoint } from "@scoopika/scoopika";
+
+const scoopika = new Scoopika({...});
 
 // Basic usage
-const container = new Container({
+const endpoint = new Endpoint({
 	scoopika,
 	agents: ["AGENT_ID-1", "AGENT_ID-2"],
 	boxes: ["BOX_ID-1", "BOX_ID-2"]
 });
 
 // Advanced usage
-const container = new Container({
+const endpoint = new Endpoint({
 	scoopika,
 	agents: async (scoopika) => {
-		const myAgent = new Agent("AGENT_ID-1");
+		const myAgent = new Agent(scoopika, "AGENT_ID-1");
 
-		// Do anything you want here...
+		// Do anything you want here like adding tools...
+		myAgent.addTool({...});
 
-		return [myAgent];
+		return [myAgent]; // return a list of agents
 	},
 });
 ```

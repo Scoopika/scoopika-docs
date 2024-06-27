@@ -3,7 +3,8 @@ title: Next.js
 description: Use Scoopika with Next.js
 ---
 
-This guide walks you through integrating Scoopika into your Next.js application, enabling you to leverage intelligent agents within your web components.
+This guide walks you through integrating Scoopika into your Next.js application, 
+enabling you to leverage intelligent agents within your web components.
 
 <Check>
 	**Prerequisites:** 
@@ -14,46 +15,51 @@ This guide walks you through integrating Scoopika into your Next.js application,
 
 ## Initialize
 
-Create a file named `scoopika.ts` inside your `lib` directory (or adjust the path based on your project structure). This file will house the Scoopika initialization code.
+Create a file named `scoopika.ts` inside your `lib` directory 
+(or adjust the path based on your project structure). 
+This file will house the Scoopika initialization code.
 
 ```typescript lib/scoopika.ts
-import { Scoopika, Container, Agent } from "@scoopika/scoopika";
+import { Scoopika, Endpoint, Agent } from "@scoopika/scoopika";
 
 const scoopika = new Scoopika({...}); // Replace with your Scoopika config
 
 // Minimal setup
-const container = new Container({
+const scoopikaEndpoint = new Endpoint({
 	scoopika,
 	agents: ["AGENT_ID-1"]
 });
 
 // or Advanced setup (optional to add tools to agents)
-const container = new Container({
+const scoopikaEndpoint = new Endpoint({
 	scoopika,
 	agents: async (scoopika: Scoopika) => {
 		const agent = new Agent("AGENT_ID", scoopika);
 
 		// Do anything you want here, like adding tools to agents
+		agent.addTool(...);
 
 		return [agent]; // Return array of agents
 	}
 });
 
-// Export the container
-export default container;
+// Export the endpoint
+export default scoopikaEndpoint;
 ```
 
 ## Add API Route
 
-Next, add an API route to your Next.js project that handles everything related to Scoopika. If using the Pages API, put the route under `pages/api/scoopika.ts`. If using the App Router, place it under `app/api/scoopika/route.ts`. Here are examples for both setups:
+Next, add an API route to your Next.js project that handles everything related to Scoopika. 
+If using the Pages API, put the route under `pages/api/scoopika.ts`. 
+If using the App Router, place it under `app/api/scoopika/route.ts`. Here are examples for both setups:
 
 <CodeGroup>
 ```typescript pages/api/scoopika.ts
-import container from "@/lib/container"; // import the container
+import scoopikaEndpoint from "@/lib/scoopika"; // import the endpoint
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-	container.handleRequest({
+	scoopikaEndpoint.handleRequest({
 		request: req.body,
 	    stream: (s) => res.write(s),
 		end: () => res.end(),
@@ -61,7 +67,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 ```
 ```typescript app/api/scoopika/route.ts
-import container from "@/lib/container"; // import the container
+import scoopikaEndpoint from "@/lib/scoopika"; // import the endpoint
 import { NextRequest, NextResponse } from 'next/server';
 
 // Add a POST method
@@ -70,7 +76,7 @@ export async function POST(req: NextRequest) {
 
 	const stream = new ReadableStream({
 		start(controller) {
-			container.handleRequest({
+			scoopikaEndpoint.handleRequest({
 				request: body,
 			    stream: (s) => controller.enqueue(s),
 				end: () => controller.close()
@@ -85,7 +91,8 @@ export async function POST(req: NextRequest) {
 
 ## Use Scoopika
 
-You can now use the Scoopika client library to run Scoopika in your Next.js application. This works in both server and client components.
+You can now use the Scoopika client library to run Scoopika in your Next.js application. 
+This works in both server and client components.
 
 ```typescript
 import { Client, Agent } from "@scoopika/scoopika";
@@ -100,3 +107,12 @@ const response = await agent.run({
 	}
 });
 ```
+
+## Scoopika React library
+
+We provide [@scoopika/react](/packages/ts/react) for easily building interactive
+AI-powered UI interfaces for both text-based and voice-based interactions with AI agents.
+
+It provides building blocks along with built-in state management and hooks.
+
+Check the full docs for React [here](/packages/ts/react).

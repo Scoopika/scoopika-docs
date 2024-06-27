@@ -9,17 +9,20 @@ title: Scoopika for the Web
 	2. Scoopika access token. generate one [here](https://scoopika.com/settings?tab=tokens).
 </Check>
 
+
 This guide provides a walkthrough for integrating Scoopika into your web application, covering both server-side and client-side setup.
 
 ## Key concepts
 
-[Scoopika Container](/packages/ts/scoopika/container): A central component that handles API requests related to Scoopika functionalities. It can be easily added to an API route and should work with any web frameworks that supports HTTP streaming.
+[Scoopika Endpoint](/packages/ts/scoopika/endpoint): A central container that handles API requests related to Scoopika functionalities. It can be easily added to an API route and should work with any web frameworks that supports HTTP streaming.
 
-[AI Agents](/agents): Personalized LLM-powered assistants. created on the platform and executed on your servers.
+[AI Agents](/agents): Personalized LLM-powered assistants. Created from the platform and executed on your servers.
 
-[Tools](/tools): Custom functions that extend the capabilities of agents. allowing the agent to call the function to perform actions or fetch data based on the context.
+[Tools](/tools): Custom functions that extend the capabilities of agents.
+Allowing the agent to call the function to perform actions or fetch data based on the context.
 
-[Client-side Actions](/tools/client-side-actions): A special type of tools defined and executed on the client-side, enabling agents to executed tools on the client-side in real-time (example: clicking a button).
+[Client-side Actions](/tools/client-side-actions): A special type of tools defined and executed on the 
+client-side, enabling agents to safely execute tools on the client-side in real-time (example: clicking a button).
 
 We provide examples for integrating Scoopika with a lot of frameworks, check the [Usage](/guides/usage) page for more info based on the framework you're using.
 
@@ -40,75 +43,85 @@ npm install @scoopika/scoopika
 Let's initialize Scoopika and set up your agents. Here's a basic example:
 
 ```typescript scoopika.ts
-import { Scoopika, Container } from "@scoopika/scoopika";
+import { Scoopika, Endpoint } from "@scoopika/scoopika";
 
 // Initialize Scoopika instance
 const scoopika = new Scoopika({
-	token: "YOUR_SCOOPIKA_TOKEN", // Replace with your token
-	store: "REMOTE_STORE_URL", // For persistent history (optional)
-	engines: {...} // Replace with your engines
+	token: "YOUR_SCOOPIKA_TOKEN", // Replace with your token or set `SCOOPIKA_TOKEN` in your env
+	store: "REMOTE_STORE_ID", // For persistent history (optional)
+	keys: {...} // Replace with your keys
 });
 
-// Create container to handle requests
-const scoopikaContainer = new Container({
+// Create endpoint to handle requests
+const scoopikaEndpoint = new Endpoint({
 	scoopika,
 	agents: ["AGENT_ID-1", "AGENT_ID-2"]
-})
+});
 
-export default scoopikaContainer;
+export default scoopikaEndpoint;
 ```
 
 Refer to the following resources for more details:
 
 [Initialize Scoopika](/packages/ts/scoopika/scoopika).
 
-[Scoopika Container](/packages/ts/scoopika/container).
+[Scoopika Endpoint](/packages/ts/scoopika/endpoint).
 
-For more advanced scenarios where you want to add [tools](/tools) to your agents, the `agents` property can take a function that allows for custom agent setup logic and returns an array of agents:
+#### Custom setup
+
+For more advanced scenarios where you want to add [tools](/tools) to your agents, 
+the `agents` property can take a function that allows for custom agent setup logic and returns 
+an array of agents:
 
 ```typescript
-import { Scoopika, Agent, Container } from "@scoopika/scoopika";
+import { Scoopika, Agent, Endpoint } from "@scoopika/scoopika";
 
 const scoopika = new Scoopika({...});
 
-// Setup agents (with custom function)
-const setupAgents = async (scoopika: Scoopika) => {
-	const myAgent1 = new Agent("AGENT_ID-1", scoopika);
-	const myAgent2 = new Agent("AGENT_ID-2", scoopika);
-
-	// Pass agent2 as tool to agent1
-	await myAgent1.addAgentAsTool(myAgent2);
-
-	// Add other tools to agent1
-	myAgent1.addTool(...);
-
-	return [myAgent1, myAgent2]; // return array of agents
-};
-
-// Create container to handle requests
-const scoopikaContainer = new Container({
+// Create endpoint to handle requests
+const scoopikaEndpoint = new Server({
 	scoopika,
-	agents: setupAgents
+
+	// use custom setup function
+	agents: async (scoopika) => {
+		const myAgent1 = new Agent("AGENT_ID-1", scoopika);
+		const myAgent2 = new Agent("AGENT_ID-2", scoopika);
+
+		// do anything you want here... like:
+
+		// Pass agent2 as tool to agent1
+		await myAgent1.addAgentAsTool(myAgent2);
+
+		// Add other tools to agent1
+		myAgent1.addTool(...);
+
+		return [myAgent1, myAgent2]; // return array of agents
+	}
 })
 
-export default scoopikaContainer;
+export default scoopikaEndpoint;
 ```
 
-<Info>You can add boxes the same way you do with agents. check the [Container docs](/packages/ts/scoopika/container) for more info</Info>
+<Info>You can add boxes the same way you do with agents. check the [Endpoint docs](/packages/ts/scoopika/endpoint) for more info</Info>
 
 ### 3. Add API Route
 
-Now, create an API route within your framework (e.g., Express) to handle Scoopika requests using the Scoopika Container. This example demonstrates usage with Express:
+Now, create an API route within your framework (e.g., Express) 
+to handle Scoopika requests using the Scoopika Endpoint. 
+This example demonstrates usage with Express:
 
 ```typescript
 import express from "express";
-import scoopikaContainer from "./scoopika"; // path to your Scoopika container
+import cors from "cors";
+import scoopikaEndpoint from "./scoopika"; // path to your Scoopika endpoint
 
 const app = express();
 app.use(express.json()); // Required middleware
+app.use("/scoopika", cors()); // Allow cors (adjust this as you want)
 
-app.post("/scoopika", async (req, res) => {
-	await scoopikaContainer.handleRequest({
+// has to be 'post' route
+app.post("/scoopika", (req, res) => {
+	scoopikaEndpoint.handleRequest({
 		request: req.body,
 		stream: (s) => res.write(s),
 		end: () => res.end()
@@ -120,7 +133,8 @@ app.listen(4149, () => {
 });
 ```
 
-This scoopika route will now be able to handle running anything related to Scoopika from running agents or boxes, getting their info, and managing history sessions. Refer to the [Scoopika Container documentation](/packages/ts/scoopika/container) for more info.
+This route will now be able to handle running anything related to Scoopika from running agents or boxes, getting their info, and managing history sessions. 
+Refer to the [Scoopika Endpoint documentation](/packages/ts/scoopika/endpoint) for more info.
 
 ## Client-side
 
@@ -140,7 +154,7 @@ Now you can initialize a Scoopika client, an agent, and run it:
 import { Client, Agent } from "@scoopika/client";
 
 const client = new Client(
-	"http://localhost:4149/scoopika" // The exact url to your scoopika API.
+	"http://127.0.0.1:4149/scoopika" // The exact url to your scoopika API.
 );
 
 const agent = new Agent("AGENT_ID", client);
@@ -173,9 +187,12 @@ console.log(agentData.name); // string
 
 // Run agent
 const response = await agent.run({
+	options: {
+		session_id: session.id,
+		voice: true // allow audio response
+	},
 	inputs: {
 		message: "Hello!",
-		session_id: session.id
 	},
 	hooks: { // real-time streaming hooks are supported
 		onToken: (t) => console.log(t)
@@ -187,9 +204,9 @@ console.log(response); // AgentResponse
 const userSessions = await client.store.listUserSessions("USER_1");
 console.log(userSessions); // string[]
 
-// Get session runs (messages or history)
-const runs = await client.store.getSessionRuns(userSessions[0]);
-console.log(runs); // RunHistory[] (in this example there should be 2 items. one for the user request, and one for the agent response)
+// Get chat session messages
+const messages = await client.store.getSessionMessages(userSessions[0]);
+console.log(messages); // RunHistory[] (in this example there should be 2 items. one for the user request, and one for the agent response)
 
 // Delete session
 const deleted = await client.store.deleteSession(session.id);
@@ -204,98 +221,51 @@ Scoopika allows you to equip your agents with tools, extending their capabilitie
 
 For full docs on tools, refer to the [Tools documentation](/tools).
 
+### API Tools
+
+API tools are added from the platform with no-code. they can be used to give agents the ability to call external APIs. you define the API url, headers, body, and method. the tool also takes inputs that are passed from the agent when calling it, and they can be used in the tool's url or request body.
+
+[Learn more about API tools](/tools/api-tools).
+
 ### Server-side Tools
 
-Server-side tools are custom functions that you add to agents on the server. You can define the tool's arguments using a JSON schema, allowing Scoopika to validate the agent's outputs when calling the tool, ensuring stability and type safety. The results returned by this function are sent back to the agent for further processing.
+Server-side tools are custom functions that you add to agents on the server. 
+You can define the tool's arguments using a Zod schema, 
+allowing Scoopika to validate the agent's outputs when calling the tool, 
+ensuring stability and type safety. The results returned by this function are sent back to the agent 
+for further processing ([learn more about tools](/foundations/tools)).
 
-Here's an example of creating a server-side tool:
+To add tools from the server-side, you need to use a custom agents setup function:
 
-Example tool:
-
-<CodeGroup>
-```typescript scoopika/tools/my_tool.ts
-// Type-safe example
-
-import { createToolSchema, FromSchema, JSONSchema } from "@scoopika/scoopika";
-
-// Define the tool parameters schema
-const toolParams = {
-  type: "object",
-  properties: {
-    id: {
-      type: "string",
-      description: "The document ID to get info about",
-    }
-  },
-  required: ["id"]
-} as const satisfies JSONSchema;
-
-// Define the tool inputs type (from the tool parameters)
-export type ToolInputs = FromSchema<typeof toolParams>;
-
-// Create the tool schema
-const toolSchema = createToolSchema({
-  name: "get_document_info",
-  description: "Get information about a document",
-  parameters: toolParams
-});
-
-// Define the tool function
-function toolFunc(args: ToolInputs) {
-  // Implement your tool logic here
-}
-
-const tool = {
-  func: toolFunc,
-  schema: toolSchema
-};
-
-export default tool;
-```
-```typescript scoopika/tools/my_tool.js
-import { createToolSchema } from "@scoopika/scoopika";
-
-// Create a tool schema
-const toolSchema = createToolSchema({
-	name: "get_document_info",
-	description: "Get information about a document",
-	parameters: {
-		type: "object",
-		properties: {
-			id: {
-				type: "string",
-				description: "The document ID to get info about",
-			}
-		},
-		required: ["id"]
-	}
-})
-
-function toolFunc() {
-	// Implement your tool logic here
-}
-
-const tool = {
-	func: toolFunc,
-	schema: toolSchema
-}
-
-export default tool;
-```
-</CodeGroup>
-
-Now in your server-side agent setup, you can equip an agent with this tool:
-
-```typescript
-import { Scoopika, Agent } from "@scoopika/scoopika";
+```typescript scoopika.ts
+import { Scoopika, Endpoint, Agent } from "@scoopika/scoopika";
 import tool from "./tools/my_tool";
 
 const setupAgents = async (scoopika: Scoopika) => {
 	const myAgent = new Agent("AGENT_ID_1", scoopika);
-	myAgent.addTool(tool.func, tool.schema); // Add the tool
 
-	return [myAgent];
-};
+	// Add the tool (example)
+	myAgent.addTool({
+		name: "get_document_info",
+		description: "Get information about a document",
+		parameters: z.object({
+			id: z.string()
+		}),
+		execute: ({ id }) => {...} // tool logic here
+	});
+
+	return [myAgent]; // return array of agents
+}
+
+const scoopika = new Scoopika();
+const endpoint = new Endpoint({
+	scoopika,
+
+	// use custom setup function
+	agents: setupAgents
+});
+
+export default endpoint;
 ``` 
 
 ### Client-side Actions (Client-side Tools)
@@ -318,7 +288,11 @@ import { Agent } from "@scoopika/client";
 
 const agent = new Agent("AGENT_ID", scoopikaClient);
 
-agent.addClientAction(toolFunc, toolSchema);
+agent.addClientAction({
+	name: "sort_documents",
+	description: "",
+	... // the same logic applies to the client side
+});
 ```
 
 **Remember**: When the agent calls a client-side action, it executes on the client-side in real-time, enabling dynamic interactions within the web application.
@@ -327,6 +301,7 @@ See [how to build your tools](/tools/how-to) for more information on how to defi
 
 ## Next steps
 
-Now that you have setup Scoopika on both the server-side and the client-side, you can start trying the advanced functionalities Scoopika offers, like adding tools to agents, using agents to extract structured data, adding agents as tools to other agents so they can call each other when needed, and much more!
+Now that you have setup Scoopika on both the server-side and the client-side, the fun part starts.
+Memory is managed for you, streaming is managed for you, validation is also managed for you, what you gonna do? well just focus on building your application and unique features. good luck!
 
 We strongly recommend you check the full docs and API reference for both [Packages](/packages).

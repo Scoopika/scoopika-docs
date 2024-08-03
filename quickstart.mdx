@@ -1,91 +1,250 @@
 ---
 title: 'Quickstart'
-description: 'Start building AI agents & applications in under 5 minutes'
+description: 'Start building LLM-powered applications in under 5 minutes'
+
 ---
 
-## 1. Create your account
+---
 
-Visit the [Scoopika platform](https://scoopika.com/app) and create a free account.
+## Getting Started Steps
 
-## 2. Create your first agent
+<Steps>
 
-Creating a new agent is a breeze. 
-Simply provide a name, optional description, avatar, and a system prompt to guide its behavior. 
-You can even generate agent avatars using AI directly from the platform.
+<Step title="Create your account">
 
-- **Name**: The name of the agent. agents are aware of their own names and their companions names.
-- **Description**: Briefly describe the agent. notice that this is not the agent's prompt, and only useful when using companions.
-- **Avatar**: The agent's avatar. only useful to display it.
-- **LLM**: The large language model that powers the agent (its brain).
-- **Prompt**: A set of instructions that the agent will act and behave based on.
-- **Voice**: Select your agent's voice. it will be used in voice-based interaction (we provide 2 voices options for now).
+Visit the [Scoopika platform](https://app.scoopika.com) and create a free account.
 
-## 3. Manage & Test your agent
+Don't know what an AI agent is? see [this page](/foundations/agents).
 
-After creating an AI agent, You'll be redirected to its page, where you can manage everything related to it from settings, to tools, and companions. you'll find links to the documentation in each tab so you never get lost.
+</Step>
 
-Now you can test your agent in the playground. 
-The playground provides both text-based and voice-based interfaces for testing your agent, 
-both of them were built with Scoopika itself (using the [React library](/packages/ts/react)).
-
-Notice that you need to provide an API key for the LLM provider the agent uses, 
-You'll see an interface guiding you through what to do, 
-just pay attention that if you choose (add to my account) you won't need to pass the key again from your code.
-
-## 4. Setup your app
+<Step title="Install Scoopika in your project">
 
 For React or NextJS applications, refer to this [guide](/guides/react).
 
-### Generate token
-
-Generate a Scoopika access token, you can click on the settings icon in the platform, give your token a label, copy it and add it to your env file as `SCOOPIKA_TOKEN`.
-
-### Installation
-
-Now let's install Scoopika in your project (server-side environment):
+First, install the main SDK:
 
 ```bash
 npm install @scoopika/scoopika
 ```
 
-### Initialize
+This SDK is built for server-side usage and to deploy your AI agents as API endpoints, you'll learn how to do that later, don't worry it's a simple copy-paste process that We'll walk through together.
 
-Now it's time to initialize Scoopika in your project:
+We also have packages for client-side usage and React applications that We'll discover later (requires a deployed AI agent).
+
+</Step>
+
+<Step title="Generate access token">
+
+You need to generate your own access token from the platform by clicking on the settings icon in the top-left corner.
+
+Once your access token is generated you should copy it and add it to your environment variables like this:
+
+```text
+SCOOPIKA_TOKEN="YOUR_TOKEN_GOES_HERE"
+```
+
+This access token will be used to authenticate your application with Scoopika only when sending audio or url inputs to your AI agents, or enabling voice responses, otherwise it won't be used.
+
+Audio files, URLs, and voice responses generation happens on our servers because it requires running some heavy AI models.
+
+</Step>
+
+
+
+<Step title="Initialize Scoopika">
+
+Now you can initialize Scoopika in your app, you only need one line of code:
 
 ```typescript
-import { Scoopika } from "@scoopika/scoopika";
+import { Scoopika } from '@scoopika/scoopika';
 
-const scoopika = new Scoopika({
-  keys: {
-    openai: "OPENAI_KEY" // just example
-  }
+const scoopika = new Scoopika();
+```
+
+</Step>
+
+
+
+<Step title="Connect LLM provider">
+
+In order to run AI agents, You need to connect your LLM provider using your own API key in order to use the LLMs provided by it. Scoopika currently supports a number of LLM providers that's growing everyday, You can connect multiple LLM providers in your app and use multiple models provided by different providers, you can see how to connect these providers [here](https://app.scoopika.com/llm-providers). and here are a few examples:
+
+```typescript
+scoopika.connectProvider('openai', 'YOUR_OPENAI_API_KEY');
+scoopika.connectProvider('groq', 'YOUR_GROQ_API_KEY');
+```
+
+You'll see a number of supported LLMs under each provider in the platform, but you can really use any model provided by these providers, you just need to pass its name when creating your AI agents, so let's do it!
+
+</Step>
+
+
+
+<Step title="Create AI agents">
+
+AI agents are just LLMs with access to extra tools and functionalities, in Scoopika AI agents are the main component that can be used for text, voice, and object generation.
+
+Create an AI agent is simple:
+
+```typescript
+import { Agent } from '@scoopika/scoopika';
+
+const myAgent = new Agent(scoopika, {
+    provider: 'openai',
+    model: 'gpt-4', // any LLM provided by the provider, supports even custom or fine-tuned models
+    prompt: 'Your role is to...' // the prompt instructions
 });
 ```
 
-Replace the keys with the name-key of the LLMs providers you're using, see this [page](/packages/ts/scoopika/scoopika) to see an example.
-again if you added the API key to your account you don't need to pass it again from the code.
-
-See all properties the Scoopika class accepts [here](/packages/ts/scoopika/scoopika).
-
-## Run agents in your app
-
-Now you can start running agent in your application (server-side):
+You can also pass extra optional properties to your AI agent to give it access to long-term memory or knowledge stores (hosted services we provide to make your development much easier):
 
 ```typescript
-import { Scoopika, Agent } from "@scoopika/scoopika";
+import { Agent } from '@scoopika/scoopika';
 
-const scoopika = new Scoopika({...});
-const agent = new Agent("AGENT_ID", scoopika);
-
-const response = await agent.run({
-	inputs: {
-		message: "Hello!"
-	}
+const myAgent = new Agent(scoopika, {
+    provider: 'openai',
+    model: 'gpt-4',
+    prompt: 'Your role is to...',
+    memory: 'MEMORY_STORE_ID', // created from the platform
+    knowledge: 'KNOWLEDGE_STORE_ID' // create from the platform
 });
-
-console.log(response);
 ```
 
-## Web usage
+If you want to give your AI agents to have long-term memory and save conversations history, you can create a memory store [here](https://app.scoopika.com/data-stores).
 
-Now you have an agent running on the server-side, but you're here for web usage, which involves running agents on the client-side too, for that matter keep going to the [next page](/foundations/endpoint).
+If you want to extend the model's knowledge with information from files, PDFs, or websites, you can create a knowledge store [here](https://app.scoopika.com/knowledge), upload your info, and just add its ID.
+
+
+
+Let's see a full usage example with [Groq](https://groq.com/):
+
+```typescript
+import { Scoopika, Agent } from '@scoopika/scoopika';
+
+const scoopika = new Scoopika();
+scoopika.connectProvider('groq', 'YOUR_GROQ_API_KEY');
+
+const agent = new Agent(scoopika, {
+    provider: 'groq',
+    model: 'llama3-8b-8192',
+    prompt: 'You are a helpful AI assistant'
+});
+
+// Usage for text generation
+(async () => {
+    const { data, error } = await agent.run({
+        inputs: { message: 'Hello' }
+    });
+    
+    if (error === null) {
+        console.log(data); // handle data
+    } else {
+        console.error(error); // handle errors
+    }
+})();
+```
+
+
+
+But you're here for the heavy stuff right? now in the above code you'll get built-in error recovery without any additional code, but what about multimodal inputs and streaming responses? well, it's just the same:
+
+```typescript
+const { data, error } = await agent.run({
+    // MUTLIMODAL INPUTS (AT LEAST ONE INPUT IS REQUIRED)
+    inputs: {
+        message: 'Hello', // text inputs
+        audio: [
+            // list of audio files
+            { type: 'base64', value: 'BASE_64_VALUE' }
+        ],
+        images: [
+            // list of images URLs (NOTICE: the LLM you're using has to support vision)
+            'https://avatars.githubusercontent.com/u/164682378'
+        ],
+        urls: [
+            // list of web pages URLs
+            'https://scoopika.com/pricing'
+        ]
+    },
+    // STREAMING HOOKS
+    hooks: {
+        onToken: (t) => {
+            // capture each generated token (do anything here)
+            process.stdout.writeText(t)
+        },
+        // +6 useful hooks
+    }
+})
+```
+
+But what about conversations history? once you connect a memory store to your AI agents, you can pass sessions IDs when running an AI agent, learn more here.
+
+```typescript
+const { data, error } = await agent.run({
+    options: { session_id: 'SESSION_123' },
+    // the rest of the inputs
+})
+```
+
+You can pass and control a lot of things using the run options other than the session ID:
+
+```typescript
+const { data, error } = await agent.run({
+    options: { 
+        session_id: 'SESSION_123',
+        voice: true, // enable voice responses
+        llm: {
+            // config of the LLM
+            temperature: 0
+        }
+    },
+    // the rest of the inputs
+})
+```
+
+
+
+</Step>
+
+
+
+<Step title="Deploy AI agent">
+
+Now we have an AI agent, let's deploy it as an API endpoint so we can use it from the client-side with built-in streaming support and data validation!
+
+The process of deploying an AI agent might change a little bit based on the framework you're using, but it should work with any web framework that supports HTTP streaming. for example, when using Express this is how you do it:
+
+```typescript
+app.post('/my-agent', (req, res) => {
+    myAgent.serve({
+        request: req.body, // need to have JSON middleware
+        stream: (s) => res.write(s),
+        end: () => res.end()
+    })
+})
+```
+
+See how to deploy your AI agent based on your framework [here](/agents/deploy).
+
+</Step>
+
+</Steps>
+
+
+
+## What's Next?
+
+Once you have a deployed AI agent, you can start using the client-side library to run it, the process is so simple and just the same as running the AI agent on the server-side, learn more [here](/agents/client-side-usage).
+
+Learn more about:
+
+[Deploying AI agents and using them on the client-side]().
+
+[Text generation and building AI assistants](/text-generation).
+
+[Object generation and data extraction](/object-generation).
+
+[Memory & conversations sessions and history](/memory).
+
+[Running AI agents with options](/agents/howto/run-with-options).

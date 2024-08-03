@@ -18,8 +18,8 @@
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://scoopika.com/app"
+    "name": "Getting Started",
+    "url": "https://app.scoopika.com"
   },
   "feedback": {
     "thumbsRating": true,
@@ -29,14 +29,17 @@
   "primaryTab": {
     "name": "General"
   },
+  "sidebar": {
+    "items": "container"
+  },
+  "background": {
+    "style": "windows"
+  },
+  "layout": "sidenav",
   "tabs": [
     {
-      "name": "Agents",
+      "name": "AI Agents",
       "url": "agents"
-    },
-    {
-      "name": "Multi-Agent Boxes",
-      "url": "multi-agent-boxes"
     },
     {
       "name": "Tools",
@@ -82,7 +85,9 @@
       "group": "Getting Started",
       "pages": [
         "quickstart",
-        "foundations/endpoint"
+        "foundations/endpoint",
+        "text-generation",
+        "object-generation"
       ]
     },
     {

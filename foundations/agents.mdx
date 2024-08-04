@@ -3,30 +3,38 @@ title: AI Agents
 icon: robot
 ---
 
-This page is a beginner-friendly intro to AI agents and AI assistants in the scope of Scoopika.
+What are AI agents? what makes them different? how they work and why they're useful? Let's discover all these topics together.
 
 ## What is an AI agent?
 
-An AI agent is a software powered by a Large Language Models (LLM). They can automate processes, make decisions, and intelligently interact with users, other agents, and their environment. in simple terms, AI agents are LLMs on steroids.
+You’re probably familiar with AI assistants like ChatGPT. These are platforms that allow you to interact with a large language model (LLM) in a chat-like interface.
 
-## Characteristics of AI agents
+In simple terms, an AI assistant is software built around an LLM to communicate with humans in a conversational manner.
 
-In Scoopika, AI agents are built on top of LLMs (large language models) at their core, with the following characteristics:
+So what the hell is an AI agent?
 
-- Multimodal: AI agents can accept text, images, and audio (and video soon), and response with text and audio in real-time.
-- Perform actions & fetch data: Agents can send HTTP requests to external APIs or call custom functions to perform actions or fetch data based on context.
-- Autonomy: AI agents can operate without human intervention, performing multi actions and automating tasks.
-- Interactive: AI agents can interact with human and other agents in a conversational way in real-time.
+An AI agent is essentially an enhanced AI assistant with additional capabilities. Here's a straightforward definition:
 
-## Building blocks of AI agents
+1. **Takes Directions**: Can receive instructions from humans (e.g., perform a task, answer a question).
+2. **Use Tools**: Has one or more tools to perform actions or retrieve data (e.g., call APIs).
+3. **Autonomous Reasoning**: Decides independently how and when to use its tools to complete tasks, sometimes using multiple tools.
+4. **Versatile Applications**: Can be used beyond conversational interfaces, such as for data extraction from unstructured data or generating structured outputs like JSON.
+5. **Multimodal Inputs**: In Scoopika, AI agents can accept various input types, including text, audio, images, websites, and files.
 
-- **LLM**: Large language models are the core of AI agents, or you can say the brain.
-- **Prompt**: A set of instructions the agent will follow to achieve the expected behavior or tasks.
-- **Tools**: External APIs or functions that enable the agent to take actions or fetch needed data. Scoopika takes it to another level and lets developers define client-side actions, custom functions defined and executed safely on the client-side (user's browser), that the agent can execute them in real-time allowing it to click buttons, write in inputs, or manipulating the DOM.
-- **Voice**: Agents can generate audio responses in real-time using TTS (text to speech) with a human voice. once LLMs get to a level where they can output audio without TTS Scoopika will adapt with it ASAP.
 
-## Scoopika's mission
 
-Scoopika is not built to help users create personalized AI agents to automate tasks, that's never the project's goal.
+In short, an AI agent is like an AI assistant on steroids. You can use any LLM capable of reasoning and utilizing tools (or function-calling) to create an AI agent with Scoopika.
 
-Scoopika's mission is to make it easy for developers to create advanced customizable AI agents for their applications.
+
+
+## So what does Scoopika do?
+
+Scoopika simplifies the creation of advanced AI agents around LLMs, offering features you won’t find elsewhere:
+
+1. **Easy Development**: Scoopika provides all the tools needed for a seamless development process, making it simple to build interactive apps around AI agents.
+2. **Built-in Error Recovery**: AI agents can make mistakes when calling tools, generating structured data, or handling complex tasks. Scoopika AI agents can self-recover from any errors they encounter.
+3. **Multimodal Inputs**: Scoopika AI agents can accept various input types right out of the box, enabling the creation of advanced multimodal AI apps (accepted inputs include text, audio, images, URLs, and files).
+4. **Managed History**: Scoopika offers managed serverless databases to store conversation histories, allowing you to build context-aware apps similar to how ChatGPT retains chat histories until deleted. This feature requires no additional code and is fully managed for you.
+5. **Expand the Agent’s Knowledge**: When building AI agents or assistants, you often want them to understand more about your app or its documentation. Scoopika provides knowledge stores where you can upload files, PDFs, and websites, connecting them to your agent to access all the data so it has more knowledge from the sources you upload to the knowledge store.
+
+And there's much more tools to discover along the way.

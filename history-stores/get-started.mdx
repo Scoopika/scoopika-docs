@@ -24,7 +24,7 @@ fostering a more natural and engaging conversational experience.
 ## What are History Stores
 
 Imagine a user interacting with your agent.. By default, Scoopika uses an in-memory store, 
-meaning past conversations are forgotten. 
+meaning past conversations are forgotten on the long-term (stored in RAM only). 
 History stores offer a persistent solution, allowing you to record chat history and enable your agents to 
 access and reference previous interactions. This empowers your agents to:
 
@@ -46,21 +46,19 @@ This will create a managed Serverless data store for you that's served edge-clos
 
 ## Connecting your Store
 
-Once your history store is created, You just need to add its ID to your scoopika instance on the server-side setup:
+Once your history store is created, You just need to add its ID when initializing Scoopika:
 
 ```typescript
-import { Scoopika } from "@scoopika/scoopika";
+import { Scoopika } from '@scoopika/scoopika';
 
 const scoopika = new Scoopika({
-	store: "STORE_ID"
+    memory: 'STORE_ID'
 });
 ```
 
-By providing the history store ID during Scoopika instance initialization,
+By providing the history store ID to your Scoopika instance,
 you instruct Scoopika to utilize this persistent storage for managing chat sessions and conversation history.
 
 With your history store connected, explore the comprehensive documentation to learn more about:
 
-[Server-side Session Management](/packages/ts/scoopika/scoopika/history)
-
-[Client-side Session Management](/packages/ts/client/store/overview)
+[Conversations Session Management](/packages/ts/scoopika/scoopika/history)

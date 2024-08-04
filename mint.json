@@ -4,8 +4,8 @@
   "favicon": "/scoopika.svg",
   "colors": {
     "primary": "#8f70f5",
-    "light": "#fff",
-    "dark": "#000",
+    "light": "#8f70f5",
+    "dark": "#333333",
     "anchors": {
       "from": "#a48bf7",
       "to": "#6a40f2"
@@ -85,7 +85,6 @@
       "group": "Getting Started",
       "pages": [
         "quickstart",
-        "foundations/endpoint",
         "text-generation",
         "object-generation"
       ]
@@ -123,20 +122,6 @@
             "agents/howto/extract-data",
             "agents/howto/equip-with-tools",
             "agents/howto/agents-collaboration"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Multi-agent Boxes",
-      "pages": [
-        "multi-agent-boxes/get-started",
-        "multi-agent-boxes/features",
-        {
-          "group": "Usage",
-          "pages": [
-            "multi-agent-boxes/server-side-usage",
-            "multi-agent-boxes/client-side-usage"
           ]
         }
       ]

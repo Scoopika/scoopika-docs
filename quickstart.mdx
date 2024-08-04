@@ -1,7 +1,7 @@
 ---
 title: 'Quickstart'
 description: 'Start building LLM-powered applications in under 5 minutes'
-
+icon: rocket
 ---
 
 ---
@@ -13,8 +13,6 @@ description: 'Start building LLM-powered applications in under 5 minutes'
 <Step title="Create your account">
 
 Visit the [Scoopika platform](https://app.scoopika.com) and create a free account.
-
-Don't know what an AI agent is? see [this page](/foundations/agents).
 
 </Step>
 
@@ -68,7 +66,9 @@ const scoopika = new Scoopika();
 
 <Step title="Connect LLM provider">
 
-In order to run AI agents, You need to connect your LLM provider using your own API key in order to use the LLMs provided by it. Scoopika currently supports a number of LLM providers that's growing everyday, You can connect multiple LLM providers in your app and use multiple models provided by different providers, you can see how to connect these providers [here](https://app.scoopika.com/llm-providers). and here are a few examples:
+In order to run AI agents, You need to connect your LLM provider using your own API key in order to use the LLMs provided by it. 
+
+Scoopika currently supports a number of LLM providers that's growing everyday, You can connect multiple LLM providers in your app and use multiple models provided by different providers, you can see how to connect these providers [here](https://app.scoopika.com/llm-providers). and here are a few examples:
 
 ```typescript
 scoopika.connectProvider('openai', 'YOUR_OPENAI_API_KEY');
@@ -82,6 +82,8 @@ You'll see a number of supported LLMs under each provider in the platform, but y
 
 
 <Step title="Create AI agents">
+
+Don't know what an AI agent is? see [this page](/foundations/agents).
 
 AI agents are just LLMs with access to extra tools and functionalities, in Scoopika AI agents are the main component that can be used for text, voice, and object generation.
 
@@ -97,16 +99,19 @@ const myAgent = new Agent(scoopika, {
 });
 ```
 
-You can also pass extra optional properties to your AI agent to give it access to long-term memory or knowledge stores (hosted services we provide to make your development much easier):
+You can also pass extra optional properties to your Scoopika instance and AI agent to give it access to long-term memory or knowledge stores (hosted services we provide to make your development much easier):
 
 ```typescript
-import { Agent } from '@scoopika/scoopika';
+import { Scoopika, Agent } from '@scoopika/scoopika';
+
+const scoopika = new Scoopika({
+    memory: 'MEMORY_STORE_ID', // created from the platform
+})
 
 const myAgent = new Agent(scoopika, {
     provider: 'openai',
     model: 'gpt-4',
     prompt: 'Your role is to...',
-    memory: 'MEMORY_STORE_ID', // created from the platform
     knowledge: 'KNOWLEDGE_STORE_ID' // create from the platform
 });
 ```

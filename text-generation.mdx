@@ -1,15 +1,125 @@
 ---
-title: 'Text generation & AI assistants'
+title: 'Text generation'
 description: 'Using AI agents for text generation and building AI assistants'
+icon: message
 ---
 
 
 
-Before we start, the examples shown here work on both the server-side and the client-side, check the [quickstart](/quickstart) to learn how to set it up.
+Before we start, the examples shown here work on both the server-side and the client-side, check the [quickstart](/quickstart) to learn how to set it up, create, and deploy an AI agent/assistant.
 
 
 
 ---
 
 
+
+After creating an AI agent or assistant (In Scoopika the only difference between agents and assistants is that agents have access to tools while assistants don't), we can use it for text generation tasks and build interactive AI conversational interfaces.
+
+
+
+## Features
+
+- **Multimodal inputs**: Accept different data formats as inputs (text, audio, images, files, URLs).
+- **Text & voice responses**: Generate both text and voice responses with streaming.
+- **Tool calls**: AI agents can use the tools they have access to when needed to take actions, fetch data, or communicate with your back-end.
+- **Interactive**: Building interactive AI conversational interfaces is super easy with built-in streaming support for the front-end.
+
+
+
+## Usage
+
+Text generation is when the AI agent is asked to generate text, to answer a question for example, and it's the method used to build conversational AI assistants (like chatgpt).
+
+<Check>
+
+In Scoopika, generated text responses can also be in the form of voice responses, generated in real-time for better performance, learn more about it [here](/agents/features#voice)
+
+</Check>
+
+### Example
+
+To use text generation, you can use this code:
+
+```typescript
+// works the same on both server-side and client-side
+
+const { data, error } = await agent.run({
+    // MUTLIMODAL INPUTS (AT LEAST ONE INPUT IS REQUIRED)
+    inputs: {
+        message: 'Hello', // text inputs
+        audio: [
+            // list of audio files
+            { type: 'base64', value: 'BASE_64_VALUE' }
+        ],
+        images: [
+            // list of images URLs (NOTICE: the LLM you're using has to support vision)
+            'https://avatars.githubusercontent.com/u/164682378'
+        ],
+        urls: [
+            // list of web pages URLs
+            'https://scoopika.com/pricing'
+        ]
+    },
+    // STREAMING HOOKS
+    hooks: {
+        onToken: (t) => {
+            // capture each generated token (do anything here)
+            process.stdout.writeText(t)
+        },
+        // +6 useful hooks
+    }
+})
+```
+
+### Inputs
+
+You can send different inputs formats to your AI agents, check all the available inputs [here](/api-reference/inputs).
+
+### Options
+
+You can control the process using options, to define the conversation session ID, enable voice responses, control the LLM config, and more, learn more [here](/api-reference/run-options).
+
+ ### Streaming hooks
+
+Streaming hooks are used to capture actions and responses in real-time while they're being generated or performed, like generated responses tokens, or tool calls, see all available hooks [here](/api-reference/hooks).
+
+
+
+## Web usage
+
+If building AI agents to integrate in your website, then you should use the [client package](/packages/ts/client/overview).
+
+Building with React or Nextjs? use the [react package](/packages/ts/react/overview).
+
+
+
+What's included in these packages?
+
+1. Easily run deployed AI agents from the client-side with streaming hooks.
+2. In-browser voice recorder with speech recognition (for building AI voice apps).
+3. AI agent voice player (to easily play the AI agent voice response in real-time).
+
+The React package has state management and a lot of the things you need just built for you.
+
+
+
+## Conversation sessions
+
+You need to keep the context of a conversation between your user and the AI agent? usually when using other SDKs, like OpenAI's or Vercel's AI SDK, you need to pass `messages` in each run, keep them, store them yourself in a database, and just a lot of useless extra steps.
+
+In Scoopika We realized this problem, and solved it for you... the only thing you need to do is pass the conversations sessions ID in the run options:
+
+```typescript
+agent.run({
+    options: { session_id: 'SESSION-123' },
+    // the rest inputs
+})
+```
+
+
+
+When using Scoopika, It uses a built in in-memory store to keep conversations (in RAM), which means that the data is not persistent, and is lost once the server is turned off. to have persistent conversations memory you can create a memory store [here](https://app.scoopika.com/data-stores).
+
+So you actually only need to keep track of the sessions IDs on your own, a new session is automatically created when used in a run for the first time.
 

@@ -1,0 +1,97 @@
+---
+title: 'JSON Object generation'
+description: 'JSON object generation and data extraction'
+icon: brackets-curly
+---
+
+You can use AI agents to generate structured JSON objects and extract structured data from unstructured data.
+
+This is useful for building smart, context-driven applications with LLM-generated data or for data extraction where you generate structured JSON from unstructured data.
+
+## Features
+
+- **Multimodal inputs**: Extract structured data from various data sources (text, audio files, images, websites).
+- **Validated output**: The generated JSON output is validated against a [zod schema](https://zod.dev/?id=objects) you provide.
+- **Tries**: In case of generation failure, Scoopika retries generating a valid JSON object, sending the errors back to the LLM to avoid repeating them. You can control the number of tries.
+
+## Usage
+
+We can use AI agents to both output generative JSON objects or do some data extraction, let's see examples for both.
+
+### JSON object generation
+
+```typescript
+// works the same on server-side and client-side
+
+import { z } from 'zod'; // required to specify the expected output schema (npm i zod)
+
+const { data, error } = await agent.structuredOutput({
+    inputs: {
+        message: 'The story is about a little girl...' // example to output a story
+    },
+    schema: z.object({
+        title: z.string().describe('The story title'),
+        introduction: z.string().describe('The intro to the story'),
+        // anything else you need
+    }),
+    tries: 3 // how many times to try generating data
+});
+
+if (error === null) {
+    console.log(data.title); // a string for sure (data is validated)
+} else {
+    console.error(error); // handle errors
+}
+```
+
+### Data extraction
+
+```typescript
+// works the same on server-side and client-side
+
+import { z } from 'zod';
+
+const { data, error } = await agent.structuredOutput({
+    inputs: {
+        message: 'Extract JSON data from this website:',
+        urls: [
+            'https://scoopika.com'
+        ]
+    },
+    schema: z.object({
+        title: z.string().describe('The website title'),
+        audience: z.enum(['developers', 'non-developers']),
+        free_plan: z.boolean().describe('Does the website have a free plan')
+    })
+});
+
+if (error === null) {
+    console.log(data.title); // string
+    console.log(data.audience); // one of 'developers', 'non-developers'
+    console.log(data.free_plan); // true or false
+} else {
+    console.error(error); // handle errors
+}
+```
+
+
+
+## Conversational-context
+
+For example, if you have a conversation between your AI assistant and a user in session `s_123`, and you want to generate JSON data based on the conversation to decide the next steps, you can pass the session ID to the run options as you do for text generation, and the generation will be driven by the conversation context:
+
+```typescript
+const { data, error } = await agent.structuredOutput({
+    options: { session_id: 's_123' },
+    // the same goes here
+})
+```
+
+You can even use a different AI agent with a different prompt and task, possibly using another LLM provider.
+
+
+
+
+
+
+

@@ -2,13 +2,7 @@
 title: Run With History
 ---
 
-<Check>
-	**Prerequisite**
-
-	A running Scoopika API endpoint. see this [page](/foundations/endpoint).
-</Check>
-
-This guide shows how to run agents with long-term memory by using sessions. This works on both server-side and client-side.
+This guide shows how to run agents with long-term memory by using sessions. This works on the server-side only.
 
 In your server-side Scoopika initialization, you can pass a remote store ID that you can create [here](https://scoopika.com/app/data-stores) to have persistent memory and chat sessions, otherwise Scoopika will use an in-memory store (not persistent).
 
@@ -21,14 +15,8 @@ In your server-side Scoopika initialization, you can pass a remote store ID that
 Let's create a new session, in this case We'll create a session for a user with the ID "SCOOP" so we can then list SCOOP's sessions. You can use this approach to create sessions for specific users in your app based on their IDs.
 
 ```typescript
-// On Server-side
-const session = await scoopika.newSession({
-	user_id: "SCOOP"
-});
-
-// Or Client-side
-const session = await client.store.newSession({
-	user_id: "SCOOP"
+const session = await scoopika.memory.newSession({
+	user_id: "SCOOP" // optional
 });
 ```
 
@@ -65,11 +53,7 @@ await agent.run({
 Now we can check that session's messages (history, it contains the user request and agent response):
 
 ```typescript
-// On Server-side
-await scoopika.getSessionMessages(session.id);
-
-// Or Client-side
-await client.store.getSessionMessages(session.id);
+await scoopika.memory.getSessionMessages(session.id);
 ```
 
 ## List user sessions
@@ -77,11 +61,7 @@ await client.store.getSessionMessages(session.id);
 and we can list SCOOP's sessions, and it will return the IDs of sessions that SCOOP owns:
 
 ```typescript
-// On Server-side
-await scoopika.listUserSessions(session.id);
-
-// Or Client-side
-await client.store.listUserSessions(session.id);
+await scoopika.memory.listUserSessions(session.id);
 ```
 
 ## Delete session
@@ -89,11 +69,7 @@ await client.store.listUserSessions(session.id);
 You can also delete a session if you want to:
 
 ```typescript
-// On Server-side
-await scoopika.deleteSession(session.id);
-
-// Or Client-side
-await client.store.deleteSession(session.id);
+await scoopika.memory.deleteSession(session.id);
 ```
 
 See how easy and simple that is, history is managed for you, you just pass sessions IDs to runs!
